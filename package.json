@@ -1,0 +1,19 @@
+{
+  "name": "odeon",
+  "version": "1.0.0",
+  "description": "Movie Library",
+  "main": "client/index.js",
+  "scripts": {
+    "client": "npm start --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhmedWalidKamal/odeon.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AhmedWalidKamal/odeon/issues"
+  },
+  "homepage": "https://github.com/AhmedWalidKamal/odeon#readme"
+}
