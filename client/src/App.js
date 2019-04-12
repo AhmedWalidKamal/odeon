@@ -13,13 +13,13 @@ import SignUp from "./components/auth/SignUp";
 class App extends Component {
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <div className="App">
           <Navbar />
           <Switch>
-            <Route exact path="/" component={Home}></Route>
-            <Route exact path="/login" component={Login}></Route>
-            <Route exact path="/signup" component={SignUp}></Route>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={SignUp} />
           </Switch>
           <Footer />
         </div>
