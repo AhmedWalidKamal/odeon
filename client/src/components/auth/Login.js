@@ -9,6 +9,8 @@ import "./auth.scss";
 class Login extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
+
     this.state = {
       email: "",
       password: ""
@@ -44,7 +46,7 @@ class Login extends Component {
     const { dispatch } = this.props;
 
     if (email && password) {
-      dispatch(login(email, password));
+      this.props.login(email, password);
     }
   }
   render() {
@@ -85,11 +87,15 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps)(Login);
+export default connect(
+  mapStateToProps,
+  { login }
+)(Login);

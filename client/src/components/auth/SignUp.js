@@ -9,6 +9,7 @@ import "./auth.scss";
 class SignUp extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
 
     this.state = {
       user: {
@@ -45,9 +46,10 @@ class SignUp extends Component {
     event.preventDefault();
 
     const { email, username, password, confirmPassword } = this.state.user;
+    console.log(this.props);
     const { dispatch } = this.props;
     if (username && email && password && confirmPassword) {
-      dispatch(register(this.state.user, this.props.history));
+      this.props.register(this.state.user, this.props.history);
     }
   }
 
@@ -105,14 +107,13 @@ class SignUp extends Component {
 }
 
 SignUp.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  register: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
-  return {
-    user: state.user
-  };
-}
+const mapStateToProps = state => ({
+  user: state.user
+});
 
 export default connect(
   mapStateToProps,

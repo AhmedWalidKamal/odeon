@@ -4,7 +4,7 @@ import setAuthToken from "../util/setAuthToken";
 
 import { SET_CURRENT_USER } from "./types";
 
-export const register = (userData, history) => {
+export const register = (userData, history) => dispatch => {
   axios
     .post("/api/users/register", userData)
     .then(res => {
