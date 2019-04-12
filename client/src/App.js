@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Router, Switch, Route } from "react-router-dom";
+import { history } from "./helpers/history";
 
 import "./App.css";
 
@@ -16,16 +17,13 @@ class App extends Component {
         <div className="App">
           <Navbar />
           <Switch>
-            <Route exact path="/" component={Home}></Route>
-            <Route exact path="/login" component={Login}></Route>
-            <Route exact path="/register" component={Register}></Route>    
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
           </Switch>
           <Footer />
         </div>
       </Router>
-      <div className="App">
-        
-      </div>
     );
   }
 }
