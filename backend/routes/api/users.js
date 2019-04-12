@@ -50,12 +50,15 @@ router.get("/profile", passport.authenticate("jwt", { session: false }),
 router.put("/edit-profile", passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const info = decode(req.headers.authorization);
+    console.log("New Profile:")
+    console.log(req.body.profile)
+    console.log("token info:")
     console.log(info);
     const { _id, displayName, avatar, social, location, bio } = req.body.profile;
     errors = {};
     if (info.profileId !== _id) {
       errors.profile = "Profile id is different from user's profile id";
-      req.status(400).json(errors);
+      res.status(400).json(errors);
     } else {
       users.editProfile(_id, displayName, avatar, social, location, bio).then(data => {
         console.log(data);

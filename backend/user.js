@@ -92,7 +92,7 @@ module.exports.login = function(email, password) {
           console.log(user)
           const payload = {
             id: user._id,
-            profileId: user.profile,
+            profileId: user.profile._id,
             username: user.username,
             email: user.email,
             displayName: user.displayName,
@@ -148,7 +148,7 @@ module.exports.editProfile = function(profileId, displayName, avatar, social, lo
     }
 
     // Check for existing username
-    User.findByIdAndUpdate(id,{
+    Profile.findByIdAndUpdate(profileId, {
       displayName,
       avatar,
       social,
@@ -156,6 +156,7 @@ module.exports.editProfile = function(profileId, displayName, avatar, social, lo
       bio
     }).then(function(profile) {
       if (empty(profile)) {
+        console.log("Profile " + profileId + " not found")
         errors.error = "Profile not found";
         return reject(errors);
       } else {
