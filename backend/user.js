@@ -10,9 +10,12 @@ const validateRegisterInput = require("./validation/register");
 const validateLoginInput = require("./validation/login");
 const validateProfileInput = require("./validation/profile");
 
-module.exports.register = function(username, email, password) {
+module.exports.register = function (username, email, password) {
   return new Promise((resolve, reject) => {
-    const { errors, isValid } = validateRegisterInput({
+    const {
+      errors,
+      isValid
+    } = validateRegisterInput({
       username,
       email,
       password,
@@ -23,14 +26,20 @@ module.exports.register = function(username, email, password) {
       return reject(errors);
     }
 
-    User.findOne({$or: [ { username: username }, { email: email } ]}).then(function(result) {
+    User.findOne({
+      $or: [{
+        username: username
+      }, {
+        email: email
+      }]
+    }).then(function (result) {
       if (!empty(result)) {
         console.log(result);
         if (result.username === username) {
           errors.username = "Username already exists";
         }
         if (result.email === email) {
-          errors.email = "Email already exists";  
+          errors.email = "Email already exists";
         }
         console.log(errors);
         return reject(errors);
@@ -41,7 +50,9 @@ module.exports.register = function(username, email, password) {
         email: email,
         password: password
       });
-      const newProfile = new Profile({ user: newUser._id });
+      const newProfile = new Profile({
+        user: newUser._id
+      });
       newUser.profile = newProfile._id;
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -50,21 +61,25 @@ module.exports.register = function(username, email, password) {
             throw err;
           }
           newUser.password = hash;
-          newUser.save().then(function() {
+          newUser.save().then(function () {
             if (newUser.isNew) {
               errors.error = "Registration error";
               return reject(errors);
             }
             console.log("User: " + newUser.username + " Signed Up.");
-            return resolve({ success: true });
+            return resolve({
+              success: true
+            });
           });
-          newProfile.save().then(function() {
+          newProfile.save().then(function () {
             if (newProfile.isNew) {
               errors.error = "Registration error";
               return reject(errors);
             }
             console.log("Profile: " + newUser.username + " Created.");
-            return resolve({ success: true });
+            return resolve({
+              success: true
+            });
           });
         });
       });
@@ -72,16 +87,24 @@ module.exports.register = function(username, email, password) {
   });
 };
 
-module.exports.login = function(email, password) {
+module.exports.login = function (email, password) {
   return new Promise((resolve, reject) => {
-    const { errors, isValid } = validateLoginInput({ email, password });
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
+      email,
+      password
+    });
 
     // Check validation
     if (!isValid) {
       return reject(errors);
     }
     // Find user by Username
-    User.findOne({ email }).populate("profile", ["displayName", "avatar"]).then(user => {
+    User.findOne({
+      email
+    }).populate("profile", ["displayName", "avatar"]).then(user => {
       if (!user) {
         errors.error = "Username not found";
         return reject(errors); // User not found
@@ -102,10 +125,14 @@ module.exports.login = function(email, password) {
           // Sign token, returned to the frontend, has user info in the payload.
           jwt.sign(
             payload,
-            keys.secretOrKey,
-            { expiresIn: 86400 }, // time in seconds for the token to be expired and the user needs to login and get a new token.
+            keys.secretOrKey, {
+              expiresIn: 86400
+            }, // time in seconds for the token to be expired and the user needs to login and get a new token.
             (err, token) => {
-              return resolve({ success: true, token: "Bearer " + token });
+              return resolve({
+                success: true,
+                token: "Bearer " + token
+              });
             }
           );
         } else {
@@ -117,11 +144,13 @@ module.exports.login = function(email, password) {
   });
 };
 
-module.exports.getProfile = function(userId) {
+module.exports.getProfile = function (userId) {
   return new Promise((resolve, reject) => {
     // Check for existing username
     const errors = {};
-    Profile.findOne({ user: userId }).then(function(profile) {
+    Profile.findOne({
+      user: userId
+    }).then(function (profile) {
       if (empty(profile)) {
         errors.error = "Profile does not exist";
         return reject(errors);
@@ -132,9 +161,12 @@ module.exports.getProfile = function(userId) {
   });
 };
 
-module.exports.editProfile = function(profileId, displayName, avatar, social, location, bio) {
+module.exports.editProfile = function (profileId, displayName, avatar, social, location, bio) {
   return new Promise((resolve, reject) => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName,
       avatar,
       social,
@@ -154,13 +186,15 @@ module.exports.editProfile = function(profileId, displayName, avatar, social, lo
       social,
       location,
       bio
-    }).then(function(profile) {
+    }).then(function (profile) {
       if (empty(profile)) {
         console.log("Profile " + profileId + " not found")
         errors.error = "Profile not found";
         return reject(errors);
       } else {
-        return resolve({ success: true });
+        return resolve({
+          success: true
+        });
       }
     });
   });

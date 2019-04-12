@@ -6,7 +6,10 @@ const isEmpty = require("is-empty");
 describe("Login Validation", () => {
   // Create tests
   it("Tests login with valid data", () => {
-    const { errors, isValid } = validateLoginInput({
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
       email: "email@gmail.com",
       password: "123456"
     });
@@ -15,13 +18,19 @@ describe("Login Validation", () => {
   });
 
   it("Tests login with null data", () => {
-    const { errors, isValid } = validateLoginInput(null);
+    const {
+      errors,
+      isValid
+    } = validateLoginInput(null);
     expect(isValid).toEqual(false);
     expect(!isEmpty(errors.error)).toEqual(true);
   });
 
   it("Tests login with empty email", () => {
-    const { errors, isValid } = validateLoginInput({
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
       email: "",
       password: "123456"
     });
@@ -32,7 +41,10 @@ describe("Login Validation", () => {
   });
 
   it("Tests login with missing email", () => {
-    const { errors, isValid } = validateLoginInput({
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
       password: "123456"
     });
     expect(isValid).toEqual(false);
@@ -42,7 +54,10 @@ describe("Login Validation", () => {
   });
 
   it("Tests login with null email", () => {
-    const { errors, isValid } = validateLoginInput({
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
       email: null,
       password: "123456"
     });
@@ -53,7 +68,10 @@ describe("Login Validation", () => {
   });
 
   it("Tests login with invalid email format", () => {
-    const { errors, isValid } = validateLoginInput({
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
       email: "email@",
       password: "123456"
     });
@@ -64,7 +82,10 @@ describe("Login Validation", () => {
   });
 
   it("Tests login with empty password", () => {
-    const { errors, isValid } = validateLoginInput({
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
       email: "email@gmail.com",
       password: ""
     });
@@ -75,7 +96,10 @@ describe("Login Validation", () => {
   });
 
   it("Tests login with missing password", () => {
-    const { errors, isValid } = validateLoginInput({
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
       email: "email@gmail.com",
     });
     expect(isValid).toEqual(false);
@@ -85,7 +109,10 @@ describe("Login Validation", () => {
   });
 
   it("Tests login with null password", () => {
-    const { errors, isValid } = validateLoginInput({
+    const {
+      errors,
+      isValid
+    } = validateLoginInput({
       email: "email@gmail.com",
       password: null
     });
