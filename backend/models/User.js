@@ -4,20 +4,24 @@ const Schema = mongoose.Schema;
 
 // create Schema
 const UserSchema = new Schema({
+  profile: {
+    type: Schema.Types.ObjectId,
+    ref: "profile",
+    unique: true
+  },
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
     required: true
-  },
-  avatar: {
-    type: String
   },
   date: {
     type: Date,

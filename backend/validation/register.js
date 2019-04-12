@@ -6,7 +6,7 @@ module.exports = function validateRegisterInput(data) {
 
   // Checking with isEmpty if data.username is empty, and converting it to a string, because Validator.isEmpty only expects a string not an object.
   data.username = !isEmpty(data.username) ? data.username : "";
-  data.phone = !isEmpty(data.phone) ? data.phone : "";
+  data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   // data.password2 = !isEmpty(data.password2) ? data.password2 : "";
 
@@ -17,11 +17,11 @@ module.exports = function validateRegisterInput(data) {
     errors.username = "Username must be between 3 and 15 characters!";
   }
 
-  // phone field validations
-  if (Validator.isEmpty(data.phone)) {
-    errors.phone = "Phone field is required";
-  } else if (!Validator.isMobilePhone(data.phone, "ar-EG")) {
-    errors.phone = "Phone entered is invalid";
+  // email field validations
+  if (Validator.isEmpty(data.email)) {
+    errors.email = "Email field is required";
+  } else if (!Validator.isEmail(data.email)) {
+    errors.email = "Email entered is invalid";
   }
 
   // Password field validations
