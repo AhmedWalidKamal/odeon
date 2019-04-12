@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { register } from "../../actions/userActions";
 
@@ -9,7 +10,6 @@ import "./auth.scss";
 class SignUp extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       user: {
         username: "",
@@ -96,7 +96,7 @@ class SignUp extends Component {
         </div>
         <div className="login">
           <p>
-            already have an account?<a href="#">login</a>
+            already have an account?<Link to='/login'>Login</Link>
           </p>
         </div>
       </div>
