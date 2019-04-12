@@ -6,11 +6,18 @@ import { fetchProfile } from '../../actions/profileActions';
 import './profileCard.scss'
 
 class ProfileCard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
-    // this.props.fetchProfile(this.props.loggedInUserId);
+    this.props.fetchProfile(this.props.user.user.id);
   }
 
   render() {
+    const { profile } = this.props.profile;
+    const { user } = this.props.user;
+    console.log(user);
     return (
       <div>
         <div className="wrapper">
@@ -19,7 +26,9 @@ class ProfileCard extends Component {
               <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg" alt="profile card" />
             </div>
             <div className="profile-card__cnt js-profile-cnt">
-              <div className="profile-card__name">First Last</div>
+              <div className="profile-card__name">{profile.displayName?
+                profile.displayName.firstName + " " +  profile.displayName.lastName
+                  : this.user.username}</div>
               <div className="profile-card__txt">Likes french new-wave films</div>
               <div className="profile-card-loc">
                 <span className="profile-card-loc__icon">
@@ -120,7 +129,7 @@ class ProfileCard extends Component {
 
 const mapStateToProps = state => ({
   profile: state.profile,
-  loggedInUserId: state.user.id
+  user: state.user
 });
 
 export default connect(mapStateToProps, { fetchProfile })(ProfileCard);
