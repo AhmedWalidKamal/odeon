@@ -35,9 +35,9 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/profile", passport.authenticate("jwt", { session: false }),
+router.get("/profile/:id", passport.authenticate("jwt", { session: false }),
  (req, res) => {
-    const { id } = req.body;
+    const id = req.params.id;
     users.getProfile(id).then(data => {
       console.log(data);
       res.json(data);
