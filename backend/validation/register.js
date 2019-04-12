@@ -4,6 +4,14 @@ const isEmpty = require("is-empty");
 module.exports = function validateRegisterInput(data) {
   let errors = {};
 
+  if (isEmpty(data)) {
+    errors.error = "Registration failed";
+    return {
+      errors,
+      isValid: false
+    };
+  }
+
   // Checking with isEmpty if data.username is empty, and converting it to a string, because Validator.isEmpty only expects a string not an object.
   data.username = !isEmpty(data.username) ? data.username : "";
   data.email = !isEmpty(data.email) ? data.email : "";
@@ -29,6 +37,8 @@ module.exports = function validateRegisterInput(data) {
     errors.password = "Password field is required";
   } else if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
     errors.password = "Password must be at least 6 characters";
+  } else if (data.password === data.username) {
+    errors.password = "Password should be different from username";
   }
 
   // // Password2 field validations
