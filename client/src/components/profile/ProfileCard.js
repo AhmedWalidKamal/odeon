@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import { fetchProfile } from '../../actions/profileActions';
+import { fetchProfile } from "../../actions/profileActions";
+import "./profileCard.scss";
 
-import './profileCard.scss'
+const isEmpty = require("is-empty");
 
 class ProfileCard extends Component {
   constructor(props) {
@@ -18,25 +19,51 @@ class ProfileCard extends Component {
     const { profile } = this.props.profile;
     const { user } = this.props.user;
     console.log(user);
+
     return (
       <div>
         <div className="wrapper">
           <div className="profile-card js-profile-card">
             <div className="profile-card__img">
-              <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg" alt="profile card" />
+              <img
+                src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
+                alt="profile card"
+              />
             </div>
             <div className="profile-card__cnt js-profile-cnt">
-              <div className="profile-card__name">{profile.displayName?
-                profile.displayName.firstName + " " +  profile.displayName.lastName
-                  : this.user.username}</div>
-              <div className="profile-card__txt">Likes french new-wave films</div>
+              {!isEmpty(profile) && !isEmpty(profile.displayName) ? (
+                <div className="profile-card__name">
+                  {" "}
+                  {profile.displayName.firstName} + " " +
+                  {profile.displayName.lastName}
+                </div>
+              ) : (
+                <div>{user.username}</div>
+              )}
+
+              {!isEmpty(profile) && !isEmpty(profile.bio) ? (
+                <div className="profile-card__txt">{profile.bio}</div>
+              ) : (
+                <div className="profile-card__txt">
+                  Likes french new-wave films
+                </div>
+              )}
+
               <div className="profile-card-loc">
                 <span className="profile-card-loc__icon">
-                  <svg className="icon"><use xlinkHref="#icon-location" /></svg>
+                  <svg className="icon">
+                    <use xlinkHref="#icon-location" />
+                  </svg>
                 </span>
-                <span className="profile-card-loc__txt">
-                  Alexandria, Egypt
-                </span>
+                {!isEmpty(profile) && !isEmpty(profile.location) ? (
+                  <span className="profile-card-loc__txt">
+                    {profile.location}
+                  </span>
+                ) : (
+                  <span className="profile-card-loc__txt">
+                    Alexandria, Egypt
+                  </span>
+                )}
               </div>
               <div className="profile-card-inf">
                 <div className="profile-card-inf__item">
@@ -53,19 +80,37 @@ class ProfileCard extends Component {
                 </div>
               </div>
               <div className="profile-card-social">
-                <a href="https://www.facebook.com/" className="profile-card-social__item facebook" target="_blank">
+                <a
+                  href="https://www.facebook.com/"
+                  className="profile-card-social__item facebook"
+                  target="_blank"
+                >
                   <span className="icon-font">
-                    <svg className="icon"><use xlinkHref="#icon-facebook" /></svg>
+                    <svg className="icon">
+                      <use xlinkHref="#icon-facebook" />
+                    </svg>
                   </span>
                 </a>
-                <a href="https://twitter.com/" className="profile-card-social__item twitter" target="_blank">
+                <a
+                  href="https://twitter.com/"
+                  className="profile-card-social__item twitter"
+                  target="_blank"
+                >
                   <span className="icon-font">
-                    <svg className="icon"><use xlinkHref="#icon-twitter" /></svg>
+                    <svg className="icon">
+                      <use xlinkHref="#icon-twitter" />
+                    </svg>
                   </span>
                 </a>
-                <a href="http://website.com/" className="profile-card-social__item link" target="_blank">
+                <a
+                  href="http://website.com/"
+                  className="profile-card-social__item link"
+                  target="_blank"
+                >
                   <span className="icon-font">
-                    <svg className="icon"><use xlinkHref="#icon-link" /></svg>
+                    <svg className="icon">
+                      <use xlinkHref="#icon-link" />
+                    </svg>
                   </span>
                 </a>
               </div>
@@ -132,4 +177,7 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, { fetchProfile })(ProfileCard);
+export default connect(
+  mapStateToProps,
+  { fetchProfile }
+)(ProfileCard);
