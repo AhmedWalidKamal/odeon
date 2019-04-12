@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { login } from "../../actions/userActions";
 
@@ -77,7 +78,7 @@ class Login extends Component {
           </form>
         </div>
         <div className="login">
-          <p>Don't have an account?<a href="#">Sign Up</a></p>
+          <p>Don't have an account?<Link to='/signup'>Sign Up</Link></p>
         </div>
       </div>
     );
