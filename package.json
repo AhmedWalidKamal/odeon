@@ -2,9 +2,13 @@
   "name": "odeon",
   "version": "1.0.0",
   "description": "Movie Library",
-  "main": "client/index.js",
+  "main": "backend/server.js",
   "scripts": {
-    "client": "npm start --prefix client"
+    "client-install": "npm install --prefix client",
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
