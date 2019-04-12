@@ -8,8 +8,7 @@ describe("Saving records", function() {
     const user = new user({
       username: "admin",
       passward: "admin",
-      phone: "123456",
-      type: 0
+      email: "a@b.c"
     });
 
     user.save().then(function() {
