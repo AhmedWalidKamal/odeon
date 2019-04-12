@@ -16,7 +16,7 @@ class Login extends Component {
             <input type="submit" defaultValue="Sign Up" />
           </form>
         </div>
-        <div className="signup">
+        <div className="login">
           <p>Don't have an account?<a href="#">Sign Up</a></p>
         </div>
       </div>
@@ -24,4 +24,4 @@ class Login extends Component {
   }
 }
 
-export default (Login);
+export default Login;
