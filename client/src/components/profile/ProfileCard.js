@@ -4,16 +4,11 @@ import { fetchProfile } from '../../actions/profileActions';
 import './profileCard.scss'
 
 class ProfileCard extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     // this.props.fetchProfile(this.props.loggedInUserId);
   }
 
   render() {
-    const profile = this.props.profile;
     return (
       <div>
         <div className="wrapper">

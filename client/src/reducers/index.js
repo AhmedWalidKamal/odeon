@@ -3,6 +3,6 @@ import userReducer from "./userReducer";
 import profileReducer from "./profileReducer";
 
 export default combineReducers({
-  users: userReducer,
+  user: userReducer,
   profile: profileReducer
 });
