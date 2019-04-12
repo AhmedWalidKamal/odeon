@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Router, Switch, Route } from "react-router-dom";
+import { history } from "./helpers/history";
 
 import "./App.css";
 
