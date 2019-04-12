@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { fetchProfile } from '../../actions/profileActions';
+
 import './profileCard.scss'
 
 class ProfileCard extends Component {
@@ -116,9 +118,9 @@ class ProfileCard extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return { profile: state.profile //loggedInUserId: state.user.id
-  };
-}
+const mapStateToProps = state => ({
+  profile: state.profile,
+  loggedInUserId: state.user.id
+});
 
 export default connect(mapStateToProps, { fetchProfile })(ProfileCard);
