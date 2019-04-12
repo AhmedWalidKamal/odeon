@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import Home from "./components/Home";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
+import ProfileCard from "./components/profile/ProfileCard";
 
 // Check for jwt token
 if (localStorage.jwtToken) {
@@ -51,7 +52,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/" component={Home} />
+            <Route exact path="/profile" component={ProfileCard} />
           </Switch>
           <Footer />
         </div>

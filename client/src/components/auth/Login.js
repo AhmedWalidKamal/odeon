@@ -76,10 +76,8 @@ class Login extends Component {
             <input type="submit" defaultValue="Sign Up" />
           </form>
         </div>
-        <div className="signup">
-          <p>
-            Don't have an account?<a href="#">Sign Up</a>
-          </p>
+        <div className="login">
+          <p>Don't have an account?<a href="#">Sign Up</a></p>
         </div>
       </div>
     );
