@@ -20,7 +20,7 @@ module.exports = function validateProfileInput(data) {
   }
 
   data.social = !isEmpty(data.social) ? data.social : {};
-  
+
   console.log(data);
 
   data.displayName = !isEmpty(data.displayName) ? data.displayName : "";
@@ -30,11 +30,17 @@ module.exports = function validateProfileInput(data) {
   const facebook = !isEmpty(data.social.facebook) ? data.social.facebook : "";
   const website = !isEmpty(data.social.website) ? data.social.website : "";
 
-  if (!isEmpty(data.bio) && !Validator.isLength(data.bio, { min: 0, max: 100 })) {
+  if (!isEmpty(data.bio) && !Validator.isLength(data.bio, {
+      min: 0,
+      max: 100
+    })) {
     errors.bio = "Bio should be less than 100 characters";
   }
 
-  if (!isEmpty(data.displayName) && !Validator.isLength(data.displayName, { min: 3, max: 100 })) {
+  if (!isEmpty(data.displayName) && !Validator.isLength(data.displayName, {
+      min: 3,
+      max: 100
+    })) {
     errors.displayName = "Display name should be more than 3 characters and less than 100 characters";
   }
 

@@ -8,7 +8,9 @@ const users = require("./routes/api/users");
 const app = express();
 
 // Body Parser middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 
 // DB Config
@@ -16,7 +18,9 @@ const db = require("./config/keys").mongoURI;
 
 // Connect to Mongo
 mongoose
-  .connect(db, { useNewUrlParser: true })
+  .connect(db, {
+    useNewUrlParser: true
+  })
   .then(() => console.log("MongoDB Connected..."))
   .catch(err => console.log(err));
 

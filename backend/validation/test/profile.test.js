@@ -6,7 +6,10 @@ const isEmpty = require("is-empty");
 describe("Profile Validation", () => {
   // Create tests
   it("Tests profile with valid data", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -22,13 +25,19 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with null data", () => {
-    const { errors, isValid } = validateProfileInput(null);
+    const {
+      errors,
+      isValid
+    } = validateProfileInput(null);
     expect(isValid).toEqual(false);
     expect(!isEmpty(errors.error)).toEqual(true);
   });
 
   it("Tests profile with empty display name", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -44,7 +53,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with empty avatar", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "",
       social: {
@@ -60,7 +72,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with empty twitter", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -76,7 +91,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with empty facebook", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -93,7 +111,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with empty website", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -110,7 +131,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with empty location", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -127,7 +151,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with empty bio", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -143,7 +170,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with missing display name", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       avatar: "https://domain.com/avatar.png",
       social: {
         twitter: "https://twitter.com/user",
@@ -158,7 +188,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with missing avatar", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       social: {
         twitter: "https://twitter.com/user",
@@ -173,7 +206,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with missing twitter", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -188,7 +224,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with missing facebook", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -204,7 +243,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with missing website", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -220,7 +262,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with missing location", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -236,7 +281,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with missing bio", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -251,7 +299,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with  null display name", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: null,
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -267,7 +318,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with null avatar", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: null,
       social: {
@@ -283,7 +337,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with null twitter", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -299,7 +356,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with null facebook", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -316,7 +376,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with null website", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -333,7 +396,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with null location", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -350,7 +416,10 @@ describe("Profile Validation", () => {
 
 
   it("Tests profile with null bio", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -366,7 +435,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with too long display name", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe".repeat(100),
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -387,7 +459,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with too long bio", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -408,7 +483,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with invalid avatar url", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "avatar",
       social: {
@@ -427,10 +505,13 @@ describe("Profile Validation", () => {
     expect(isEmpty(errors.twitter)).toEqual(true);
     expect(isEmpty(errors.website)).toEqual(true);
   });
-  
+
 
   it("Tests profile with invalid twitter url", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -451,7 +532,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with invalid facebook url", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {
@@ -472,7 +556,10 @@ describe("Profile Validation", () => {
   });
 
   it("Tests profile with invalid website url", () => {
-    const { errors, isValid } = validateProfileInput({
+    const {
+      errors,
+      isValid
+    } = validateProfileInput({
       displayName: "John Doe",
       avatar: "https://domain.com/avatar.png",
       social: {

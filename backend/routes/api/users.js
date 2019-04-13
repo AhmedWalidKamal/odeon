@@ -35,8 +35,10 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/profile/:id", passport.authenticate("jwt", { session: false }),
- (req, res) => {
+router.get("/profile/:id", passport.authenticate("jwt", {
+    session: false
+  }),
+  (req, res) => {
     const id = req.params.id;
     users.getProfile(id).then(data => {
       console.log(data);
@@ -45,16 +47,25 @@ router.get("/profile/:id", passport.authenticate("jwt", { session: false }),
       console.log(err);
       res.status(400).json(err);
     });
-})
+  })
 
-router.put("/edit-profile", passport.authenticate("jwt", { session: false }),
+router.put("/edit-profile", passport.authenticate("jwt", {
+    session: false
+  }),
   (req, res) => {
     const info = decode(req.headers.authorization);
     console.log("New Profile:")
     console.log(req.body.profile)
     console.log("token info:")
     console.log(info);
-    const { _id, displayName, avatar, social, location, bio } = req.body.profile;
+    const {
+      _id,
+      displayName,
+      avatar,
+      social,
+      location,
+      bio
+    } = req.body.profile;
     errors = {};
     if (info.profileId !== _id) {
       errors.profile = "Profile id is different from user's profile id";
@@ -68,6 +79,6 @@ router.put("/edit-profile", passport.authenticate("jwt", { session: false }),
         res.status(400).json(err);
       });
     }
-})
+  })
 
 module.exports = router;

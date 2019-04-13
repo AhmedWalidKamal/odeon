@@ -21,7 +21,10 @@ module.exports = function validateRegisterInput(data) {
   // Username field validations
   if (Validator.isEmpty(data.username)) {
     errors.username = "Username field is required";
-  } else if (!Validator.isLength(data.username, { min: 3, max: 15 })) {
+  } else if (!Validator.isLength(data.username, {
+      min: 3,
+      max: 15
+    })) {
     errors.username = "Username must be between 3 and 15 characters!";
   }
 
@@ -35,7 +38,10 @@ module.exports = function validateRegisterInput(data) {
   // Password field validations
   if (Validator.isEmpty(data.password)) {
     errors.password = "Password field is required";
-  } else if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
+  } else if (!Validator.isLength(data.password, {
+      min: 6,
+      max: 30
+    })) {
     errors.password = "Password must be at least 6 characters";
   } else if (data.password === data.username) {
     errors.password = "Password should be different from username";
