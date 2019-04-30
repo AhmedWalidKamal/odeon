@@ -1,5 +1,5 @@
 const User = require("./models/User");
-const Profile = require("./models/Profile")
+const Profile = require("./models/Profile");
 const empty = require("is-empty");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -10,15 +10,12 @@ const validateRegisterInput = require("./validation/register");
 const validateLoginInput = require("./validation/login");
 const validateProfileInput = require("./validation/profile");
 
-module.exports.register = function (username, email, password) {
+module.exports.register = function(username, email, password) {
   return new Promise((resolve, reject) => {
-    const {
-      errors,
-      isValid
-    } = validateRegisterInput({
+    const { errors, isValid } = validateRegisterInput({
       username,
       email,
-      password,
+      password
     });
 
     // Check validation
@@ -27,12 +24,15 @@ module.exports.register = function (username, email, password) {
     }
 
     User.findOne({
-      $or: [{
-        username: username
-      }, {
-        email: email
-      }]
-    }).then(function (result) {
+      $or: [
+        {
+          username: username
+        },
+        {
+          email: email
+        }
+      ]
+    }).then(function(result) {
       if (!empty(result)) {
         console.log(result);
         if (result.username === username) {
@@ -61,7 +61,7 @@ module.exports.register = function (username, email, password) {
             throw err;
           }
           newUser.password = hash;
-          newUser.save().then(function () {
+          newUser.save().then(function() {
             if (newUser.isNew) {
               errors.error = "Registration error";
               return reject(errors);
@@ -71,7 +71,7 @@ module.exports.register = function (username, email, password) {
               success: true
             });
           });
-          newProfile.save().then(function () {
+          newProfile.save().then(function() {
             if (newProfile.isNew) {
               errors.error = "Registration error";
               return reject(errors);
@@ -87,12 +87,9 @@ module.exports.register = function (username, email, password) {
   });
 };
 
-module.exports.login = function (email, password) {
+module.exports.login = function(email, password) {
   return new Promise((resolve, reject) => {
-    const {
-      errors,
-      isValid
-    } = validateLoginInput({
+    const { errors, isValid } = validateLoginInput({
       email,
       password
     });
@@ -104,69 +101,76 @@ module.exports.login = function (email, password) {
     // Find user by Username
     User.findOne({
       email
-    }).populate("profile", ["displayName", "avatar"]).then(user => {
-      if (!user) {
-        errors.error = "Username not found";
-        return reject(errors); // User not found
-      }
-      bcrypt.compare(password, user.password).then(isMatch => {
-        if (isMatch) {
-          // user matched
-          console.log(user)
-          const payload = {
-            id: user._id,
-            profileId: user.profile._id,
-            username: user.username,
-            email: user.email,
-            displayName: user.displayName,
-            avatar: user.avatar
-          }; // Create JWT payload, this gives information about the user
-
-          // Sign token, returned to the frontend, has user info in the payload.
-          jwt.sign(
-            payload,
-            keys.secretOrKey, {
-              expiresIn: 86400
-            }, // time in seconds for the token to be expired and the user needs to login and get a new token.
-            (err, token) => {
-              return resolve({
-                success: true,
-                token: "Bearer " + token
-              });
-            }
-          );
-        } else {
-          errors.error = "Incorrect password";
-          return reject(errors);
+    })
+      .populate("profile", ["displayName", "avatar"])
+      .then(user => {
+        if (!user) {
+          errors.error = "User not found";
+          return reject(errors); // User not found
         }
+        bcrypt.compare(password, user.password).then(isMatch => {
+          if (isMatch) {
+            // user matched
+            console.log(user);
+            const payload = {
+              id: user._id,
+              profileId: user.profile._id,
+              username: user.username,
+              email: user.email,
+              displayName: user.displayName,
+              avatar: user.avatar
+            }; // Create JWT payload, this gives information about the user
+
+            // Sign token, returned to the frontend, has user info in the payload.
+            jwt.sign(
+              payload,
+              keys.secretOrKey,
+              {
+                expiresIn: 86400
+              }, // time in seconds for the token to be expired and the user needs to login and get a new token.
+              (err, token) => {
+                return resolve({
+                  success: true,
+                  token: "Bearer " + token
+                });
+              }
+            );
+          } else {
+            errors.error = "Incorrect password";
+            return reject(errors);
+          }
+        });
       });
-    });
   });
 };
 
-module.exports.getProfile = function (userId) {
+module.exports.getProfile = function(userId) {
   return new Promise((resolve, reject) => {
     // Check for existing username
     const errors = {};
     Profile.findOne({
       user: userId
-    }).then(function (profile) {
+    }).then(function(profile) {
       if (empty(profile)) {
         errors.error = "Profile does not exist";
         return reject(errors);
       } else {
-        return resolve(profile)
+        return resolve(profile);
       }
     });
   });
 };
 
-module.exports.editProfile = function (profileId, displayName, avatar, social, location, bio) {
+module.exports.editProfile = function(
+  profileId,
+  displayName,
+  avatar,
+  social,
+  location,
+  bio
+) {
   return new Promise((resolve, reject) => {
-    const {
-      errors,
-      isValid
-    } = validateProfileInput({
+    const { errors, isValid } = validateProfileInput({
       displayName,
       avatar,
       social,
@@ -186,9 +190,9 @@ module.exports.editProfile = function (profileId, displayName, avatar, social, l
       social,
       location,
       bio
-    }).then(function (profile) {
+    }).then(function(profile) {
       if (empty(profile)) {
-        console.log("Profile " + profileId + " not found")
+        console.log("Profile " + profileId + " not found");
         errors.error = "Profile not found";
         return reject(errors);
       } else {

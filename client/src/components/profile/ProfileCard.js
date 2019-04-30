@@ -19,6 +19,7 @@ class ProfileCard extends Component {
     const { profile } = this.props.profile;
     const { user } = this.props.user;
     console.log(user);
+    console.log(profile);
 
     return (
       <div>
