@@ -12,7 +12,7 @@ const MovieSchema = new Schema({
     type: String
   },
   release_date: {
-    type: String
+    type: Date
   },
   plot_summary: {
     type: String
@@ -31,6 +31,13 @@ const MovieSchema = new Schema({
   },
   duration: {
     type: Number
+  },
+  language: {
+    type: String,
+    default: "en"
+  },
+  adult: {
+    type: Boolean
   },
   genres: [
     {

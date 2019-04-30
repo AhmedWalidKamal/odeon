@@ -11,8 +11,7 @@ const ShelfSchema = new Schema({
   },
   movies: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "movie",
+      type: Number,
       unique: true
     }
   ]

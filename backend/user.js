@@ -1,5 +1,6 @@
 const User = require("./models/User");
 const Profile = require("./models/Profile");
+const Shelf = require("./models/Shelf");
 const empty = require("is-empty");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -9,6 +10,14 @@ const keys = require("./config/keys");
 const validateRegisterInput = require("./validation/register");
 const validateLoginInput = require("./validation/login");
 const validateProfileInput = require("./validation/profile");
+
+const getShelf = function(shelfName) {
+  const shelf = new Shelf({
+    name: shelfName,
+    movies: []
+  });
+  return shelf;
+};
 
 module.exports.register = function(username, email, password) {
   return new Promise((resolve, reject) => {
@@ -54,6 +63,9 @@ module.exports.register = function(username, email, password) {
         user: newUser._id
       });
       newUser.profile = newProfile._id;
+      watchedShelf = getShelf("Watched");
+      planToWatchShelf = getShelf("Plan to Watch");
+      newUser.shelves = [watchedShelf._id, planToWatchShelf._id];
 
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -77,6 +89,38 @@ module.exports.register = function(username, email, password) {
               return reject(errors);
             }
             console.log("Profile: " + newUser.username + " Created.");
+            return resolve({
+              success: true
+            });
+          });
+          watchedShelf.save().then(function() {
+            if (watchedShelf.isNew) {
+              errors.error = "Registration error";
+              return reject(errors);
+            }
+            console.log(
+              "Shelf: " +
+                newUser.username +
+                "." +
+                watchedShelf.name +
+                " Created."
+            );
+            return resolve({
+              success: true
+            });
+          });
+          planToWatchShelf.save().then(function() {
+            if (planToWatchShelf.isNew) {
+              errors.error = "Registration error";
+              return reject(errors);
+            }
+            console.log(
+              "Shelf: " +
+                newUser.username +
+                "." +
+                planToWatchShelf.name +
+                " Created."
+            );
             return resolve({
               success: true
             });
