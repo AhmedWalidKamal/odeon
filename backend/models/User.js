@@ -33,6 +33,17 @@ const UserSchema = new Schema({
       ref: "shelf",
       unique: true
     }
+  ],
+  ratings: [
+    {
+      movieId: {
+        type: Number,
+        unique: true
+      },
+      rating: {
+        type: Number
+      }
+    }
   ]
 });
 

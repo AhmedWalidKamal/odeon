@@ -10,6 +10,7 @@ const keys = require("./config/keys");
 const validateRegisterInput = require("./validation/register");
 const validateLoginInput = require("./validation/login");
 const validateProfileInput = require("./validation/profile");
+const validateUserUpdate = require("./validation/user");
 
 const getShelf = function(shelfName) {
   const shelf = new Shelf({
@@ -162,7 +163,9 @@ module.exports.login = function(email, password) {
               username: user.username,
               email: user.email,
               displayName: user.displayName,
-              avatar: user.avatar
+              avatar: user.avatar,
+              shelves: user.shelves,
+              ratings: user.ratings
             }; // Create JWT payload, this gives information about the user
 
             // Sign token, returned to the frontend, has user info in the payload.
@@ -200,6 +203,42 @@ module.exports.getProfile = function(userId) {
         return reject(errors);
       } else {
         return resolve(profile);
+      }
+    });
+  });
+};
+
+module.exports.getUser = function(userId) {
+  return new Promise((resolve, reject) => {
+    User.findById(id).then(user => {
+      if (empty(user)) {
+        console.log("User " + userId + " not found");
+        errors.error = "User not found";
+        return reject(errors);
+      } else {
+        return resolve(user);
+      }
+    });
+  });
+};
+
+module.exports.updateUser = function(userId, newUser) {
+  return new Promise((resolve, reject) => {
+    const { errors, isValid } = validateUserUpdate(newUser);
+
+    // Check validation
+    if (!isValid) {
+      return reject(errors);
+    }
+    User.findByIdAndUpdate(id.newUser).then(user => {
+      if (empty(user)) {
+        console.log("User " + userId + " not found");
+        errors.error = "User not found";
+        return reject(errors);
+      } else {
+        return resolve({
+          success: true
+        });
       }
     });
   });

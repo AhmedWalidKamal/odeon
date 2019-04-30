@@ -79,3 +79,18 @@ module.exports.getMovie = function(id) {
     });
   });
 };
+
+module.exports.updateRating = function(ratings, movieId, newRating) {
+  var updated = false;
+  for (var i = 0; i < ratings.length; i++) {
+    if (ratings[i].movieId === movieId) {
+      updated = true;
+      ratings[i].rating = newRating;
+    }
+  }
+  if (!updated) {
+    ratings.push({ movieId, rating: newRating });
+  }
+
+  return ratings;
+};
