@@ -67,6 +67,7 @@ module.exports.register = function(username, email, password) {
       watchedShelf = getShelf("Watched");
       planToWatchShelf = getShelf("Plan to Watch");
       newUser.shelves = [watchedShelf._id, planToWatchShelf._id];
+      newUser.ratings = [];
 
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
