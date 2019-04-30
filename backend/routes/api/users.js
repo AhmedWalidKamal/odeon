@@ -16,7 +16,10 @@ router.post("/register", (req, res) => {
   users
     .register(req.body.username, req.body.email, req.body.password)
     .then(data => res.json(data))
-    .catch(err => res.status(400).json(err));
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
 
 // @route   POST api/users/login
@@ -35,28 +38,36 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/profile/:id", passport.authenticate("jwt", {
+router.get(
+  "/profile/:id",
+  passport.authenticate("jwt", {
     session: false
   }),
   (req, res) => {
     const id = req.params.id;
-    users.getProfile(id).then(data => {
-      console.log(data);
-      res.json(data);
-    }).catch(err => {
-      console.log(err);
-      res.status(400).json(err);
-    });
-  })
+    users
+      .getProfile(id)
+      .then(data => {
+        console.log(data);
+        res.json(data);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
+  }
+);
 
-router.put("/edit-profile", passport.authenticate("jwt", {
+router.put(
+  "/edit-profile",
+  passport.authenticate("jwt", {
     session: false
   }),
   (req, res) => {
     const info = decode(req.headers.authorization);
-    console.log("New Profile:")
-    console.log(req.body.profile)
-    console.log("token info:")
+    console.log("New Profile:");
+    console.log(req.body.profile);
+    console.log("token info:");
     console.log(info);
     const {
       _id,
@@ -71,14 +82,18 @@ router.put("/edit-profile", passport.authenticate("jwt", {
       errors.profile = "Profile id is different from user's profile id";
       res.status(400).json(errors);
     } else {
-      users.editProfile(_id, displayName, avatar, social, location, bio).then(data => {
-        console.log(data);
-        res.json(data);
-      }).catch(err => {
-        console.log(err);
-        res.status(400).json(err);
-      });
+      users
+        .editProfile(_id, displayName, avatar, social, location, bio)
+        .then(data => {
+          console.log(data);
+          res.json(data);
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(400).json(err);
+        });
     }
-  })
+  }
+);
 
 module.exports = router;

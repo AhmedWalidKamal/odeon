@@ -50,7 +50,7 @@ class SignUp extends Component {
     console.log(this.props);
     const { dispatch } = this.props;
     if (username && email && password && confirmPassword) {
-      this.props.register(this.state.user, this.props.history);
+      this.props.register({ username, email, password }, this.props.history);
     }
   }
 
