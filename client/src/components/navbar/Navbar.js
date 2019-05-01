@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../../actions/userActions";
 
 import "./navbar.scss";
 
@@ -49,10 +50,14 @@ class Navbar extends Component {
         <nav>
           <ul>
             <li>
-              <Link class="Link" to="/login">Login</Link>
+              <Link className="Link" to="/login">
+                Login
+              </Link>
             </li>
             <li>
-              <Link class="Link" to="/signup">Register</Link>
+              <Link className="Link" to="/signup">
+                Register
+              </Link>
             </li>
           </ul>
         </nav>
@@ -80,7 +85,15 @@ class Navbar extends Component {
             <ul>
               <li>Your Account</li>
               <li>Help Center</li>
-              <li>Sign out</li>
+              <li>
+                <Link
+                  className="Link"
+                  to="/"
+                  onClick={() => this.props.logout()}
+                >
+                  Logout
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -110,7 +123,8 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -119,5 +133,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { logout }
 )(Navbar);

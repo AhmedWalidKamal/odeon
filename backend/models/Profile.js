@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const defaults = require("../config/defaults");
 
 // Create Schema
 const ProfileSchema = new Schema({
@@ -13,7 +14,8 @@ const ProfileSchema = new Schema({
     max: 100
   },
   avatar: {
-    type: String
+    type: String,
+    default: defaults.default_avatar
   },
   location: {
     type: String

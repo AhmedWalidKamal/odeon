@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
+const defaults = require("../config/defaults");
 
 // create Schema
 const MovieSchema = new Schema({
@@ -19,8 +20,7 @@ const MovieSchema = new Schema({
   },
   poster_path: {
     type: String,
-    default:
-      "https://in.bmscdn.com/iedb/movies/images/website/poster/large/ET00021963.jpg"
+    default: defaults.poster_path
   },
   avg_rating: {
     type: Number

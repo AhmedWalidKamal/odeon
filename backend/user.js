@@ -161,7 +161,7 @@ module.exports.login = function(email, password) {
               username: user.username,
               email: user.email,
               displayName: user.displayName,
-              avatar: user.avatar,
+              avatar: user.profile.avatar,
               shelves: user.shelves,
               ratings: user.ratings
             }; // Create JWT payload, this gives information about the user
