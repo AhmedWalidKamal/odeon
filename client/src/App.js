@@ -8,12 +8,14 @@ import { setCurrentUser, logout } from "./actions/userActions";
 import "./App.css";
 import store from "./store";
 
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import ProfileCard from "./components/profile/ProfileCard";
+import PosterGrid from "./components/grid/PosterGrid";
+import MovieCard from "./components/movie/MovieCard";
 
 // Check for jwt token
 if (localStorage.jwtToken) {
@@ -50,9 +52,12 @@ class App extends Component {
         <Navbar />
         <div className="App">
           <Switch>
+            <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/profile" component={ProfileCard} />
+            <Route exact path="/movie/:id" component={MovieCard} />
+            <Route exact path="/grid" component={PosterGrid} />
           </Switch>
           <Footer />
         </div>

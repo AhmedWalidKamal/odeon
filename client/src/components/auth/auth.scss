@@ -1,5 +1,4 @@
 @import url('/fonts/montserrat.css');
-
 @import url('/fonts/lato.css');
 
 
@@ -11,7 +10,7 @@ $font-primary: 'Montserrat','Arial',sans-serif;
 $font-body: 'Lato','Arial',sans-serif;
 
 // colors
-$color-primary: #DB5253;
+$color-primary: indianred;
 $color-primary-dark: darken($color-primary,3%);
 $color-light-gray: #DAE2F1;
 
@@ -32,12 +31,7 @@ body{
 }
 
 body{
-  background:
-    linear-gradient(
-      rgba(220, 234, 237, .25),
-      rgba(220, 234, 237, .25)
-    ),
-    url('/img/cinema-paradiso.jpg') repeat;
+  background: #221f1f;
 }
 
 .container{
@@ -216,5 +210,9 @@ li.twitter{
   }
   & a:hover{
     color: $color-primary-dark;
+  }
+
+  & p{
+    color: darkgrey;
   }
 }

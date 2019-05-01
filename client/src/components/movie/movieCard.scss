@@ -11,7 +11,7 @@ html {
 
 body {
   font-family: 'Montserrat', sans-serif;
-  color: dimgrey;
+  color: #324e63;
 }
 
 a, a:hover {
@@ -35,7 +35,8 @@ a, a:hover {
   padding: 50px 20px;
   padding-top: 100px;
   display: flex;
-  // background: #000000;
+  background-image: linear-gradient(to right, rgba(20,20,20,1), rgba(20,20,20,0.75), rgba(20,20,20,1));
+
 
   @media screen and (max-width: 768px) {
     height: auto;
@@ -45,45 +46,43 @@ a, a:hover {
 
 }
 
-.profile-card {
-  width: 100%;
-  min-height: 460px;
+.film-card {
+  // width: 100%;
+  // min-height: 460px;
   margin: auto;
   box-shadow: 0px 8px 60px -10px rgba(0, 0, 0, 0.6);
   background: #fff;
-  border-radius: 12px;
+  // border-radius: 12px;
   max-width: 700px;
   position: relative;
 
   &.active {
-    .profile-card__cnt {
+    .film-card__cnt {
       filter: blur(6px);
     }
 
-    .profile-card-message,
-    .profile-card__overlay {
+    .film-card-message,
+    .film-card__overlay {
       opacity: 1;
       pointer-events: auto;
       transition-delay: .1s;
     }
 
-    .profile-card-form {
+    .film-card-form {
       transform: none;
       transition-delay: .1s;
     }
   }
 
   &__img {
-    width: 150px;
-    height: 150px;
-    margin-left: auto;
-    margin-right: auto;
-    transform: translateY(-50%);
-    border-radius: 50%;
+    width: 230px;
+    margin: auto;
+    transform: translateY(-25%);
+    // border-radius: 0%;
     overflow: hidden;
     position: relative;
     z-index: 4;
-    box-shadow: 0px 5px 50px 0px rgb(0, 0, 0), 0px 0px 0px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 2px 30px 0px rgb(0, 0, 0), 0px 0px 0px 1px rgba(0, 0, 0, 0.5);
 
     @media screen and (max-width: 576px) {
       width: 120px;
@@ -95,14 +94,13 @@ a, a:hover {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 50%;
+      // border-radius: 50%;
     }
 
   }
 
   &__cnt {
     margin-top: -35px;
-    text-align: center;
     padding: 0 20px;
     padding-bottom: 40px;
     transition: all .3s;
@@ -110,19 +108,59 @@ a, a:hover {
 
   &__name {
     font-weight: 700;
+    text-align: center;
     font-size: 24px;
     color: dimgrey;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+  }
+
+  &__tags {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 5px;
+    color: darkgrey;
+  }
+
+  &__tags2 {
+    font-size: 14px;
+    text-align: left;
+    color: dimgrey;
+  }
+
+  &__tagtitle {
+    font-weight: 1000;
+    color: dimgrey;
+    width: 75px;
+  }
+
+  .list {
+  &--inline li {
+    margin-bottom: 5px;
+    display: inline-block;
+    color: darkgrey;
+
+    &:not(:last-child) {
+      margin-right: 12px;
+    }
+  }
+}
+
+  &__subtitle {
+    font-size: 16px;
+    font-weight: 1000;
+    color: dimgrey;
+    margin-bottom: 8px;
   }
 
   &__txt {
-    font-size: 18px;
-    font-weight: 500;
-    color: dimgrey;
+    font-size: 14px;
+    font-weight: 100;
+    color: darkgrey;
     margin-bottom: 15px;
+    align-text: justify;
 
     strong {
-      //color: #ff2846;
+      // color: #ff2846;
       font-weight: 700;
     }
 
@@ -132,18 +170,14 @@ a, a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
 
     &__icon {
       display: inline-flex;
-      font-size: 16px;
+      font-size: 27px;
       margin-right: 10px;
-      color: darkgrey;
-    }
-
-    &__txt {
-      color: darkgrey;
+      //color: #6944ff;
     }
 
   }
@@ -170,13 +204,12 @@ a, a:hover {
       font-weight: 700;
       font-size: 27px;
       //color: #6944ff;
-      color: dimgray;
+      color: #324e63;
     }
 
     &__txt {
       font-weight: 500;
       margin-top: 7px;
-      color: dimgrey;
     }
 
   }
@@ -406,7 +439,7 @@ a, a:hover {
     border: 2px solid #dcdcdc;
     border-radius: 10px;
     padding: 15px 20px;
-    color: dimgrey;
+    color: #324e63;
     font-weight: 500;
     font-family: 'Montserrat', sans-serif;
     outline: none;
@@ -432,4 +465,32 @@ a, a:hover {
     transition: all .3s;
   }
 
+}
+
+.icon-bar {
+  width: 100%;
+  overflow: auto;
+  text-align: center;
+}
+
+.icon-bar a {
+  // float: left;
+  text-align: center;
+  padding: 6px 0; /* Some top and bottom padding */
+  transition: all 0.3s ease; /* Add transition for hover effects */
+  color: dimgrey;
+  font-size: 25px;
+  line-height: 60px;
+}
+
+.icon-bar a:hover {
+  color: indianred;
+}
+
+.icon-bar a:active {
+  color: indianred; /* Add an active/current color */
+}
+
+.icon-bar a:focus {
+  color: indianred; /* Add an active/current color */
 }

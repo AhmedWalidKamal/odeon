@@ -1,0 +1,275 @@
+// Fonts
+@import url('/fonts/montserrat.css');
+
+// Variables
+$font: 'Montserrat','Arial',sans-serif;
+
+// Colors
+$red: indianred;
+$black: #221f1f;
+$blackblack: #000000;
+$grey: #f5f5f1;
+$white: #ffffff;
+
+// General
+body {
+  background: $black;
+  color: darkgrey;
+  font-family: $font;
+}
+
+// Typography
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 1em;
+}
+
+p {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 1em;
+}
+
+////////////
+// MIXINS //
+////////////
+@mixin generate-gradient($color, $amount) {
+  background: -moz-linear-gradient(
+    top,
+    rgba($color, $amount) 0%,
+    rgba($color, 0) 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    top,
+    rgba($color, $amount) 0%,
+    rgba($color, 0) 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    rgba($color, $amount) 0%,
+    rgba($color, 0) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+}
+
+////////////////
+// COMPONENTS //
+////////////////
+
+// Header
+.Header {
+  @include generate-gradient($blackblack, 1);
+  display: flex;
+  padding: 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+// Logo
+.Logo {
+  width: 151px;
+  height: 41px;
+  margin-right: 10px;
+  transition: margin 0.125s ease;
+
+  svg {
+    transform: scale(0.5);
+    transform-origin: 0 0;
+
+    path {
+      fill: $red;
+      transition: fill 0.125s ease;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    margin-top: 2px;
+    svg {
+      path {
+        fill: $white !important;
+      }
+    }
+  }
+}
+
+// Navigation
+.Navigation {
+  ul {
+    display: flex;
+    height: 37px;
+    align-items: center;
+    padding: 0 10px;
+    list-style-type: none;
+
+    li {
+      font-weight: 400;
+      padding: 7px 10px;
+      font-size: 14px;
+      transition: background 0.125s ease;
+      border-radius: 3px;
+      font-family: $font;
+      color: darkgrey;
+
+      &:hover {
+        background: $red;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.Link {
+  color: darkgrey;
+  &:hover {
+    color: darkgrey;
+  }
+}
+
+// Navigation
+.auth-nav {
+  margin-left: auto;
+  ul {
+    display: flex;
+    height: 37px;
+    align-items: center;
+    padding: 0 10px;
+    list-style-type: none;
+
+    li {
+      font-weight: 400;
+      padding: 7px 10px;
+      font-size: 14px;
+      transition: background 0.125s ease;
+      border-radius: 3px;
+      font-family: $font;
+      
+
+      &:hover {
+        background: $red;
+        cursor: pointer;
+      }
+
+      
+    }
+  }
+}
+
+// Search
+.Search {
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+
+  input {
+    font-family: $font;
+    font-weight: 300;
+    font-size: 14px;
+    height: 37px;
+    width: 20%;
+    background: transparent;
+    color: $white;
+    appearance: none;
+    border: 0;
+    border: 2px solid rgba($grey, 0.1);
+    outline: none;
+    border-radius: 37px;
+    padding: 0 10px;
+    pointer-events: all;
+    transition: border 0.25s ease, width 0.125s ease 0.125s;
+
+    &:focus {
+      border: 2px solid $red;
+      width: 30%;
+    }
+  }
+}
+
+// UserProfile
+.UserProfile {
+  margin-left: auto;
+
+  // User
+  .User {
+    display: flex;
+
+    .image {
+      border-radius: 44px;
+      margin-left: 10px;
+      overflow: hidden;
+      width: 44px;
+      height: 44px;
+      box-sizing: border-box;
+      border: 3px solid transparent;
+      transition: border 0.125s ease;
+
+      img {
+        width: 100%;
+        display: block;
+      }
+    }
+
+    .name {
+      align-items: center;
+      display: flex;
+      font-size: 18px;
+      font-weight: 300;
+      height: 44px;
+      font-family: $font;
+      color: darkgrey;
+    }
+
+    &:hover {
+      cursor: pointer;
+      .image {
+        border: 3px solid $red;
+      }
+    }
+  }
+
+  .UserProfile-menu {
+    display: none;
+  }
+
+  &:hover .UserProfile-menu {
+    display: inline-block;
+  }
+
+  .UserNavigation {
+    ul {
+      display: block;
+      height: 37px;
+      width: 160px;
+      align-items: center;
+      padding: 0 10px;
+      list-style-type: none;
+  
+      li {
+        font-weight: 400;
+        padding: 7px 10px;
+        font-size: 14px;
+        transition: background 0.125s ease;
+        border-radius: 3px;
+        font-family: $font;
+        color: darkgrey;
+  
+        &:hover {
+          background: $red;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
