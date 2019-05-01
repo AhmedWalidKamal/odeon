@@ -86,11 +86,16 @@ module.exports.getMovie = function(id) {
 
         movie = createMovie(movieInfo, movieCredits);
         if (movieInfo.poster_path) {
-          getConfig().then(data => {
-            const { base_url, poster_size } = data;
-            movie.poster_path = base_url + poster_size + movieInfo.poster_path;
-            return resolve(movie);
-          });
+          getConfig()
+            .then(data => {
+              const { base_url, poster_size } = data;
+              movie.poster_path =
+                base_url + poster_size + movieInfo.poster_path;
+              return resolve(movie);
+            })
+            .catch(err => {
+              return reject(err);
+            });
         } else {
           return resolve(movie);
         }
@@ -176,7 +181,7 @@ module.exports.removeFromShelf = function(shelfId, movieId) {
 };
 
 module.exports.getMovieCollection = function(collectionName, page) {
-  return new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     const callBack = function(err, res) {
       if (!err) {
         return resolve(res);
@@ -206,6 +211,29 @@ module.exports.getMovieCollection = function(collectionName, page) {
         console.log(errors);
         return reject(errors);
     }
+  });
+  return new Promise((resolve, reject) => {
+    promise
+      .then(collection => {
+        getConfig()
+          .then(data => {
+            const { base_url, poster_size } = data;
+            collection.results.forEach(movie => {
+              if (movie.poster_path) {
+                movie.poster_path = base_url + poster_size + movie.poster_path;
+              } else {
+                movie.poster_path = defaults.poster_path;
+              }
+            });
+            return resolve(collection);
+          })
+          .catch(err => {
+            return reject(err);
+          });
+      })
+      .catch(err => {
+        return reject(err);
+      });
   });
 };
 
