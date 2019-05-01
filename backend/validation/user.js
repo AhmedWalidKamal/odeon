@@ -36,6 +36,11 @@ const validateRatings = function(ratings) {
   ) {
     return false;
   }
+  for (var i = 0; i < ratings.length; i++) {
+    if (ratings[i].rating < 0 || ratings[i].rating > 10) {
+      return false;
+    }
+  }
   return true;
 };
 
@@ -49,7 +54,28 @@ module.exports = function validateUserUpdate(data) {
       isValid: false
     };
   }
-  const { errors, isValid } = validateReg(data);
+
+  data.username = !isEmpty(data.username) ? data.username : "";
+  data.email = !isEmpty(data.email) ? data.email : "";
+
+  // Username field validations
+  if (Validator.isEmpty(data.username)) {
+    errors.username = "Username field is required";
+  } else if (
+    !Validator.isLength(data.username, {
+      min: 3,
+      max: 15
+    })
+  ) {
+    errors.username = "Username must be between 3 and 15 characters!";
+  }
+
+  // email field validations
+  if (Validator.isEmpty(data.email)) {
+    errors.email = "Email field is required";
+  } else if (!Validator.isEmail(data.email)) {
+    errors.email = "Email entered is invalid";
+  }
 
   console.log(data);
 
