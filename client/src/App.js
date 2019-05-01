@@ -8,7 +8,7 @@ import { setCurrentUser, logout } from "./actions/userActions";
 import "./App.css";
 import store from "./store";
 
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import Login from "./components/auth/Login";
