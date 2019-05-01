@@ -1,7 +1,8 @@
-import { FETCH_MOVIE } from "../actions/types";
+import { FETCH_MOVIE, FETCH_COLLECTION } from "../actions/types";
 
 const initialState = {
-  movie: {}
+  movie: {},
+  movies: []
 };
 console.log(initialState);
 
@@ -11,6 +12,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         movie: action.payload
+      };
+    case FETCH_COLLECTION:
+      return {
+        ...state,
+        movies: action.payload
       };
     default:
       return state;

@@ -1,0 +1,39 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchMoviesCollection } from "../../actions/movieActions";
+
+import "./home.scss";
+import HomeMovie from "./HomeMovie";
+
+class Home extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    this.props.fetchMoviesCollection("popular");
+  }
+  render() {
+    console.log(this.props);
+    let moviesGrid = this.props.movie.movies.map(movie => {
+      return <HomeMovie key={movie.id} movie={movie} />;
+    });
+
+    return <div className="grid">{moviesGrid}</div>;
+  }
+}
+
+Home.propTypes = {
+  movie: PropTypes.object.isRequired,
+  fetchMoviesCollection: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  movie: state.movie
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchMoviesCollection }
+)(Home);
