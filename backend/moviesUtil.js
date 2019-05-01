@@ -171,7 +171,6 @@ module.exports.removeFromShelf = function(shelfId, movieId) {
 
 module.exports.getMovieCollection = function(collectionName, page) {
   return new Promise((resolve, reject) => {
-    collection = {};
     const callBack = function(err, res) {
       if (!err) {
         return resolve(res);
@@ -201,5 +200,18 @@ module.exports.getMovieCollection = function(collectionName, page) {
         console.log(errors);
         return reject(errors);
     }
+  });
+};
+
+module.exports.searchMovies = function(query, page) {
+  return new Promise((resolve, reject) => {
+    params = { query, page };
+    tmdb.searchMovie(params, (err, res) => {
+      if (!err) {
+        return resolve(res);
+      }
+      console.log(err);
+      return reject(err);
+    });
   });
 };

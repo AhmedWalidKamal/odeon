@@ -122,9 +122,24 @@ router.put(
 
 router.get("/collection/:name", (req, res) => {
   const collectionName = req.params.name;
-  const pageNum = req.params.page || 1;
+  const page = req.params.page || 1;
   moviesUtil
-    .getMovieCollection(collectionName, pageNum)
+    .getMovieCollection(collectionName, page)
+    .then(data => {
+      console.log(data);
+      res.json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
+
+router.get("/search", (req, res) => {
+  const query = req.params.query;
+  const page = req.params.page || 1;
+  moviesUtil
+    .searchMovies(query, page)
     .then(data => {
       console.log(data);
       res.json(data);
