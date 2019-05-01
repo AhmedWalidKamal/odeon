@@ -26,10 +26,7 @@ class ProfileCard extends Component {
         <div className="wrapper">
           <div className="profile-card js-profile-card">
             <div className="profile-card__img">
-              <img
-                src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                alt="profile card"
-              />
+              <img src={profile.avatar} alt="profile card" />
             </div>
             <div className="profile-card__cnt js-profile-cnt">
               {!isEmpty(profile) && !isEmpty(profile.displayName) ? (
@@ -68,15 +65,15 @@ class ProfileCard extends Component {
               </div>
               <div className="profile-card-inf">
                 <div className="profile-card-inf__item">
-                  <div className="profile-card-inf__title">1598</div>
+                  <div className="profile-card-inf__title">0</div>
                   <div className="profile-card-inf__txt">Watched</div>
                 </div>
                 <div className="profile-card-inf__item">
-                  <div className="profile-card-inf__title">14</div>
+                  <div className="profile-card-inf__title">0</div>
                   <div className="profile-card-inf__txt">Reviewed</div>
                 </div>
                 <div className="profile-card-inf__item">
-                  <div className="profile-card-inf__title">20</div>
+                  <div className="profile-card-inf__title">0</div>
                   <div className="profile-card-inf__txt">This Year</div>
                 </div>
               </div>

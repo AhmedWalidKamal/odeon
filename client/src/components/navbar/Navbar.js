@@ -83,7 +83,11 @@ class Navbar extends Component {
         <div className="UserProfile-menu">
           <div className="UserNavigation">
             <ul>
-              <li>Your Account</li>
+              <li>
+                <Link className="Link" to="/profile">
+                  Profile
+                </Link>
+              </li>
               <li>Help Center</li>
               <li>
                 <Link
