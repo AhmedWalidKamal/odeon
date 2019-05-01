@@ -19,9 +19,6 @@ export const fetchMoviesCollection = collectionName => dispatch => {
   axios
     .get(`/api/movies/collection/${collectionName}`)
     .then(res => {
-      console.log("Movies returned from database:");
-      console.log(res.data);
-
       dispatch({
         type: FETCH_COLLECTION,
         payload: res.data.results

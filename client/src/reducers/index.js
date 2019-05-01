@@ -4,7 +4,7 @@ import profileReducer from "./profileReducer";
 import movieReducer from "./movieReducer";
 
 export default combineReducers({
-  user: userReducer,
-  profile: profileReducer,
-  movie: movieReducer
+  userReducer: userReducer,
+  profileReducer: profileReducer,
+  movieReducer: movieReducer
 });

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchMoviesCollection } from "../../actions/movieActions";
 
+import { fetchMoviesCollection } from "../../actions/movieActions";
 import "./home.scss";
 import HomeMovie from "./HomeMovie";
 
@@ -16,7 +16,7 @@ class Home extends Component {
   }
   render() {
     console.log(this.props);
-    let moviesGrid = this.props.movie.movies.map(movie => {
+    let moviesGrid = this.props.movieReducer.movies.map(movie => {
       return <HomeMovie key={movie.id} movie={movie} />;
     });
 
@@ -25,12 +25,12 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  movie: PropTypes.object.isRequired,
+  movieReducer: PropTypes.object.isRequired,
   fetchMoviesCollection: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  movie: state.movie
+  movieReducer: state.movieReducer
 });
 
 export default connect(

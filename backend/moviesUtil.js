@@ -31,16 +31,21 @@ const parseCredits = function(movieCredits) {
   const movieCast = [];
   const directors = [];
 
-  const { cast } = movieCredits;
+  const { cast, crew } = movieCredits;
   cast.forEach(person => {
     castMember = {
       id: person.id,
       name: person.name
     };
+    movieCast.push(castMember);    
+  });
+  crew.forEach(person => {
+    crewMember = {
+      id: person.id,
+      name: person.name
+    }
     if (!empty(person.job) && person.job === "Director") {
-      directors.push(castMember);
-    } else {
-      movieCast.push(castMember);
+      directors.push(crewMember);
     }
   });
   return { cast: movieCast, directors: directors };
