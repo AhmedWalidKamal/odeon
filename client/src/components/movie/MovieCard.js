@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { fetchMovie } from "../../actions/movieActions";
@@ -16,7 +17,7 @@ class MovieCard extends Component {
   }
 
   render() {
-    const { movie } = this.props.movie;
+    const { movie } = this.props.movieReducer;
     console.log(movie);
 
     return (
@@ -46,7 +47,7 @@ class MovieCard extends Component {
                 )}
 
                 {!isEmpty(movie) && !isEmpty(movie.release_date) ? (
-                  <li>{this.getYear(movie.release_date)}</li>
+                  <li>{new Date(movie.release_date).getFullYear()}</li>
                 ) : (
                   <li>Release Date</li>
                 )}
@@ -104,16 +105,12 @@ class MovieCard extends Component {
     );
   }
 
-  getYear = date => {
-    return new Date(date).getFullYear();
-  }
-
   getGenres = genres => {
     var genreNames = genres.map(({ name }) => name);
     return genreNames.join(", ");
   };
 
-  renderNames = (persons, size = 3) => {
+  renderNames = (persons, size = 4) => {
     var names = persons.map((person) => {
       return <li key={person.id}>{person.name}</li>;
     });
@@ -125,8 +122,13 @@ class MovieCard extends Component {
   };
 }
 
+MovieCard.propTypes = {
+  movieReducer: PropTypes.object.isRequired,
+  fetchMovie: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => ({
-  movie: state.movie
+  movieReducer: state.movieReducer
 });
 
 export default connect(

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { fetchProfile } from "../../actions/profileActions";
@@ -12,12 +13,12 @@ class ProfileCard extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchProfile(this.props.user.user.id);
+    this.props.fetchProfile(this.props.userReducer.user.id);
   }
 
   render() {
-    const { profile } = this.props.profile;
-    const { user } = this.props.user;
+    const { profile } = this.props.profileReducer;
+    const { user } = this.props.userReducer;
     console.log(user);
     console.log(profile);
 
@@ -170,9 +171,15 @@ class ProfileCard extends Component {
   }
 }
 
+ProfileCard.propTypes = {
+  profileReducer: PropTypes.object.isRequired,
+  userReducer: PropTypes.object.isRequired,
+  fetchProfile: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => ({
-  profile: state.profile,
-  user: state.user
+  profileReducer: state.profileReducer,
+  userReducer: state.userReducer
 });
 
 export default connect(

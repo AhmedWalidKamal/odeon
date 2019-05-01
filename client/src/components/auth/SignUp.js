@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { register } from "../../actions/userActions";
-
 import "./auth.scss";
 
 class SignUp extends Component {
