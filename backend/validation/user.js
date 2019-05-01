@@ -17,8 +17,9 @@ const hasDuplicates = function(array, getStringValue) {
 
 const validateShelves = function(shelves) {
   shelves.forEach(shelf => {
+    const movies = isEmpty(shelf.movies) ? [] : shelf.movies;
     if (
-      hasDuplicates(shelf.movies, val => {
+      hasDuplicates(movies, val => {
         return val.toString();
       })
     ) {
@@ -79,8 +80,8 @@ module.exports = function validateUserUpdate(data) {
 
   console.log(data);
 
-  shelves = empty(data.shelves) ? [] : data.shelves;
-  ratings = empty(data.ratings) ? [] : data.ratings;
+  shelves = isEmpty(data.shelves) ? [] : data.shelves;
+  ratings = isEmpty(data.ratings) ? [] : data.ratings;
 
   if (!validateShelves(shelves)) {
     errors.shelves = "Shelves contain duplicates";
