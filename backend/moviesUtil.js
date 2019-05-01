@@ -28,8 +28,8 @@ const getConfig = function() {
 };
 
 const parseCredits = function(movieCredits) {
-  movieCast = [];
-  directors = [];
+  const movieCast = [];
+  const directors = [];
 
   const { cast } = movieCredits;
   cast.forEach(person => {
@@ -48,7 +48,7 @@ const parseCredits = function(movieCredits) {
 
 const createMovie = function(movieInfo, movieCredits) {
   const { cast, directors } = parseCredits(movieCredits);
-  movie = new Movie();
+  const movie = new Movie();
   movie._id = movieInfo.id;
   movie.title = movieInfo.title;
   movie.imdb_id = movieInfo.imdb_id;
@@ -69,7 +69,7 @@ const createMovie = function(movieInfo, movieCredits) {
 module.exports.getMovie = function(id) {
   return new Promise((resolve, reject) => {
     tmdb.movieInfo({ id }, (movieErr, movieInfo) => {
-      errors = {};
+      const errors = {};
       if (movieErr) {
         return reject(movieErr);
       }
@@ -191,7 +191,7 @@ module.exports.getMovieCollection = function(collectionName, page) {
       console.log(err);
       return reject(err);
     };
-    params = { page };
+    const params = { page };
     switch (collectionName) {
       case "top_rated":
         tmdb.miscTopRatedMovies(params, callBack);
@@ -240,8 +240,8 @@ module.exports.getMovieCollection = function(collectionName, page) {
 };
 
 module.exports.searchMovies = function(query, page) {
-  promise = new Promise((resolve, reject) => {
-    params = { query, page };
+  const promise = new Promise((resolve, reject) => {
+    const params = { query, page };
     console.log("Searching with params " + JSON.stringify(params));
     tmdb.searchMovie(params, (err, res) => {
       if (!err) {
