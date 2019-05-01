@@ -16,7 +16,7 @@ router.get("/:id", (req, res) => {
   moviesUtil
     .getMovie(id)
     .then(data => {
-      console.log(data);
+      // console.log(data);
       res.json(data);
     })
     .catch(err => {

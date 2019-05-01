@@ -3,14 +3,23 @@ const Shelf = require("./models/Shelf");
 const empty = require("is-empty");
 const keys = require("./config/keys");
 const tmdb = require("moviedb")(keys.tmdbApiKey);
+const defaults = require("./config/defaults");
+
+var base_url;
+var poster_size;
 
 // Get config
 const getConfig = function() {
   return new Promise((resolve, reject) => {
+    if (base_url && poster_size) {
+      return resolve({ base_url, poster_size });
+    }
     tmdb.configuration((err, res) => {
       if (!err) {
-        const { base_url, poster_sizes } = res.images;
-        return resolve({ base_url, poster_sizes });
+        base_url = res.images.base_url;
+        const poster_sizes = res.images.poster_sizes;
+        poster_size = poster_sizes[poster_sizes.length - 1];
+        return resolve({ base_url, poster_size });
       }
       console.log(err);
       return reject(err);
@@ -45,16 +54,6 @@ const createMovie = function(movieInfo, movieCredits) {
   movie.imdb_id = movieInfo.imdb_id;
   movie.release_date = new Date(movieInfo.release_date);
   movie.plot_summary = movieInfo.overview;
-  if (!empty(poster_path)) {
-    getConfig()
-      .then(data => {
-        console.log(data);
-        const { base_url, poster_sizes } = data;
-        const poster_size = poster_sizes[poster_sizes.length - 1];
-        movie.poster_path = base_url + poster_size + movieInfo.poster_path;
-      })
-      .catch(err => console.log(err));
-  }
   movie.avg_rating = movieInfo.vote_average;
   movie.ratings_count = movieInfo.vote_count;
   movie.duration = movieInfo.runtime;
@@ -63,8 +62,6 @@ const createMovie = function(movieInfo, movieCredits) {
   movie.genres = movieInfo.genres;
   movie.cast = cast;
   movie.directors = directors;
-
-  return movie;
 };
 
 module.exports.getMovie = function(id) {
@@ -78,7 +75,7 @@ module.exports.getMovie = function(id) {
         errors.error = "Empty Movie Response";
         return reject(errors);
       }
-      console.log(movieInfo);
+      console.log(movieInfo.title);
       tmdb.movieCredits({ id }, (credErr, movieCredits) => {
         if (credErr) {
           return reject(credErr);
@@ -86,8 +83,17 @@ module.exports.getMovie = function(id) {
         if (empty(movieCredits)) {
           errors.error = "Empty Credits Response";
         }
-        console.log(movieCredits);
-        return resolve(getMovie(movieInfo, movieCredits));
+
+        movie = createMovie(movieInfo, movieCredits);
+        if (movieInfo.poster_path) {
+          getConfig().then(data => {
+            const { base_url, poster_size } = data;
+            movie.poster_path = base_url + poster_size + movieInfo.poster_path;
+            return resolve(movie);
+          });
+        } else {
+          return resolve(movie);
+        }
       });
     });
   });
