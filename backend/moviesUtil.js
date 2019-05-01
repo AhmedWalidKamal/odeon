@@ -242,6 +242,7 @@ module.exports.getMovieCollection = function(collectionName, page) {
 module.exports.searchMovies = function(query, page) {
   promise = new Promise((resolve, reject) => {
     params = { query, page };
+    console.log("Searching with params " + JSON.stringify(params));
     tmdb.searchMovie(params, (err, res) => {
       if (!err) {
         return resolve(res);

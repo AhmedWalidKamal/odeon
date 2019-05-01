@@ -11,6 +11,22 @@ const moviesUtil = require("../../moviesUtil");
 
 keys = require("../../config/keys");
 
+router.get("/search", (req, res) => {
+  const query = req.body.query;
+  const page = req.body.page || 1;
+  console.log("Searching for query=" + query + ", page=" + page);
+  moviesUtil
+    .searchMovies(query, page)
+    .then(data => {
+      console.log(data);
+      res.json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
+
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   moviesUtil
@@ -125,22 +141,6 @@ router.get("/collection/:name", (req, res) => {
   const page = req.body.page || 1;
   moviesUtil
     .getMovieCollection(collectionName, page)
-    .then(data => {
-      console.log(data);
-      res.json(data);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(400).json(err);
-    });
-});
-
-router.get("/search", (req, res) => {
-  const query = req.body.query;
-  const page = req.body.page || 1;
-  console.log("Searching for query=" + query + ", page=" + page);
-  moviesUtil
-    .searchMovies(query, page)
     .then(data => {
       console.log(data);
       res.json(data);
