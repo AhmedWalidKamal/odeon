@@ -1,7 +1,6 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
-import { FETCH_MOVIE } from "./types";
+import { FETCH_MOVIE, FETCH_COLLECTION } from "./types";
 
 export const fetchMovie = movieId => dispatch => {
   axios
@@ -10,6 +9,22 @@ export const fetchMovie = movieId => dispatch => {
       dispatch({
         type: FETCH_MOVIE,
         payload: res.data
+      });
+    })
+    .catch(err => console.log(err.response.data.error));
+};
+
+export const fetchMoviesCollection = collectionName => dispatch => {
+  console.log("Fetching home movies from database...");
+  axios
+    .get(`/api/movies/collection/${collectionName}`)
+    .then(res => {
+      console.log("Movies returned from database:");
+      console.log(res.data);
+
+      dispatch({
+        type: FETCH_COLLECTION,
+        payload: res.data.results
       });
     })
     .catch(err => console.log(err.response.data.error));

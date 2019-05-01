@@ -10,7 +10,7 @@ import store from "./store";
 
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/Footer";
-import Home from "./components/Home";
+import Home from "./components/home/Home";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import ProfileCard from "./components/profile/ProfileCard";
@@ -49,17 +49,19 @@ class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <Navbar />
-        <div className="App">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/profile" component={ProfileCard} />
-            <Route exact path="/movie/:id" component={MovieCard} />
-            <Route exact path="/grid" component={PosterGrid} />
-          </Switch>
-          <Footer />
+        <div>
+          <div className="App">
+            <Navbar />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={SignUp} />
+              <Route exact path="/profile" component={ProfileCard} />
+              <Route exact path="/movie/:id" component={MovieCard} />
+              <Route exact path="/grid" component={PosterGrid} />
+            </Switch>
+            <Footer />
+          </div>
         </div>
       </Router>
     );
