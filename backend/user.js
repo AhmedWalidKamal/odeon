@@ -228,7 +228,7 @@ module.exports.updateUser = function(userId, newUser) {
     if (!isValid) {
       return reject(errors);
     }
-    User.findByIdAndUpdate(id.newUser).then(user => {
+    User.findByIdAndUpdate(userId, newUser).then(user => {
       if (empty(user)) {
         console.log("User " + userId + " not found");
         errors.error = "User not found";

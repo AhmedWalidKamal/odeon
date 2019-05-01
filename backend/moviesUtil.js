@@ -1,4 +1,5 @@
 const Movie = require("./models/Movie");
+const Shelf = require("./models/Shelf");
 const empty = require("is-empty");
 const keys = require("./config/keys");
 const tmdb = require("moviedb")(keys.tmdbApiKey);
@@ -74,7 +75,7 @@ module.exports.getMovie = function(id) {
         return reject(movieErr);
       }
       if (empty(movieInfo)) {
-        errors.error = "Empty Movie Respons e";
+        errors.error = "Empty Movie Response";
         return reject(errors);
       }
       console.log(movieInfo);
@@ -105,4 +106,65 @@ module.exports.updateRating = function(ratings, movieId, newRating) {
   }
 
   return ratings;
+};
+
+module.exports.updateShelf = function(shelfId, newShelf) {
+  Shelf.findByIdAndUpdate(shelfId, newShelf).then(shelf => {
+    if (empty(shelf)) {
+      console.log("Shelf " + shelfId + " not found");
+      errors.error = "Shelf not found";
+      return reject(errors);
+    } else {
+      return resolve({
+        success: true
+      });
+    }
+  });
+};
+
+module.exports.addToShelf = function(shelfId, movieId) {
+  return new Promise((resolve, reject) => {
+    Shelf.findById(shelfId).then(shelf => {
+      if (empty(user)) {
+        console.log("Shelf " + shelfId + " not found");
+        errors.error = "Shelf not found";
+        return reject(errors);
+      } else {
+        if (!shelf.movies.includes(movieId)) {
+          shelf.movies.push(movieId);
+          updateShelf(shelfId, shelf).then(success => {
+            return resolve({ success });
+          });
+        } else {
+          errors.error = "Shelf already contains movieId = " + movieId;
+          console.log(errors.error);
+          return reject(errors);
+        }
+      }
+    });
+  });
+};
+
+module.exports.removeFromShelf = function(shelfId, movieId) {
+  return new Promise((resolve, reject) => {
+    Shelf.findById(shelfId).then(shelf => {
+      if (empty(user)) {
+        console.log("Shelf " + shelfId + " not found");
+        errors.error = "Shelf not found";
+        return reject(errors);
+      } else {
+        var index = shelf.movies.indexOf(movieId);
+        if (index > -1) {
+          shelf.movies.splice(index, 1);
+          updateShelf(shelfId, shelf).then(success => {
+            return resolve({ success });
+          });
+        } else {
+          errors.error = "Shelf does not contain movieId = " + movieId;
+          console.log(errors.error);
+          return reject(errors);
+        }
+      }
+    });
+  });
 };
