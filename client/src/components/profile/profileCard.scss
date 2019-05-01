@@ -11,7 +11,7 @@ html {
 
 body {
   font-family: 'Montserrat', sans-serif;
-  color: #324e63;
+  color: dimgrey;
 }
 
 a, a:hover {
@@ -111,14 +111,14 @@ a, a:hover {
   &__name {
     font-weight: 700;
     font-size: 24px;
-    color: #000000;
+    color: dimgrey;
     margin-bottom: 15px;
   }
 
   &__txt {
     font-size: 18px;
     font-weight: 500;
-    color: #324e63;
+    color: dimgrey;
     margin-bottom: 15px;
 
     strong {
@@ -132,14 +132,18 @@ a, a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
 
     &__icon {
       display: inline-flex;
-      font-size: 27px;
+      font-size: 16px;
       margin-right: 10px;
-      //color: #6944ff;
+      color: darkgrey;
+    }
+
+    &__txt {
+      color: darkgrey;
     }
 
   }
@@ -166,12 +170,13 @@ a, a:hover {
       font-weight: 700;
       font-size: 27px;
       //color: #6944ff;
-      color: #324e63;
+      color: dimgray;
     }
 
     &__txt {
       font-weight: 500;
       margin-top: 7px;
+      color: dimgrey;
     }
 
   }
@@ -401,7 +406,7 @@ a, a:hover {
     border: 2px solid #dcdcdc;
     border-radius: 10px;
     padding: 15px 20px;
-    color: #324e63;
+    color: dimgrey;
     font-weight: 500;
     font-family: 'Montserrat', sans-serif;
     outline: none;

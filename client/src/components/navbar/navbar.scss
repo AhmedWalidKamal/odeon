@@ -1,8 +1,8 @@
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
+@import url('/fonts/montserrat.css');
 
 // Variables
-$font: "Montserrat", sans-serif;
+$font: 'Montserrat','Arial',sans-serif;
 
 // Colors
 $red: indianred;
@@ -14,7 +14,7 @@ $white: #ffffff;
 // General
 body {
   background: $black;
-  color: $white;
+  color: darkgrey;
   font-family: $font;
 }
 
@@ -108,6 +108,7 @@ p {
     height: 37px;
     align-items: center;
     padding: 0 10px;
+    list-style-type: none;
 
     li {
       font-weight: 400;
@@ -115,6 +116,8 @@ p {
       font-size: 14px;
       transition: background 0.125s ease;
       border-radius: 3px;
+      font-family: $font;
+      color: darkgrey;
 
       &:hover {
         background: $red;
@@ -188,6 +191,8 @@ p {
       font-size: 18px;
       font-weight: 300;
       height: 44px;
+      font-family: $font;
+      color: darkgrey;
     }
 
     &:hover {
@@ -198,8 +203,37 @@ p {
     }
   }
 
-  // UserProfile-menu
   .UserProfile-menu {
     display: none;
+  }
+
+  &:hover .UserProfile-menu {
+    display: inline-block;
+  }
+
+  .UserNavigation {
+    ul {
+      display: block;
+      height: 37px;
+      width: 160px;
+      align-items: center;
+      padding: 0 10px;
+      list-style-type: none;
+  
+      li {
+        font-weight: 400;
+        padding: 7px 10px;
+        font-size: 14px;
+        transition: background 0.125s ease;
+        border-radius: 3px;
+        font-family: $font;
+        color: darkgrey;
+  
+        &:hover {
+          background: $red;
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
