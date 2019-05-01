@@ -29,7 +29,7 @@ router.post("/login", (req, res) => {
   users
     .login(req.body.email, req.body.password)
     .then(data => {
-      console.log("user: " + data.email + " Signed in successfully.");
+      console.log(`${req.body.email} signed in successfully.`);
       res.json(data);
     })
     .catch(err => {
