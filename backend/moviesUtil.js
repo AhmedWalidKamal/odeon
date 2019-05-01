@@ -62,6 +62,8 @@ const createMovie = function(movieInfo, movieCredits) {
   movie.genres = movieInfo.genres;
   movie.cast = cast;
   movie.directors = directors;
+
+  return movie;
 };
 
 module.exports.getMovie = function(id) {
