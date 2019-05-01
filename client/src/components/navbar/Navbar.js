@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import "./navbar.scss";
 
@@ -9,10 +12,13 @@ class Navbar extends Component {
   }
 
   render() {
+    const { isAuthenticated, user } = this.props.user;
+    console.log(user);
+
     // Logo
     const Logo = (
       <div id="logo" className="Logo" width="150" height="50">
-        <a href="#">
+        <Link to="/">
           <img
             src="https://fontmeme.com/permalink/190501/6a4a11f5dcb8842d8c51dc1909496da1.png"
             alt="caillou-tv-series-font"
@@ -20,7 +26,7 @@ class Navbar extends Component {
             width="150"
             height="50"
           />
-        </a>
+        </Link>
       </div>
     );
 
@@ -37,6 +43,22 @@ class Navbar extends Component {
       </div>
     );
 
+    // Auth nav items
+    const authNav = (
+      <div id="auth-nav" className="auth-nav">
+        <nav>
+          <ul>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/signup">Register</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    );
+
     // Search
     const Search = (
       <form onSubmit={this.performSearch} id="search" className="Search">
@@ -48,9 +70,9 @@ class Navbar extends Component {
     const UserProfile = (
       <div className="UserProfile">
         <div className="User">
-          <div className="name">Anas Harby</div>
+          <div className="name">{user.username}</div>
           <div className="image">
-            <img src="https://lastfm-img2.akamaized.net/i/u/avatar170s/c0a35a756001a19f51c81e7cd89231a4.png" />
+            <img src={user.avatar} />
           </div>
         </div>
         <div className="UserProfile-menu">
@@ -65,7 +87,7 @@ class Navbar extends Component {
       </div>
     );
 
-    const Header = (
+    const authenticatedHeader = (
       <header className="Header">
         {Logo}
         {Navigation}
@@ -74,8 +96,28 @@ class Navbar extends Component {
       </header>
     );
 
-    return <div>{Header}</div>;
+    const loggedOutHeader = (
+      <header className="Header">
+        {Logo}
+        {Navigation}
+        {Search}
+        {authNav}
+      </header>
+    );
+
+    return <div>{isAuthenticated ? authenticatedHeader : loggedOutHeader}</div>;
   }
 }
 
-export default Navbar;
+Navbar.propTypes = {
+  user: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Navbar);

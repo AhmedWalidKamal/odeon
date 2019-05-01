@@ -12,7 +12,7 @@ class MovieCard extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchMovie(this.props.movieId);
+    this.props.fetchMovie(this.props.match.params.id);
   }
 
   render() {
@@ -75,7 +75,7 @@ class MovieCard extends Component {
                     <div className="film-card__tagtitle">Directors</div>
                   </li>
                   {!isEmpty(movie) && !isEmpty(movie.directors) ? (
-                    this.renderNamesList(movie.directors)
+                    this.renderNames(movie.directors)
                   ) : (
                     <li>Directors</li>
                   )}
@@ -85,7 +85,7 @@ class MovieCard extends Component {
                     <div className="film-card__tagtitle">Cast</div>
                   </li>
                   {!isEmpty(movie) && !isEmpty(movie.cast) ? (
-                    this.renderNamesList(movie.cast)
+                    this.renderNames(movie.cast)
                   ) : (
                     <li>Cast</li>
                   )}
@@ -104,21 +104,21 @@ class MovieCard extends Component {
     );
   }
 
-  const getGenres = genres => ({
-    var genreNames = objArray.map(genres.name => name);
+  getGenres = genres => {
+    var genreNames = genres.map(({ name }) => name);
     return genreNames.join();
-  });
+  };
 
-  const renderNamesList = (list, size=3) => ({
-    var namesList = list.map((obj) => {
-        return <li key={obj.id}>{obj.name}</li>;
+  renderNames = (persons, size = 3) => {
+    var names = persons.map((person) => {
+      return <li key={person.id}>{person.name}</li>;
     });
-    if (namesList.length > size) {
-      return namesList.slice(0, size);
+    if (names.length > size) {
+      return names.slice(0, size);
     } else {
-      return namesList;
+      return names;
     }
-  });
+  };
 }
 
 const mapStateToProps = state => ({

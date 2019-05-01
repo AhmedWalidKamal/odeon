@@ -127,6 +127,30 @@ p {
   }
 }
 
+// Navigation
+.auth-nav {
+  margin-left: auto;
+  ul {
+    display: flex;
+    height: 37px;
+    align-items: center;
+    padding: 0 10px;
+
+    li {
+      font-weight: 400;
+      padding: 7px 10px;
+      font-size: 14px;
+      transition: background 0.125s ease;
+      border-radius: 3px;
+
+      &:hover {
+        background: $red;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 // Search
 .Search {
   align-items: center;
