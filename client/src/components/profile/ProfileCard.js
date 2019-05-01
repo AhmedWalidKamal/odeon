@@ -37,7 +37,7 @@ class ProfileCard extends Component {
                   {profile.displayName.lastName}
                 </div>
               ) : (
-                <div>{user.username}</div>
+                <div className="profile-card__name">{user.username}</div>
               )}
 
               {!isEmpty(profile) && !isEmpty(profile.bio) ? (
