@@ -120,4 +120,19 @@ router.put(
   }
 );
 
+router.get("/collection/:name", (req, res) => {
+  const collectionName = req.params.name;
+  const pageNum = req.params.page || 1;
+  moviesUtil
+    .getMovieCollection(collectionName, pageNum)
+    .then(data => {
+      console.log(data);
+      res.json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
+
 module.exports = router;

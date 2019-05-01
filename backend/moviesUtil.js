@@ -168,3 +168,38 @@ module.exports.removeFromShelf = function(shelfId, movieId) {
     });
   });
 };
+
+module.exports.getMovieCollection = function(collectionName, page) {
+  return new Promise((resolve, reject) => {
+    collection = {};
+    const callBack = function(err, res) {
+      if (!err) {
+        return resolve(res);
+      }
+      console.log(err);
+      return reject(err);
+    };
+    params = { page };
+    switch (collectionName) {
+      case "top_rated":
+        tmdb.miscTopRatedMovies(params, callBack);
+        break;
+      case "popular":
+        tmdb.miscPopularMovies(params, callBack);
+        break;
+      case "latest":
+        tmdb.miscLatestMovies(params, callBack);
+        break;
+      case "upcoming":
+        tmdb.miscUpcomingMovies(params, callBack);
+        break;
+      case "now_playing":
+        tmdb.miscNowPlayingMovies(params, callBack);
+        break;
+      default:
+        errors = { error: collectionName + " is not a valid collection name" };
+        console.log(errors);
+        return reject(errors);
+    }
+  });
+};
