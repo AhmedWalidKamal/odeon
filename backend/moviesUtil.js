@@ -238,7 +238,7 @@ module.exports.getMovieCollection = function(collectionName, page) {
 };
 
 module.exports.searchMovies = function(query, page) {
-  return new Promise((resolve, reject) => {
+  promise = new Promise((resolve, reject) => {
     params = { query, page };
     tmdb.searchMovie(params, (err, res) => {
       if (!err) {
@@ -247,5 +247,28 @@ module.exports.searchMovies = function(query, page) {
       console.log(err);
       return reject(err);
     });
+  });
+  return new Promise((resolve, reject) => {
+    promise
+      .then(collection => {
+        getConfig()
+          .then(data => {
+            const { base_url, poster_size } = data;
+            collection.results.forEach(movie => {
+              if (movie.poster_path) {
+                movie.poster_path = base_url + poster_size + movie.poster_path;
+              } else {
+                movie.poster_path = defaults.poster_path;
+              }
+            });
+            return resolve(collection);
+          })
+          .catch(err => {
+            return reject(err);
+          });
+      })
+      .catch(err => {
+        return reject(err);
+      });
   });
 };
