@@ -48,7 +48,7 @@ $label-top-margin: 275px;
 body {
   font-family: $label-family;
   font-weight: 400;
-  background-color: $bg;
+  
   color: #000;
   padding-bottom: 4rem;
 }
@@ -80,6 +80,7 @@ a {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+  background-color: $bg;
 
   a {
     color: inherit;
