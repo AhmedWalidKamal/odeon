@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-import { FETCH_MOVIE } from ".types";
+import { FETCH_MOVIE } from "./types";
 
 export const fetchMovie = movieId => dispatch => {
   axios
