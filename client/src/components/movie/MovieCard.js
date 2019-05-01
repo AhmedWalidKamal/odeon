@@ -28,7 +28,7 @@ class MovieCard extends Component {
               {!isEmpty(movie) && !isEmpty(movie.poster_path) ? (
                 <img src={movie.poster_path} alt="film card" />
               ) : (
-                <img src="/img/default-movie.png" alt="film card" />
+                <img src="/img/default-poster.jpg" alt="film card" />
               )}
             </div>
             <div className="film-card__cnt js-film-cnt">
@@ -46,7 +46,7 @@ class MovieCard extends Component {
                 )}
 
                 {!isEmpty(movie) && !isEmpty(movie.release_date) ? (
-                  <li>{movie.release_date}</li>
+                  <li>{this.getYear(movie.release_date)}</li>
                 ) : (
                   <li>Release Date</li>
                 )}
@@ -72,7 +72,7 @@ class MovieCard extends Component {
               <div className="film-card__tags2">
                 <div className="list--inline">
                   <li>
-                    <div className="film-card__tagtitle">Directors</div>
+                    <div className="film-card__tagtitle">Director</div>
                   </li>
                   {!isEmpty(movie) && !isEmpty(movie.directors) ? (
                     this.renderNames(movie.directors)
@@ -104,9 +104,13 @@ class MovieCard extends Component {
     );
   }
 
+  getYear = date => {
+    return new Date(date).getFullYear();
+  }
+
   getGenres = genres => {
     var genreNames = genres.map(({ name }) => name);
-    return genreNames.join();
+    return genreNames.join(", ");
   };
 
   renderNames = (persons, size = 3) => {
