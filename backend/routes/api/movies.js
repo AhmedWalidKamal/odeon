@@ -106,7 +106,7 @@ router.put(
   }
 );
 
-router.put(
+router.delete(
   "/remove-from-shelf",
   passport.authenticate("jwt", {
     session: false
@@ -121,22 +121,23 @@ router.put(
     console.log("token info:");
     console.log(info);
     errors = {};
-    const user = users.getUser(info.id);
-    if (!user.shelves.includes(shelfId)) {
-      errors.shelf = "Requested shelf id does not belong to user";
-      res.status(400).json(errors);
-    } else {
-      moviesUtil
-        .removeFromShelf(shelfId, movieId)
-        .then(data => {
-          console.log(data);
-          res.json(data);
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(400).json(err);
-        });
-    }
+    users.getUser(info.id).then(user => {
+      if (!user.shelves.map(shelf => shelf.toString()).includes(shelfId)) {
+        errors.shelf = "Requested shelf id does not belong to user";
+        res.status(400).json(errors);
+      } else {
+        moviesUtil
+          .removeFromShelf(shelfId, parseInt(movieId))
+          .then(data => {
+            console.log(data);
+            res.json(data);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
+      }
+    });
   }
 );
 

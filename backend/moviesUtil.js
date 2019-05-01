@@ -166,7 +166,7 @@ module.exports.addToShelf = function(shelfId, movieId) {
 module.exports.removeFromShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
-      if (empty(user)) {
+      if (empty(shelf)) {
         console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
