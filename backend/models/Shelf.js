@@ -6,8 +6,7 @@ const Schema = mongoose.Schema;
 const ShelfSchema = new Schema({
   name: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   movies: [
     {

@@ -3,14 +3,19 @@ const empty = require("is-empty");
 const keys = require("./config/keys");
 const tmdb = require("moviedb")(keys.tmdbApiKey);
 
-const initConfig = function() {
-  const { base_url, poster_sizes } = tmdb.configuration();
-  return { base_url, poster_sizes };
+// Get config
+const getConfig = function() {
+  return new Promise((resolve, reject) => {
+    tmdb.configuration((err, res) => {
+      if (!err) {
+        const { base_url, poster_sizes } = res.images;
+        return resolve({ base_url, poster_sizes });
+      }
+      console.log(err);
+      return reject(err);
+    });
+  });
 };
-
-const { base_url, poster_sizes } = initConfig;
-
-const poster_size = poster_sizes[poster_sizes.length - 1];
 
 const parseCredits = function(movieCredits) {
   movieCast = [];
@@ -40,7 +45,14 @@ const createMovie = function(movieInfo, movieCredits) {
   movie.release_date = new Date(movieInfo.release_date);
   movie.plot_summary = movieInfo.overview;
   if (!empty(poster_path)) {
-    movie.poster_path = base_url + poster_size + movieInfo.poster_path;
+    getConfig()
+      .then(data => {
+        console.log(data);
+        const { base_url, poster_sizes } = data;
+        const poster_size = poster_sizes[poster_sizes.length - 1];
+        movie.poster_path = base_url + poster_size + movieInfo.poster_path;
+      })
+      .catch(err => console.log(err));
   }
   movie.avg_rating = movieInfo.vote_average;
   movie.ratings_count = movieInfo.vote_count;
@@ -62,7 +74,7 @@ module.exports.getMovie = function(id) {
         return reject(movieErr);
       }
       if (empty(movieInfo)) {
-        errors.error = "Empty Movie Response";
+        errors.error = "Empty Movie Respons e";
         return reject(errors);
       }
       console.log(movieInfo);

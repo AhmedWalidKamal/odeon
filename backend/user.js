@@ -64,9 +64,11 @@ module.exports.register = function(username, email, password) {
         user: newUser._id
       });
       newUser.profile = newProfile._id;
+
       watchedShelf = getShelf("Watched");
       planToWatchShelf = getShelf("Plan to Watch");
       newUser.shelves = [watchedShelf._id, planToWatchShelf._id];
+
       newUser.ratings = [];
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -75,56 +77,51 @@ module.exports.register = function(username, email, password) {
             throw err;
           }
           newUser.password = hash;
-          newUser.save().then(function() {
-            if (newUser.isNew) {
-              errors.error = "Registration error";
-              return reject(errors);
-            }
-            console.log("User: " + newUser.username + " Signed Up.");
-            return resolve({
-              success: true
-            });
-          });
+
           newProfile.save().then(function() {
             if (newProfile.isNew) {
-              errors.error = "Registration error";
+              errors.error = "Couldn't create profile for user";
               return reject(errors);
             }
             console.log("Profile: " + newUser.username + " Created.");
-            return resolve({
-              success: true
-            });
-          });
-          watchedShelf.save().then(function() {
-            if (watchedShelf.isNew) {
-              errors.error = "Registration error";
-              return reject(errors);
-            }
-            console.log(
-              "Shelf: " +
-                newUser.username +
-                "." +
-                watchedShelf.name +
-                " Created."
-            );
-            return resolve({
-              success: true
-            });
-          });
-          planToWatchShelf.save().then(function() {
-            if (planToWatchShelf.isNew) {
-              errors.error = "Registration error";
-              return reject(errors);
-            }
-            console.log(
-              "Shelf: " +
-                newUser.username +
-                "." +
-                planToWatchShelf.name +
-                " Created."
-            );
-            return resolve({
-              success: true
+
+            watchedShelf.save().then(function() {
+              if (watchedShelf.isNew) {
+                errors.error = "Couldn't create watched shelf for user";
+                return reject(errors);
+              }
+              console.log(
+                "Shelf: " +
+                  newUser.username +
+                  "." +
+                  watchedShelf.name +
+                  " Created."
+              );
+              planToWatchShelf.save().then(function() {
+                if (planToWatchShelf.isNew) {
+                  errors.error = "Couldn't create plan to watch shelf for user";
+                  return reject(errors);
+                }
+                console.log(
+                  "Shelf: " +
+                    newUser.username +
+                    "." +
+                    planToWatchShelf.name +
+                    " Created."
+                );
+                newUser.save().then(function() {
+                  if (newUser.isNew) {
+                    console.log("The error is here fam");
+                    errors.error = "Registration error";
+                    return reject(errors);
+                  }
+                  console.log("User: " + newUser.username + " Signed Up.");
+
+                  return resolve({
+                    success: true
+                  });
+                });
+              });
             });
           });
         });
