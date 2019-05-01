@@ -63,6 +63,12 @@ class MovieCard extends Component {
                 ) : (
                   <li>Language</li>
                 )}
+
+                {!isEmpty(movie) && !isEmpty(movie.duration) ? (
+                  <li>{movie.duration} min</li>
+                ) : (
+                  <li>Language</li>
+                )}
               </div>
               <div className="film-card__subtitle">Overview</div>
               {!isEmpty(movie) && !isEmpty(movie.plot_summary) ? (
@@ -73,12 +79,12 @@ class MovieCard extends Component {
               <div className="film-card__tags2">
                 <div className="list--inline">
                   <li>
-                    <div className="film-card__tagtitle">Director</div>
+                    <div className="film-card__tagtitle">Director(s)</div>
                   </li>
                   {!isEmpty(movie) && !isEmpty(movie.directors) ? (
                     this.renderNames(movie.directors)
                   ) : (
-                    <li>Directors</li>
+                    <li>Director</li>
                   )}
                 </div>
                 <div className="list--inline">

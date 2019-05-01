@@ -22,14 +22,14 @@ class Login extends Component {
 
   componentDidMount() {
     // Redirecting to home if user is already logged in
-    if (this.props.user.isAuthenticated) {
+    if (this.props.userReducer.isAuthenticated) {
       this.props.history.push("/");
     }
   }
 
   // This lifecycle method is invoked before a mounted component receives new props
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.isAuthenticated) {
+    if (nextProps.userReducer.isAuthenticated) {
       this.props.history.push("/");
     }
   }
@@ -85,12 +85,12 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  user: PropTypes.object.isRequired,
+  userReducer: PropTypes.object.isRequired,
   login: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  userReducer: state.userReducer
 });
 
 export default connect(

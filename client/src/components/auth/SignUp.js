@@ -26,7 +26,7 @@ class SignUp extends Component {
 
   componentDidMount() {
     // Redirecting to home if user is already logged in
-    if (this.props.user.isAuthenticated) {
+    if (this.props.userReducer.isAuthenticated) {
       this.props.history.push("/");
     }
   }
@@ -107,12 +107,12 @@ class SignUp extends Component {
 }
 
 SignUp.propTypes = {
-  user: PropTypes.object.isRequired,
+  userReducer: PropTypes.object.isRequired,
   register: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  userReducer: state.userReducer
 });
 
 export default connect(
