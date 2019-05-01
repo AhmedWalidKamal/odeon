@@ -1,4 +1,5 @@
 const decode = require("jwt-decode");
+var mongoose = require("mongoose");
 
 const express = require("express");
 const router = express.Router();
@@ -77,32 +78,35 @@ router.put(
   }),
   (req, res) => {
     const info = decode(req.headers.authorization);
-    const movieId = req.body.movieId;
-    const shelfId = req.body.shelfId;
-    console.log("AddMovie(ShelfId=" + shelfId + ", MovieId=" + movieId + ")");
+    const { movieId, shelfId } = req.body;
+
+    console.log(`AddMovie(ShelfId=${shelfId}, MovieId=${movieId})`);
     console.log("token info:");
     console.log(info);
+
     errors = {};
-    const user = users.getUser(info.id);
-    if (!user.shelves.includes(shelfId)) {
-      errors.shelf = "Requested shelf id does not belong to user";
-      res.status(400).json(errors);
-    } else {
-      moviesUtil
-        .addToShelf(shelfId, movieId)
-        .then(data => {
-          console.log(data);
-          res.json(data);
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(400).json(err);
-        });
-    }
+
+    users.getUser(info.id).then(user => {
+      if (!user.shelves.map(id => id.toString()).includes(shelfId)) {
+        errors.shelf = "Requested shelf id does not belong to user";
+        res.status(400).json(errors);
+      } else {
+        moviesUtil
+          .addToShelf(shelfId, parseInt(movieId))
+          .then(data => {
+            console.log(data);
+            res.json(data);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
+      }
+    });
   }
 );
 
-router.put(
+router.delete(
   "/remove-from-shelf",
   passport.authenticate("jwt", {
     session: false
@@ -117,22 +121,23 @@ router.put(
     console.log("token info:");
     console.log(info);
     errors = {};
-    const user = users.getUser(info.id);
-    if (!user.shelves.includes(shelfId)) {
-      errors.shelf = "Requested shelf id does not belong to user";
-      res.status(400).json(errors);
-    } else {
-      moviesUtil
-        .removeFromShelf(shelfId, movieId)
-        .then(data => {
-          console.log(data);
-          res.json(data);
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(400).json(err);
-        });
-    }
+    users.getUser(info.id).then(user => {
+      if (!user.shelves.map(shelf => shelf.toString()).includes(shelfId)) {
+        errors.shelf = "Requested shelf id does not belong to user";
+        res.status(400).json(errors);
+      } else {
+        moviesUtil
+          .removeFromShelf(shelfId, parseInt(movieId))
+          .then(data => {
+            console.log(data);
+            res.json(data);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
+      }
+    });
   }
 );
 

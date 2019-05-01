@@ -29,7 +29,7 @@ router.post("/login", (req, res) => {
   users
     .login(req.body.email, req.body.password)
     .then(data => {
-      console.log("user: " + data.email + " Signed in successfully.");
+      console.log(`${req.body.email} signed in successfully.`);
       res.json(data);
     })
     .catch(err => {
@@ -102,23 +102,17 @@ router.get(
     session: false
   }),
   (req, res) => {
-    const info = decode(req.headers.authorization);
     const id = req.params.id;
-    if (info.id !== id) {
-      errors.profile = "Requested id is different from user's id";
-      res.status(400).json(errors);
-    } else {
-      users
-        .getUser(id)
-        .then(data => {
-          console.log(data);
-          res.json(data.shelves);
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(400).json(err);
-        });
-    }
+    users
+      .getUser(id)
+      .then(data => {
+        console.log(data);
+        res.json(data.shelves);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 );
 

@@ -121,28 +121,33 @@ module.exports.updateRating = function(ratings, movieId, newRating) {
   return ratings;
 };
 
-module.exports.updateShelf = function(shelfId, newShelf) {
-  Shelf.findByIdAndUpdate(shelfId, newShelf).then(shelf => {
-    if (empty(shelf)) {
-      console.log("Shelf " + shelfId + " not found");
-      errors.error = "Shelf not found";
-      return reject(errors);
-    } else {
-      return resolve({
-        success: true
-      });
-    }
-  });
-};
-
-module.exports.addToShelf = function(shelfId, movieId) {
+const updateShelf = function(shelfId, newShelf) {
   return new Promise((resolve, reject) => {
-    Shelf.findById(shelfId).then(shelf => {
-      if (empty(user)) {
+    Shelf.findByIdAndUpdate(shelfId, newShelf).then(shelf => {
+      if (empty(shelf)) {
         console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
+        return resolve({
+          success: true
+        });
+      }
+    });
+  });
+};
+module.exports.updateShelf = updateShelf;
+
+module.exports.addToShelf = function(shelfId, movieId) {
+  return new Promise((resolve, reject) => {
+    Shelf.findById(shelfId).then(shelf => {
+      if (empty(shelf)) {
+        console.log("Shelf " + shelfId + " not found");
+        errors.error = "Shelf not found";
+        return reject(errors);
+      } else {
+        console.log(shelf.movies);
+
         if (!shelf.movies.includes(movieId)) {
           shelf.movies.push(movieId);
           updateShelf(shelfId, shelf).then(success => {
@@ -161,7 +166,7 @@ module.exports.addToShelf = function(shelfId, movieId) {
 module.exports.removeFromShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
-      if (empty(user)) {
+      if (empty(shelf)) {
         console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);

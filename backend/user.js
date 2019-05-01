@@ -208,7 +208,7 @@ module.exports.getProfile = function(userId) {
 
 module.exports.getUser = function(userId) {
   return new Promise((resolve, reject) => {
-    User.findById(id).then(user => {
+    User.findById(userId).then(user => {
       if (empty(user)) {
         console.log("User " + userId + " not found");
         errors.error = "User not found";
