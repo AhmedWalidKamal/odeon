@@ -117,6 +117,18 @@ class ProfileCard extends Component {
             <div className="profile-card__overlay js-message-close" />
           </div>
         </div>
+
+        <div class="content">
+          <div class="content__subtitle">
+            Watched
+          </div>
+          {/* <Grid class="grid"/> */}
+          <div class="content__subtitle">
+            Watchlist
+          </div>
+          {/* <Grid class="grid"/> */}
+        </div>
+
         <svg hidden="hidden">
           <defs>
             <symbol id="icon-codepen" viewBox="0 0 32 32">

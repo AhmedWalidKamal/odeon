@@ -433,3 +433,14 @@ a, a:hover {
   }
 
 }
+
+.content {
+  margin-left: 200px;
+  margin-right: 2000px;
+
+  &__subtitle {
+    color:darkgray;
+    font-weight: 700;
+    font-size: 28px;
+  }
+}
