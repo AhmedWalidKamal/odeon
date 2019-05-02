@@ -14,7 +14,7 @@ class Navbar extends Component {
   }
 
   render() {
-    const { isAuthenticated, user } = this.props.user;
+    const { isAuthenticated, user } = this.props.userReducer;
     console.log(user);
 
     // Logo
@@ -167,12 +167,12 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-  user: PropTypes.object.isRequired,
+  userReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  userReducer: state.userReducer
 });
 
 export default connect(
