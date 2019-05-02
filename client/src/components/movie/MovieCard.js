@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Rating from "react-rating";
+<<<<<<< HEAD
 import { fetchMovie, rateMovie, addMovieToShelf, removeMovieFromShelf, fetchShelfMovies } from "../../actions/movieActions";
+=======
+import { fetchMovie, rateMovie } from "../../actions/movieActions";
+>>>>>>> 5c8592288058263db07a78521ba7409aabeac6e9
 import "./movieCard.scss";
 
 const isEmpty = require("is-empty");
@@ -11,9 +15,12 @@ class MovieCard extends Component {
   constructor(props) {
     super(props);
     this.rateMovie = this.rateMovie.bind(this);
+<<<<<<< HEAD
     this.state = {
       watched: false
     };
+=======
+>>>>>>> 5c8592288058263db07a78521ba7409aabeac6e9
   }
 
   rateMovie(rating) {
@@ -27,8 +34,8 @@ class MovieCard extends Component {
   }
 
   render() {
-    console.log(this.props.movieReducer);
     const { movie } = this.props.movieReducer;
+<<<<<<< HEAD
     const { ratings } = this.props.userReducer.user;
     var initRating = 0;
     ratings.forEach(rating => {
@@ -36,7 +43,20 @@ class MovieCard extends Component {
         initRating = rating.rating;
       }
     });
+=======
+    var ratings = this.props.userReducer.user.ratings;
 
+    if (ratings == null) {
+      ratings = [];
+    }
+>>>>>>> 5c8592288058263db07a78521ba7409aabeac6e9
+
+    let initRating = 0;
+    ratings.forEach(rating => {
+      if (rating.movieId === movie.id) {
+        initRating = rating.rating;
+      }
+    });
     return (
       <div>
         <link
@@ -99,7 +119,6 @@ class MovieCard extends Component {
                   ) : (
                     <i className="fas fa-eye" />
                   )}
-
                 </a>
                 <a href="#">
                   <i className="fas fa-heart" />
@@ -190,10 +209,14 @@ class MovieCard extends Component {
 MovieCard.propTypes = {
   movieReducer: PropTypes.object.isRequired,
   userReducer: PropTypes.object.isRequired,
+<<<<<<< HEAD
   fetchMovie: PropTypes.func.isRequired,
   rateMovie: PropTypes.func.isRequired,
   addMovieToShelf: PropTypes.func.isRequired,
   removeMovieFromShelf: PropTypes.func.isRequired
+=======
+  fetchMovie: PropTypes.func.isRequired
+>>>>>>> 5c8592288058263db07a78521ba7409aabeac6e9
 };
 
 const mapStateToProps = state => ({
@@ -203,5 +226,9 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
+<<<<<<< HEAD
   { fetchMovie, rateMovie, addMovieToShelf, removeMovieFromShelf, fetchShelfMovies }
+=======
+  { fetchMovie, rateMovie }
+>>>>>>> 5c8592288058263db07a78521ba7409aabeac6e9
 )(MovieCard);
