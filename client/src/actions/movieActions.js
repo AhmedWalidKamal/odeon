@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { FETCH_MOVIE, FETCH_COLLECTION } from "./types";
+import { FETCH_MOVIE, FETCH_COLLECTION, CHANGE_COLLECTION_NAME } from "./types";
 
 export const fetchMovie = movieId => dispatch => {
   axios
@@ -25,4 +25,13 @@ export const fetchMoviesCollection = collectionName => dispatch => {
       });
     })
     .catch(err => console.log(err.response.data.error));
+};
+
+export const changeCollectionName = collectionName => dispatch => {
+  console.log(`Chaning collection name to ${collectionName}`);
+
+  dispatch({
+    type: CHANGE_COLLECTION_NAME,
+    payload: collectionName
+  });
 };

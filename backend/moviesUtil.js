@@ -37,13 +37,13 @@ const parseCredits = function(movieCredits) {
       id: person.id,
       name: person.name
     };
-    movieCast.push(castMember);    
+    movieCast.push(castMember);
   });
   crew.forEach(person => {
     crewMember = {
       id: person.id,
       name: person.name
-    }
+    };
     if (!empty(person.job) && person.job === "Director") {
       directors.push(crewMember);
     }
@@ -71,7 +71,7 @@ const createMovie = function(movieInfo, movieCredits) {
   return movie;
 };
 
-module.exports.getMovie = function(id) {
+const getMovie = async function(id) {
   return new Promise((resolve, reject) => {
     tmdb.movieInfo({ id }, (movieErr, movieInfo) => {
       const errors = {};
@@ -110,6 +110,7 @@ module.exports.getMovie = function(id) {
     });
   });
 };
+module.exports.getMovie = getMovie;
 
 module.exports.updateRating = function(ratings, movieId, newRating) {
   var updated = false;
@@ -142,6 +143,31 @@ const updateShelf = function(shelfId, newShelf) {
   });
 };
 module.exports.updateShelf = updateShelf;
+
+const promiseSerial = funcs =>
+  funcs.reduce(
+    (promise, func) =>
+      promise.then(result => func().then(Array.prototype.concat.bind(result))),
+    Promise.resolve([])
+  );
+
+const getShelfMovies = function(shelfId) {
+  return new Promise((resolve, reject) => {
+    Shelf.findById(shelfId).then(shelf => {
+      if (empty(shelf)) {
+        console.log("Shelf " + shelfId + " not found");
+        errors.error = "Shelf not found";
+        return reject(errors);
+      } else {
+        const funcs = shelf.movies.map(movieId => () => getMovie(movieId));
+        promiseSerial(funcs).then(result => {
+          return resolve(result);
+        });
+      }
+    });
+  });
+};
+module.exports.getShelfMovies = getShelfMovies;
 
 module.exports.addToShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {
@@ -202,6 +228,7 @@ module.exports.getMovieCollection = function(collectionName, page) {
       return reject(err);
     };
     const params = { page };
+
     switch (collectionName) {
       case "top_rated":
         tmdb.miscTopRatedMovies(params, callBack);

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../actions/userActions";
+import { changeCollectionName } from "../../actions/movieActions";
 
 import "./navbar.scss";
 
@@ -36,8 +37,47 @@ class Navbar extends Component {
       <div id="navigation" className="Navigation">
         <nav>
           <ul>
-            <li>Browse</li>
-            <li>My films</li>
+            <li>
+              <Link
+                className="Link"
+                to="/browse/top_rated"
+                onClick={() => this.props.changeCollectionName("top_rated")}
+              >
+                Top Rated
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="Link"
+                to="/browse/popular"
+                onClick={() => this.props.changeCollectionName("popular")}
+              >
+                Popular
+              </Link>
+            </li>
+            {/* <li>
+              <Link className="Link" to="/browse/latest" onClick={() => this.props.changeCollectionName("latest")}>
+                Latest
+              </Link>
+            </li> */}
+            <li>
+              <Link
+                className="Link"
+                to="/browse/upcoming"
+                onClick={() => this.props.changeCollectionName("upcoming")}
+              >
+                Upcoming
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="Link"
+                to="/browse/now_playing"
+                onClick={() => this.props.changeCollectionName("now_playing")}
+              >
+                Now Playing
+              </Link>
+            </li>
             <li>Activity</li>
           </ul>
         </nav>
@@ -137,5 +177,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logout }
+  { logout, changeCollectionName }
 )(Navbar);
