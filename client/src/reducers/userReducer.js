@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER } from "../actions/types";
+import { SET_CURRENT_USER, MOVIE_RATING } from "../actions/types";
 const isEmpty = require("is-empty");
 
 const initialState = {
@@ -15,6 +15,16 @@ export default function(state = initialState, action) {
         ...state,
         isAuthenticated: !isEmpty(action.payload),
         user: action.payload
+      };
+    case MOVIE_RATING:
+      let newUser = state.user;
+      newUser.ratings = action.payload;
+      console.log(action.payload);
+      console.log(newUser);
+
+      return {
+        ...state,
+        user: newUser
       };
     default:
       return state;
