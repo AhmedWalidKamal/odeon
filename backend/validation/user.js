@@ -16,16 +16,14 @@ const hasDuplicates = function(array, getStringValue) {
 };
 
 const validateShelves = function(shelves) {
-  shelves.forEach(shelf => {
-    const movies = isEmpty(shelf.movies) ? [] : shelf.movies;
-    if (
-      hasDuplicates(movies, val => {
-        return val.toString();
-      })
-    ) {
-      return false;
-    }
-  });
+  if (
+    hasDuplicates(shelves, val => {
+      return val.toString();
+    })
+  ) {
+    return false;
+  }
+
   return true;
 };
 
@@ -79,6 +77,14 @@ module.exports = function validateUserUpdate(data) {
   }
 
   console.log(data);
+
+  if (data.shelves == null) {
+    errors.shelves = "Shelves are required";
+  }
+
+  if (data.ratings == null) {
+    errors.ratings = "Ratings are required";
+  }
 
   shelves = isEmpty(data.shelves) ? [] : data.shelves;
   ratings = isEmpty(data.ratings) ? [] : data.ratings;
