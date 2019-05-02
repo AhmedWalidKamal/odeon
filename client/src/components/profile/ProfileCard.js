@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { fetchProfile } from "../../actions/profileActions";
+import { fetchShelfMovies } from "../../actions/movieActions";
 import "./profileCard.scss";
+import MoviePoster from "../home/MoviePoster";
 
 const isEmpty = require("is-empty");
 
@@ -13,14 +15,23 @@ class ProfileCard extends Component {
   }
 
   componentDidMount() {
+    console.log('movie reducer')
+    console.log(this.props.movieReducer)
     this.props.fetchProfile(this.props.userReducer.user.id);
+    console.log(this.props.userReducer.user.shelves[0])
+    // this.props.fetchShelfMovies(this.props.userReducer.user.shelves[0])
+    this.props.userReducer.user.shelves.map(this.props.fetchShelfMovies);
   }
 
   render() {
     const { profile } = this.props.profileReducer;
     const { user } = this.props.userReducer;
+    const { shelves } = this.props.movieReducer;
+    console.log('movie reducer')
+    console.log(this.props.movieReducer)
     console.log(user);
     console.log(profile);
+    console.log(shelves)
 
     return (
       <div>
@@ -118,15 +129,23 @@ class ProfileCard extends Component {
           </div>
         </div>
 
-        <div class="content">
-          <div class="content__subtitle">
+        <div className="content">
+          <div className="content__subtitle">
             Watched
           </div>
-          {/* <Grid class="grid"/> */}
-          <div class="content__subtitle">
+          {!isEmpty(shelves) ? (
+            <div className="grid">{this.getShelfMovies(shelves[user.shelves[0]])}</div>
+          ) : (
+            <div></div>
+          )}
+          <div className="content__subtitle">
             Watchlist
           </div>
-          {/* <Grid class="grid"/> */}
+          {!isEmpty(shelves) ? (
+            <div className="grid">{this.getShelfMovies(shelves[1])}</div>
+          ) : (
+            <div></div>
+          )}
         </div>
 
         <svg hidden="hidden">
@@ -181,20 +200,30 @@ class ProfileCard extends Component {
       </div>
     );
   }
+
+  getShelfMovies = shelfMovies => {
+    console.log(shelfMovies)
+    var moviePosters = shelfMovies.map(movie => {
+      return <MoviePoster key={movie.id} movie={movie} />;
+    });
+  };
 }
 
 ProfileCard.propTypes = {
   profileReducer: PropTypes.object.isRequired,
   userReducer: PropTypes.object.isRequired,
-  fetchProfile: PropTypes.func.isRequired
+  movieReducer: PropTypes.object.isRequired,
+  fetchProfile: PropTypes.func.isRequired,
+  fetchShelfMovies: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   profileReducer: state.profileReducer,
-  userReducer: state.userReducer
+  userReducer: state.userReducer,
+  movieReducer: state.movieReducer
 });
 
 export default connect(
   mapStateToProps,
-  { fetchProfile }
+  { fetchProfile, fetchShelfMovies }
 )(ProfileCard);

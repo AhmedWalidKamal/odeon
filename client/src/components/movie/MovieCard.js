@@ -17,6 +17,7 @@ class MovieCard extends Component {
   }
 
   render() {
+    console.log(this.props.movieReducer);
     const { movie } = this.props.movieReducer;
     console.log(movie);
 

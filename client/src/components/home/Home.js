@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { fetchMoviesCollection } from "../../actions/movieActions";
 import "./home.scss";
-import HomeMovie from "./HomeMovie";
+import MoviePoster from "./MoviePoster";
 
 class Home extends Component {
   constructor(props) {
@@ -14,13 +14,14 @@ class Home extends Component {
   componentWillMount() {
     this.props.fetchMoviesCollection("popular");
   }
+
   render() {
     console.log(this.props);
-    let moviesGrid = this.props.movieReducer.movies.map(movie => {
-      return <HomeMovie key={movie.id} movie={movie} />;
+    var moviePosters = this.props.movieReducer.movies.map(movie => {
+      return <MoviePoster key={movie.id} movie={movie} />;
     });
 
-    return <div className="grid">{moviesGrid}</div>;
+    return <div className="grid">{moviePosters}</div>;
   }
 }
 
