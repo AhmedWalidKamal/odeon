@@ -8,7 +8,7 @@ $bg: #fff;
 $link-color: #4584ee;
 $search-bg: #fff;
 $box-shadow: 0 0 0 1px rgba(#000, 0.1), 0 2px 8px rgba(#000, 0.2);
-$label-color: dimgrey;
+$label-color: darkgrey;
 $label-shadow: 0 0 2px rgba(#fff, 0);
 $label-family: "Montserrat", sans-serif;
 $label-weight: 900;
@@ -74,7 +74,7 @@ a {
 //--------------------
 
 .grid {
-  padding-top: 3rem;
+  padding-top: 1rem;
   color: inherit;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -153,3 +153,13 @@ a {
 }
 
 //--------------------
+
+.content {
+  margin-top: 150px;
+  &__subtitle {
+    color:darkgray;
+    margin-left: 30px;
+    font-weight: 700;
+    font-size: 28px;
+  }
+}

@@ -35,6 +35,7 @@ a, a:hover {
   padding: 50px 20px;
   padding-top: 100px;
   display: flex;
+  margin-top: 50px;
   background-image: #111111;
 
 
@@ -481,6 +482,8 @@ a, a:hover {
   color: dimgrey;
   font-size: 25px;
   line-height: 60px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .icon-bar a:hover {
@@ -493,4 +496,20 @@ a, a:hover {
 
 .icon-bar a:focus {
   color: indianred; /* Add an active/current color */
+}
+
+.icon-bar React { 
+  color: black;
+}
+
+.Rating {
+  font-size: 20px;
+
+  &__empty {
+    color: dimgray;
+  }
+
+  &__full {
+    color: indianred;
+  }
 }

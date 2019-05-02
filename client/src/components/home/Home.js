@@ -24,11 +24,16 @@ class Home extends Component {
 
   render() {
     console.log(this.props);
-    var moviePosters = this.props.movieReducer.movies.map(movie => {
+    let moviePosters = this.props.movieReducer.movies.slice(1, 15).map(movie => {
       return <MoviePoster key={movie.id} movie={movie} />;
     });
 
-    return <div className="grid">{moviePosters}</div>;
+    return (
+      <div className="content">
+        <div className="content__subtitle"> Popular Today </div>
+        <div className="grid">{moviePosters}</div>
+      </div>
+    );
   }
 }
 

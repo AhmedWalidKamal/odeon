@@ -110,13 +110,13 @@ a, a:hover {
 
   &__name {
     font-weight: 700;
-    font-size: 24px;
+    font-size: 36px;
     color: dimgrey;
     margin-bottom: 15px;
   }
 
   &__txt {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     color: dimgrey;
     margin-bottom: 15px;
@@ -132,12 +132,12 @@ a, a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
 
     &__icon {
       display: inline-flex;
-      font-size: 16px;
+      font-size: 14px;
       margin-right: 10px;
       color: darkgrey;
     }
@@ -436,7 +436,7 @@ a, a:hover {
 
 .content {
   margin-left: 200px;
-  margin-right: 2000px;
+  margin-right: 200px;
 
   &__subtitle {
     color:darkgray;
