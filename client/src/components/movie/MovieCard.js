@@ -24,7 +24,12 @@ class MovieCard extends Component {
 
   render() {
     const { movie } = this.props.movieReducer;
-    const { ratings } = this.props.userReducer.user;
+    var ratings = this.props.userReducer.user.ratings;
+
+    if (ratings == null) {
+      ratings = [];
+    }
+
     let initRating = 0;
     ratings.forEach(rating => {
       if (rating.movieId === movie.id) {
@@ -87,9 +92,15 @@ class MovieCard extends Component {
               </div>
 
               <div className="icon-bar">
-                <a href="#"><i className="fas fa-eye checked" /></a>
-                <a href="#"><i className="fas fa-heart" /></a>
-                <a href="#"><i className="fas fa-history" /></a>
+                <a href="#">
+                  <i className="fas fa-eye checked" />
+                </a>
+                <a href="#">
+                  <i className="fas fa-heart" />
+                </a>
+                <a href="#">
+                  <i className="fas fa-history" />
+                </a>
               </div>
 
               <div className="film-card__subtitle">Overview</div>
