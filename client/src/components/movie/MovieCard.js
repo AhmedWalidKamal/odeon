@@ -2,16 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Rating from "react-rating";
-import { fetchMovie } from "../../actions/movieActions";
+import { fetchMovie, rateMovie } from "../../actions/movieActions";
 import "./movieCard.scss";
-
-
 
 const isEmpty = require("is-empty");
 
 class MovieCard extends Component {
   constructor(props) {
     super(props);
+    this.rateMovie = this.rateMovie.bind(this);
+  }
+
+  rateMovie(rating) {
+    console.log(rating);
+    this.props.rateMovie(this.props.movieReducer.movie.id, rating);
   }
 
   componentDidMount() {
@@ -20,11 +24,19 @@ class MovieCard extends Component {
 
   render() {
     const { movie } = this.props.movieReducer;
-    console.log(movie);
-
+    const { ratings } = this.props.userReducer.user;
+    let initRating = 0;
+    ratings.forEach(rating => {
+      if (rating.movieId === movie.id) {
+        initRating = rating.rating;
+      }
+    });
     return (
       <div>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" />
+        <link
+          rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+        />
         <div className="wrapper">
           <div className="film-card js-film-card">
             <div className="film-card__img">
@@ -41,8 +53,9 @@ class MovieCard extends Component {
                 <div className="file-card__name">Movie Title</div>
               )}
               <div className="film-card__tags list--inline">
-                {!isEmpty(movie) && !isEmpty(movie.ratings_count)
-                    && movie.ratings_count != 0 ? (
+                {!isEmpty(movie) &&
+                !isEmpty(movie.ratings_count) &&
+                movie.ratings_count != 0 ? (
                   <li>{movie.avg_rating}</li>
                 ) : (
                   <li>Unrated</li>
@@ -69,7 +82,7 @@ class MovieCard extends Component {
                 {!isEmpty(movie) && !isEmpty(movie.duration) ? (
                   <li>{movie.duration} min</li>
                 ) : (
-                  <li>Language</li>
+                  <li>Duration</li>
                 )}
               </div>
 
@@ -78,7 +91,6 @@ class MovieCard extends Component {
                 <a href="#"><i className="fas fa-heart" /></a>
                 <a href="#"><i className="fas fa-history" /></a>
               </div>
-
 
               <div className="film-card__subtitle">Overview</div>
               {!isEmpty(movie) && !isEmpty(movie.plot_summary) ? (
@@ -108,14 +120,17 @@ class MovieCard extends Component {
                   )}
                 </div>
               </div>
-              
+
               <div className="icon-bar">
-              <Rating className="Rating"
-                emptySymbol="far fa-star Rating__empty"
-                fullSymbol="fas fa-star Rating__full" fractions={2}
+                <Rating
+                  className="Rating"
+                  emptySymbol="far fa-star Rating__empty"
+                  fullSymbol="fas fa-star Rating__full"
+                  fractions={2}
+                  initialRating={initRating}
+                  onClick={rating => this.rateMovie(rating)}
                 />
               </div>
-
             </div>
           </div>
           <div className="film-card__overlay js-message-close" />
@@ -130,7 +145,7 @@ class MovieCard extends Component {
   };
 
   renderNames = (persons, size = 4) => {
-    var names = persons.map((person) => {
+    var names = persons.map(person => {
       return <li key={person.id}>{person.name}</li>;
     });
     if (names.length > size) {
@@ -143,14 +158,16 @@ class MovieCard extends Component {
 
 MovieCard.propTypes = {
   movieReducer: PropTypes.object.isRequired,
+  userReducer: PropTypes.object.isRequired,
   fetchMovie: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  movieReducer: state.movieReducer
+  movieReducer: state.movieReducer,
+  userReducer: state.userReducer
 });
 
 export default connect(
   mapStateToProps,
-  { fetchMovie }
+  { fetchMovie, rateMovie }
 )(MovieCard);

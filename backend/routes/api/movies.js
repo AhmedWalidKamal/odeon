@@ -75,6 +75,8 @@ router.put(
       users
         .updateUser(info.id, user)
         .then(data => {
+          console.log("new ratings");
+
           console.log(data);
           res.json(data);
         })
@@ -162,7 +164,6 @@ router.get("/collection/:name", (req, res) => {
   moviesUtil
     .getMovieCollection(collectionName, page)
     .then(data => {
-      console.log(data);
       res.json(data);
     })
     .catch(err => {

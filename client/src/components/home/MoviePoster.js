@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-class HomeMovie extends Component {
+class MoviePoster extends Component {
   constructor(props) {
     super(props);
   }
@@ -16,4 +16,4 @@ class HomeMovie extends Component {
   }
 }
 
-export default HomeMovie;
+export default MoviePoster;

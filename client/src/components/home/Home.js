@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { fetchMoviesCollection } from "../../actions/movieActions";
 import "./home.scss";
-import HomeMovie from "./HomeMovie";
+import MoviePoster from "./MoviePoster";
 
 class Home extends Component {
   constructor(props) {
@@ -21,17 +21,18 @@ class Home extends Component {
       this.props.fetchMoviesCollection("popular");
     }
 
-    
+
 
   }
+
   render() {
     console.log(this.props);
-    let moviesGrid = this.props.movieReducer.movies.slice(1, 15).map(movie => {
-      return <HomeMovie key={movie.id} movie={movie} />;
+    let moviePosters = this.props.movieReducer.movies.slice(1, 15).map(movie => {
+      return <MoviePoster key={movie.id} movie={movie} />;
     });
 
     const { collection } = this.props.match.params;
-    
+
     var subtitle = <div>Popular Today</div>;
 
     switch (collection) {
@@ -54,7 +55,7 @@ class Home extends Component {
     return (
       <div className="content">
         <div className="content__subtitle">{subtitle}</div>
-        <div className="grid">{moviesGrid}</div>
+        <div className="grid">{moviePosters}</div>
       </div>
     );
   }
