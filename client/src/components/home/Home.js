@@ -16,11 +16,16 @@ class Home extends Component {
   }
   render() {
     console.log(this.props);
-    let moviesGrid = this.props.movieReducer.movies.map(movie => {
+    let moviesGrid = this.props.movieReducer.movies.slice(1, 15).map(movie => {
       return <HomeMovie key={movie.id} movie={movie} />;
     });
 
-    return <div className="grid">{moviesGrid}</div>;
+    return (
+      <div className="content">
+        <div className="content__subtitle"> Popular Today </div>
+        <div className="grid">{moviesGrid}</div>
+      </div>
+    );
   }
 }
 
