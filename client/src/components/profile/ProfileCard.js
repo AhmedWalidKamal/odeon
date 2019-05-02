@@ -200,7 +200,7 @@ class ProfileCard extends Component {
   getShelfMovies = shelfMovies => {
     console.log(shelfMovies);
     var moviePosters = shelfMovies.map(movie => {
-      return <MoviePoster key={movie._id} movie={movie} />;
+      return <MoviePoster key={movie.id} movie={movie} />;
     });
     return moviePosters;
   };
