@@ -234,9 +234,7 @@ module.exports.updateUser = function(userId, newUser) {
         errors.error = "User not found";
         return reject(errors);
       } else {
-        return resolve({
-          success: true
-        });
+        return resolve(user.ratings);
       }
     });
   });

@@ -1,6 +1,11 @@
 import axios from "axios";
 
-import { FETCH_MOVIE, FETCH_COLLECTION, CHANGE_COLLECTION_NAME } from "./types";
+import {
+  FETCH_MOVIE,
+  FETCH_COLLECTION,
+  CHANGE_COLLECTION_NAME,
+  MOVIE_RATING
+} from "./types";
 
 export const fetchMovie = movieId => dispatch => {
   axios
@@ -34,4 +39,18 @@ export const changeCollectionName = collectionName => dispatch => {
     type: CHANGE_COLLECTION_NAME,
     payload: collectionName
   });
+};
+
+export const rateMovie = (movieId, rating) => dispatch => {
+  axios
+    .put(`/api/movies/rate/${movieId}`, { rating })
+    .then(res => {
+      console.log(res);
+
+      dispatch({
+        type: MOVIE_RATING,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
 };
