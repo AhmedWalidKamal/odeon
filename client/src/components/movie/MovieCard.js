@@ -74,7 +74,7 @@ class MovieCard extends Component {
               </div>
 
               <div className="icon-bar">
-                <a href="#"><i className="fas fa-eye" /></a>
+                <a href="#"><i className="fas fa-eye checked" /></a>
                 <a href="#"><i className="fas fa-heart" /></a>
                 <a href="#"><i className="fas fa-history" /></a>
               </div>
