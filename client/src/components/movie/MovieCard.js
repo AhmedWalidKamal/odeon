@@ -15,7 +15,7 @@ class MovieCard extends Component {
 
   rateMovie(rating) {
     console.log(rating);
-    this.props.rateMovie(this.props.movieReducer.movie._id, rating);
+    this.props.rateMovie(this.props.movieReducer.movie.id, rating);
   }
 
   componentDidMount() {
@@ -23,14 +23,14 @@ class MovieCard extends Component {
   }
 
   render() {
-    console.log(this.props.movieReducer);
     const { movie } = this.props.movieReducer;
-    console.log(this.props.userReducer);
-
     const { ratings } = this.props.userReducer.user;
-    console.log(ratings);
-    console.log(movie);
-
+    let initRating = 0;
+    ratings.forEach(rating => {
+      if (rating.movieId === movie.id) {
+        initRating = rating.rating;
+      }
+    });
     return (
       <div>
         <link
@@ -133,6 +133,7 @@ class MovieCard extends Component {
                   emptySymbol="far fa-star Rating__empty"
                   fullSymbol="fas fa-star Rating__full"
                   fractions={2}
+                  initialRating={initRating}
                   onClick={rating => this.rateMovie(rating)}
                 />
               </div>

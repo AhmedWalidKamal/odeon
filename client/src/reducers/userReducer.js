@@ -19,6 +19,7 @@ export default function(state = initialState, action) {
     case MOVIE_RATING:
       let newUser = state.user;
       newUser.ratings = action.payload;
+      console.log(action.payload);
       console.log(newUser);
 
       return {
