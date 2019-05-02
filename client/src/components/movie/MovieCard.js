@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+import Rating from "react-rating";
 import { fetchMovie } from "../../actions/movieActions";
 import "./movieCard.scss";
+
+
 
 const isEmpty = require("is-empty");
 
@@ -70,6 +72,14 @@ class MovieCard extends Component {
                   <li>Language</li>
                 )}
               </div>
+
+              <div className="icon-bar">
+                <a href="#"><i className="fas fa-eye" /></a>
+                <a href="#"><i className="fas fa-heart" /></a>
+                <a href="#"><i className="fas fa-history" /></a>
+              </div>
+
+
               <div className="film-card__subtitle">Overview</div>
               {!isEmpty(movie) && !isEmpty(movie.plot_summary) ? (
                 <div className="film-card__txt">{movie.plot_summary}</div>
@@ -98,11 +108,14 @@ class MovieCard extends Component {
                   )}
                 </div>
               </div>
+              
               <div className="icon-bar">
-                <a href="#"><i className="fas fa-check" /></a>
-                <a href="#"><i className="fas fa-heart" /></a>
-                <a href="#"><i className="fas fa-star" /></a>
+              <Rating className="Rating"
+                emptySymbol="far fa-star Rating__empty"
+                fullSymbol="fas fa-star Rating__full" fractions={2}
+                />
               </div>
+
             </div>
           </div>
           <div className="film-card__overlay js-message-close" />
