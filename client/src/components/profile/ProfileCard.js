@@ -15,11 +15,7 @@ class ProfileCard extends Component {
   }
 
   componentDidMount() {
-    console.log('movie reducer')
-    console.log(this.props.movieReducer)
     this.props.fetchProfile(this.props.userReducer.user.id);
-    console.log(this.props.userReducer.user.shelves[0])
-    // this.props.fetchShelfMovies(this.props.userReducer.user.shelves[0])
     this.props.userReducer.user.shelves.map(this.props.fetchShelfMovies);
   }
 
@@ -27,11 +23,6 @@ class ProfileCard extends Component {
     const { profile } = this.props.profileReducer;
     const { user } = this.props.userReducer;
     const { shelves } = this.props.movieReducer;
-    console.log('movie reducer')
-    console.log(this.props.movieReducer)
-    console.log(user);
-    console.log(profile);
-    console.log(shelves)
 
     return (
       <div>
@@ -130,19 +121,24 @@ class ProfileCard extends Component {
         </div>
 
         <div className="content">
-          <div className="content__subtitle">
-            Watched
-          </div>
-          {!isEmpty(shelves) ? (
-            <div className="grid">{this.getShelfMovies(shelves[user.shelves[0]])}</div>
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+            <div>
+              <div className="content__subtitle">
+                Watched
+              </div>
+              <div className="grid">{this.getShelfMovies(shelves[user.shelves[0]])}</div>
+            </div>
           ) : (
             <div></div>
           )}
-          <div className="content__subtitle">
-            Watchlist
-          </div>
-          {!isEmpty(shelves) ? (
-            <div className="grid">{this.getShelfMovies(shelves[1])}</div>
+
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[1]]) ? (
+            <div>
+              <div className="content__subtitle">
+                Watchlist
+              </div>
+              <div className="grid">{this.getShelfMovies(shelves[user.shelves[1]])}</div>
+            </div>
           ) : (
             <div></div>
           )}
@@ -202,10 +198,11 @@ class ProfileCard extends Component {
   }
 
   getShelfMovies = shelfMovies => {
-    console.log(shelfMovies)
+    console.log(shelfMovies);
     var moviePosters = shelfMovies.map(movie => {
-      return <MoviePoster key={movie.id} movie={movie} />;
+      return <MoviePoster key={movie._id} movie={movie} />;
     });
+    return moviePosters;
   };
 }
 

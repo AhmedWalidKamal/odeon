@@ -28,7 +28,7 @@ export default function(state = initialState, action) {
     case FETCH_SHELF:
       return {
         ...state,
-        shelves: { ...state.shelves, ...action.payload}
+        shelves: {...state.shelves, ...action.payload}
       };
     case CHANGE_COLLECTION_NAME:
       console.log("MATCHED");

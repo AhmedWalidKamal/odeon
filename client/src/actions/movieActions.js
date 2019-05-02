@@ -28,11 +28,13 @@ export const fetchMoviesCollection = collectionName => dispatch => {
 
 export const fetchShelfMovies = shelfId => dispatch => {
   axios
-    .get(`/api/movies/collection/${shelfId}`)
+    .get(`/api/movies/shelf/${shelfId}`)
     .then(res => {
+      console.log("HE")
+      console.log(res);
       dispatch({
         type: FETCH_SHELF,
-        payload: {[shelfId]: res.data.results}
+        payload: {[shelfId]: res.data}
       });
     })
     .catch(err => console.log(err.response.data.error));
