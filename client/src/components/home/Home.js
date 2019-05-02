@@ -11,7 +11,7 @@ class Home extends Component {
     super(props);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { collection } = this.props.match.params;
     console.log(this.props.match.params);
 
@@ -20,6 +20,9 @@ class Home extends Component {
     } else {
       this.props.fetchMoviesCollection("popular");
     }
+
+
+
   }
 
   render() {
@@ -28,9 +31,30 @@ class Home extends Component {
       return <MoviePoster key={movie.id} movie={movie} />;
     });
 
+    const { collection } = this.props.match.params;
+
+    var subtitle = <div>Popular Today</div>;
+
+    switch (collection) {
+      case "popular":
+        subtitle = <div>Popular Today</div>;
+        break;
+      case "top_rated":
+        subtitle = <div>Top Rated</div>;
+        break;
+      case "upcoming":
+        subtitle = <div>Upcoming</div>;
+        break;
+      case "now_playing":
+        subtitle = <div>Now Playing</div>;
+        break;
+      default:
+        break;
+    }
+
     return (
       <div className="content">
-        <div className="content__subtitle"> Popular Today </div>
+        <div className="content__subtitle">{subtitle}</div>
         <div className="grid">{moviePosters}</div>
       </div>
     );
