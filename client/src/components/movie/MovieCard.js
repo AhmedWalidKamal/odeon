@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Rating from "react-rating";
+
 import { fetchMovie } from "../../actions/movieActions";
 import "./movieCard.scss";
-
-
 
 const isEmpty = require("is-empty");
 
@@ -75,11 +74,10 @@ class MovieCard extends Component {
               </div>
 
               <div className="icon-bar">
-                <a href="#"><i className="fas fa-eye" /></a>
+                <a href="#" onClick={this.addToWatched()}><i className="fas fa-eye" /></a>
                 <a href="#"><i className="fas fa-heart" /></a>
                 <a href="#"><i className="fas fa-history" /></a>
               </div>
-
 
               <div className="film-card__subtitle">Overview</div>
               {!isEmpty(movie) && !isEmpty(movie.plot_summary) ? (
@@ -109,7 +107,7 @@ class MovieCard extends Component {
                   )}
                 </div>
               </div>
-              
+
               <div className="icon-bar">
               <Rating className="Rating"
                 emptySymbol="far fa-star Rating__empty"
@@ -140,6 +138,10 @@ class MovieCard extends Component {
       return names;
     }
   };
+
+  addToWatched = () => {
+
+  }
 }
 
 MovieCard.propTypes = {

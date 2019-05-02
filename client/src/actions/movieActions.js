@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { FETCH_MOVIE, FETCH_COLLECTION, FETCH_SHELF, CHANGE_COLLECTION_NAME } from "./types";
+import { FETCH_MOVIE, FETCH_COLLECTION, FETCH_SHELF, CHANGE_COLLECTION_NAME, ADD_TO_SHELF } from "./types";
 
 export const fetchMovie = movieId => dispatch => {
   axios
@@ -48,3 +48,12 @@ export const changeCollectionName = collectionName => dispatch => {
     payload: collectionName
   });
 };
+
+export const addToShelf = (movieId, shelfId) => dispatch => {
+  axios
+    .put("api/movies/add-to-shelf", { movieId, shelfId })
+    .then(res => {
+      console.log("Movie added to shelf");
+    })
+    .catch(err => console.log(err.response.data.error));
+}

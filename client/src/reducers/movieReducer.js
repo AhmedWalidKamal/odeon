@@ -1,8 +1,8 @@
 import {
   FETCH_MOVIE,
   FETCH_COLLECTION,
+  FETCH_SHELF,
   CHANGE_COLLECTION_NAME,
-  FETCH_SHELF
 } from "../actions/types";
 
 const initialState = {
