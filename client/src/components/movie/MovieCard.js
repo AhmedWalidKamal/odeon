@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Rating from "react-rating";
-import { fetchMovie, rateMovie } from "../../actions/movieActions";
+import { fetchMovie, rateMovie, addMovieToShelf, removeMovieFromShelf, fetchShelfMovies } from "../../actions/movieActions";
 import "./movieCard.scss";
 
 const isEmpty = require("is-empty");
@@ -11,6 +11,9 @@ class MovieCard extends Component {
   constructor(props) {
     super(props);
     this.rateMovie = this.rateMovie.bind(this);
+    this.state = {
+      watched: false
+    };
   }
 
   rateMovie(rating) {
@@ -20,17 +23,20 @@ class MovieCard extends Component {
 
   componentDidMount() {
     this.props.fetchMovie(this.props.match.params.id);
+    // this.props.fetchShelfMovies(this.props.userReducer.user.shelves[0]); //watched shelf
   }
 
   render() {
+    console.log(this.props.movieReducer);
     const { movie } = this.props.movieReducer;
     const { ratings } = this.props.userReducer.user;
-    let initRating = 0;
+    var initRating = 0;
     ratings.forEach(rating => {
       if (rating.movieId === movie.id) {
         initRating = rating.rating;
       }
     });
+
     return (
       <div>
         <link
@@ -87,8 +93,13 @@ class MovieCard extends Component {
               </div>
 
               <div className="icon-bar">
-                <a href="#">
-                  <i className="fas fa-eye" />
+                <a href="#" onClick={this.handleOnClick}>
+                  {this.state.watched === true ? (
+                    <i className="fas fa-eye checked" />
+                  ) : (
+                    <i className="fas fa-eye" />
+                  )}
+
                 </a>
                 <a href="#">
                   <i className="fas fa-heart" />
@@ -161,15 +172,28 @@ class MovieCard extends Component {
     }
   };
 
-  addToWatched = () => {
+  handleOnClick = (watched) => {
+    console.log("watched onclick");
 
+    var movieId = this.props.movieReducer.movie.id;
+    var shelfId = this.props.userReducer.user.shelves[0];
+    if (this.state.watched === true) {
+      this.setState ({ watched: false })
+      this.props.removeMovieFromShelf(movieId, shelfId);
+    } else {
+      this.setState ({ watched: true })
+      this.props.addMovieToShelf(movieId, shelfId);
+    }
   }
 }
 
 MovieCard.propTypes = {
   movieReducer: PropTypes.object.isRequired,
   userReducer: PropTypes.object.isRequired,
-  fetchMovie: PropTypes.func.isRequired
+  fetchMovie: PropTypes.func.isRequired,
+  rateMovie: PropTypes.func.isRequired,
+  addMovieToShelf: PropTypes.func.isRequired,
+  removeMovieFromShelf: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -179,5 +203,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchMovie, rateMovie }
+  { fetchMovie, rateMovie, addMovieToShelf, removeMovieFromShelf, fetchShelfMovies }
 )(MovieCard);

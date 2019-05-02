@@ -5,8 +5,7 @@ import {
   FETCH_COLLECTION,
   FETCH_SHELF,
   CHANGE_COLLECTION_NAME,
-  MOVIE_RATING,
-  ADD_TO_SHELF
+  MOVIE_RATING
 } from "./types";
 
 export const fetchMovie = movieId => dispatch => {
@@ -37,8 +36,6 @@ export const fetchShelfMovies = shelfId => dispatch => {
   axios
     .get(`/api/movies/shelf/${shelfId}`)
     .then(res => {
-      console.log("HE");
-      console.log(res);
       dispatch({
         type: FETCH_SHELF,
         payload: { [shelfId]: res.data }
@@ -56,15 +53,6 @@ export const changeCollectionName = collectionName => dispatch => {
   });
 };
 
-export const addToShelf = (movieId, shelfId) => dispatch => {
-  axios
-    .put("api/movies/add-to-shelf", { movieId, shelfId })
-    .then(res => {
-      console.log("Movie added to shelf");
-    })
-    .catch(err => console.log(err.response.data.error));
-}
-
 export const rateMovie = (movieId, rating) => dispatch => {
   axios
     .put(`/api/movies/rate/${movieId}`, { rating })
@@ -77,4 +65,22 @@ export const rateMovie = (movieId, rating) => dispatch => {
       });
     })
     .catch(err => console.log(err));
+};
+
+export const addMovieToShelf = (movieId, shelfId) => dispatch => {
+  axios
+    .put("/api/movies/add-to-shelf", { movieId, shelfId })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => console.log(err.response.data.error));
+};
+
+export const removeMovieFromShelf = (movieId, shelfId) => dispatch => {
+  axios
+    .delete("/api/movies/remove-from-shelf", {data: { movieId, shelfId } })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => console.log(err.response.data.error));
 };

@@ -68,7 +68,12 @@ class ProfileCard extends Component {
               </div>
               <div className="profile-card-inf">
                 <div className="profile-card-inf__item">
-                  <div className="profile-card-inf__title">0</div>
+                  {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+                    <div className="profile-card-inf__title">{shelves[user.shelves[0]].length}</div>
+                  ) : (
+                    <div className="profile-card-inf__title">0</div>
+                  )}
+
                   <div className="profile-card-inf__txt">Watched</div>
                 </div>
                 <div className="profile-card-inf__item">
