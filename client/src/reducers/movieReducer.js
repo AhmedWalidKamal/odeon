@@ -1,9 +1,15 @@
-import { FETCH_MOVIE, FETCH_COLLECTION, FETCH_SHELF } from "../actions/types";
+import {
+  FETCH_MOVIE,
+  FETCH_COLLECTION,
+  CHANGE_COLLECTION_NAME,
+  FETCH_SHELF
+} from "../actions/types";
 
 const initialState = {
   movie: {},
   movies: [],
-  shelves: {}
+  shelves: {},
+  collection_name: "popular"
 };
 console.log(initialState);
 
@@ -20,11 +26,16 @@ export default function(state = initialState, action) {
         movies: action.payload
       };
     case FETCH_SHELF:
-      const shelves = state.shelves;
       return {
         ...state,
-        shelves: { ...shelves, ...action.payload}
-      }
+        shelves: { ...state.shelves, ...action.payload}
+      };
+    case CHANGE_COLLECTION_NAME:
+      console.log("MATCHED");
+      return {
+        ...state,
+        collection_name: action.payload
+      };
     default:
       return state;
   }
