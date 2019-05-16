@@ -5,12 +5,10 @@ const initialState = {
   isAuthenticated: false,
   user: {}
 };
-console.log(initialState);
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_CURRENT_USER:
-      console.log(action);
       return {
         ...state,
         isAuthenticated: !isEmpty(action.payload),
@@ -19,9 +17,6 @@ export default function(state = initialState, action) {
     case MOVIE_RATING:
       let newUser = state.user;
       newUser.ratings = action.payload;
-      console.log(action.payload);
-      console.log(newUser);
-
       return {
         ...state,
         user: newUser

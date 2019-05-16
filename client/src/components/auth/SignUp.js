@@ -9,8 +9,6 @@ import "./auth.scss";
 class SignUp extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
-
     this.state = {
       user: {
         username: "",
@@ -44,10 +42,7 @@ class SignUp extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
     const { email, username, password, confirmPassword } = this.state.user;
-    console.log(this.props);
-    const { dispatch } = this.props;
     if (username && email && password && confirmPassword) {
       this.props.register({ username, email, password }, this.props.history);
     }

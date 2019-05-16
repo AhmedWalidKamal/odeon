@@ -45,8 +45,6 @@ export const fetchShelfMovies = shelfId => dispatch => {
 };
 
 export const changeCollectionName = collectionName => dispatch => {
-  console.log(`Chaning collection name to ${collectionName}`);
-
   dispatch({
     type: CHANGE_COLLECTION_NAME,
     payload: collectionName
@@ -57,8 +55,6 @@ export const rateMovie = (movieId, rating) => dispatch => {
   axios
     .put(`/api/movies/rate/${movieId}`, { rating })
     .then(res => {
-      console.log(res);
-
       dispatch({
         type: MOVIE_RATING,
         payload: res.data
@@ -70,17 +66,11 @@ export const rateMovie = (movieId, rating) => dispatch => {
 export const addMovieToShelf = (movieId, shelfId) => dispatch => {
   axios
     .put("/api/movies/add-to-shelf", { movieId, shelfId })
-    .then(res => {
-      console.log(res);
-    })
     .catch(err => console.log(err.response.data.error));
 };
 
 export const removeMovieFromShelf = (movieId, shelfId) => dispatch => {
   axios
     .delete("/api/movies/remove-from-shelf", {data: { movieId, shelfId } })
-    .then(res => {
-      console.log(res);
-    })
     .catch(err => console.log(err.response.data.error));
 };

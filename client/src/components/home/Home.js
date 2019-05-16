@@ -7,26 +7,16 @@ import "./home.scss";
 import MoviePoster from "./MoviePoster";
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { collection } = this.props.match.params;
-    console.log(this.props.match.params);
-
     if (collection) {
       this.props.fetchMoviesCollection(collection);
     } else {
       this.props.fetchMoviesCollection("popular");
     }
-
-
-
   }
 
   render() {
-    console.log(this.props);
     let moviePosters = this.props.movieReducer.movies.slice(1, 15).map(movie => {
       return <MoviePoster key={movie.id} movie={movie} />;
     });

@@ -10,10 +10,6 @@ import MoviePoster from "../home/MoviePoster";
 const isEmpty = require("is-empty");
 
 class ProfileCard extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.fetchProfile(this.props.userReducer.user.id);
     this.props.userReducer.user.shelves.map(this.props.fetchShelfMovies);
@@ -29,7 +25,7 @@ class ProfileCard extends Component {
         <div className="wrapper">
           <div className="profile-card js-profile-card">
             <div className="profile-card__img">
-              <img src={profile.avatar} alt="profile card" />
+              <img src={profile.avatar} alt="profile avatar" />
             </div>
             <div className="profile-card__cnt js-profile-cnt">
               {!isEmpty(profile) && !isEmpty(profile.displayName) ? (
@@ -89,7 +85,7 @@ class ProfileCard extends Component {
                 <a
                   href="https://www.facebook.com/"
                   className="profile-card-social__item facebook"
-                  target="_blank"
+                  target="_blank" rel="noopener noreferrer"
                 >
                   <span className="icon-font">
                     <svg className="icon">
@@ -100,7 +96,7 @@ class ProfileCard extends Component {
                 <a
                   href="https://twitter.com/"
                   className="profile-card-social__item twitter"
-                  target="_blank"
+                  target="_blank" rel="noopener noreferrer"
                 >
                   <span className="icon-font">
                     <svg className="icon">
@@ -111,7 +107,7 @@ class ProfileCard extends Component {
                 <a
                   href="http://website.com/"
                   className="profile-card-social__item link"
-                  target="_blank"
+                  target="_blank" rel="noopener noreferrer"
                 >
                   <span className="icon-font">
                     <svg className="icon">
@@ -203,7 +199,6 @@ class ProfileCard extends Component {
   }
 
   getShelfMovies = shelfMovies => {
-    console.log(shelfMovies);
     var moviePosters = shelfMovies.map(movie => {
       return <MoviePoster key={movie.id} movie={movie} />;
     });

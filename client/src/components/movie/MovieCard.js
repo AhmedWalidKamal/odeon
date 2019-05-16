@@ -23,7 +23,6 @@ class MovieCard extends Component {
   }
 
   rateMovie(rating) {
-    console.log(rating);
     this.props.rateMovie(this.props.movieReducer.movie.id, rating);
   }
 
@@ -56,9 +55,9 @@ class MovieCard extends Component {
           <div className="film-card js-film-card">
             <div className="film-card__img">
               {!isEmpty(movie) && !isEmpty(movie.poster_path) ? (
-                <img src={movie.poster_path} alt="film card" />
+                <img src={movie.poster_path} alt="movie poster" />
               ) : (
-                <img src="/img/default-poster.jpg" alt="film card" />
+                <img src="/img/default-poster.jpg" alt="movie poster" />
               )}
             </div>
             <div className="film-card__cnt js-film-cnt">
@@ -70,7 +69,7 @@ class MovieCard extends Component {
               <div className="film-card__tags list--inline">
                 {!isEmpty(movie) &&
                 !isEmpty(movie.ratings_count) &&
-                movie.ratings_count != 0 ? (
+                movie.ratings_count !== 0 ? (
                   <li>{movie.avg_rating}</li>
                 ) : (
                   <li>Unrated</li>
@@ -181,8 +180,6 @@ class MovieCard extends Component {
   };
 
   handleOnClick = watched => {
-    console.log("watched onclick");
-
     var movieId = this.props.movieReducer.movie.id;
     var shelfId = this.props.userReducer.user.shelves[0];
     if (this.state.watched === true) {

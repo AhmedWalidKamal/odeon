@@ -10,12 +10,10 @@ import "./navbar.scss";
 class Navbar extends Component {
   performSearch(e) {
     e.preventDefault();
-    console.log("Search");
   }
 
   render() {
     const { isAuthenticated, user } = this.props.userReducer;
-    console.log(user);
 
     // Logo
     const Logo = (
@@ -117,7 +115,7 @@ class Navbar extends Component {
         <div className="User">
           <div className="name">{user.username}</div>
           <div className="image">
-            <img src={user.avatar} />
+            <img src={user.avatar} alt="User avatar" />
           </div>
         </div>
         <div className="UserProfile-menu">

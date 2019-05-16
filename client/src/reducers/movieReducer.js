@@ -11,7 +11,6 @@ const initialState = {
   shelves: {},
   collection_name: "popular"
 };
-console.log(initialState);
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -31,7 +30,6 @@ export default function(state = initialState, action) {
         shelves: {...state.shelves, ...action.payload}
       };
     case CHANGE_COLLECTION_NAME:
-      console.log("MATCHED");
       return {
         ...state,
         collection_name: action.payload

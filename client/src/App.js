@@ -40,11 +40,6 @@ if (localStorage.jwtToken) {
 }
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    console.log(this.props);
-  }
-
   render() {
     return (
       <Router history={history}>
