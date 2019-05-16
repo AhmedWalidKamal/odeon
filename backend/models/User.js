@@ -26,7 +26,25 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  shelves: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "shelf",
+      unique: true
+    }
+  ],
+  ratings: [
+    {
+      movieId: {
+        type: Number,
+        unique: true
+      },
+      rating: {
+        type: Number
+      }
+    }
+  ]
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

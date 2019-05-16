@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { fetchProfile } from "../../actions/profileActions";
+import { fetchShelfMovies } from "../../actions/movieActions";
 import "./profileCard.scss";
+import MoviePoster from "../home/MoviePoster";
 
 const isEmpty = require("is-empty");
 
@@ -12,24 +15,21 @@ class ProfileCard extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchProfile(this.props.user.user.id);
+    this.props.fetchProfile(this.props.userReducer.user.id);
+    this.props.userReducer.user.shelves.map(this.props.fetchShelfMovies);
   }
 
   render() {
-    const { profile } = this.props.profile;
-    const { user } = this.props.user;
-    console.log(user);
-    console.log(profile);
+    const { profile } = this.props.profileReducer;
+    const { user } = this.props.userReducer;
+    const { shelves } = this.props.movieReducer;
 
     return (
       <div>
         <div className="wrapper">
           <div className="profile-card js-profile-card">
             <div className="profile-card__img">
-              <img
-                src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                alt="profile card"
-              />
+              <img src={profile.avatar} alt="profile card" />
             </div>
             <div className="profile-card__cnt js-profile-cnt">
               {!isEmpty(profile) && !isEmpty(profile.displayName) ? (
@@ -39,7 +39,7 @@ class ProfileCard extends Component {
                   {profile.displayName.lastName}
                 </div>
               ) : (
-                <div>{user.username}</div>
+                <div className="profile-card__name">{user.username}</div>
               )}
 
               {!isEmpty(profile) && !isEmpty(profile.bio) ? (
@@ -68,15 +68,20 @@ class ProfileCard extends Component {
               </div>
               <div className="profile-card-inf">
                 <div className="profile-card-inf__item">
-                  <div className="profile-card-inf__title">1598</div>
+                  {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+                    <div className="profile-card-inf__title">{shelves[user.shelves[0]].length}</div>
+                  ) : (
+                    <div className="profile-card-inf__title">0</div>
+                  )}
+
                   <div className="profile-card-inf__txt">Watched</div>
                 </div>
                 <div className="profile-card-inf__item">
-                  <div className="profile-card-inf__title">14</div>
+                  <div className="profile-card-inf__title">0</div>
                   <div className="profile-card-inf__txt">Reviewed</div>
                 </div>
                 <div className="profile-card-inf__item">
-                  <div className="profile-card-inf__title">20</div>
+                  <div className="profile-card-inf__title">0</div>
                   <div className="profile-card-inf__txt">This Year</div>
                 </div>
               </div>
@@ -119,6 +124,31 @@ class ProfileCard extends Component {
             <div className="profile-card__overlay js-message-close" />
           </div>
         </div>
+
+        <div className="content">
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+            <div>
+              <div className="content__subtitle">
+                Watched
+              </div>
+              <div className="grid">{this.getShelfMovies(shelves[user.shelves[0]])}</div>
+            </div>
+          ) : (
+            <div></div>
+          )}
+
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[1]]) ? (
+            <div>
+              <div className="content__subtitle">
+                Watchlist
+              </div>
+              <div className="grid">{this.getShelfMovies(shelves[user.shelves[1]])}</div>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+
         <svg hidden="hidden">
           <defs>
             <symbol id="icon-codepen" viewBox="0 0 32 32">
@@ -171,14 +201,31 @@ class ProfileCard extends Component {
       </div>
     );
   }
+
+  getShelfMovies = shelfMovies => {
+    console.log(shelfMovies);
+    var moviePosters = shelfMovies.map(movie => {
+      return <MoviePoster key={movie.id} movie={movie} />;
+    });
+    return moviePosters;
+  };
 }
 
+ProfileCard.propTypes = {
+  profileReducer: PropTypes.object.isRequired,
+  userReducer: PropTypes.object.isRequired,
+  movieReducer: PropTypes.object.isRequired,
+  fetchProfile: PropTypes.func.isRequired,
+  fetchShelfMovies: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => ({
-  profile: state.profile,
-  user: state.user
+  profileReducer: state.profileReducer,
+  userReducer: state.userReducer,
+  movieReducer: state.movieReducer
 });
 
 export default connect(
   mapStateToProps,
-  { fetchProfile }
+  { fetchProfile, fetchShelfMovies }
 )(ProfileCard);

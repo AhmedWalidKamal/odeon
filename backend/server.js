@@ -5,12 +5,15 @@ const path = require("path");
 const passport = require("passport");
 
 const users = require("./routes/api/users");
+const movies = require("./routes/api/movies");
 const app = express();
 
 // Body Parser middleware
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 app.use(bodyParser.json());
 
 // DB Config
@@ -32,6 +35,7 @@ require("./config/passport")(passport);
 
 // Use Routes
 app.use("/api/users", users);
+app.use("/api/movies", movies);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {

@@ -1,5 +1,6 @@
 const User = require("./models/User");
 const Profile = require("./models/Profile");
+const Shelf = require("./models/Shelf");
 const empty = require("is-empty");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -9,6 +10,15 @@ const keys = require("./config/keys");
 const validateRegisterInput = require("./validation/register");
 const validateLoginInput = require("./validation/login");
 const validateProfileInput = require("./validation/profile");
+const validateUserUpdate = require("./validation/user");
+
+const getShelf = function(shelfName) {
+  const shelf = new Shelf({
+    name: shelfName,
+    movies: []
+  });
+  return shelf;
+};
 
 module.exports.register = function(username, email, password) {
   return new Promise((resolve, reject) => {
@@ -55,30 +65,63 @@ module.exports.register = function(username, email, password) {
       });
       newUser.profile = newProfile._id;
 
+      watchedShelf = getShelf("Watched");
+      planToWatchShelf = getShelf("Plan to Watch");
+      newUser.shelves = [watchedShelf._id, planToWatchShelf._id];
+
+      newUser.ratings = [];
+
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) {
             throw err;
           }
           newUser.password = hash;
-          newUser.save().then(function() {
-            if (newUser.isNew) {
-              errors.error = "Registration error";
-              return reject(errors);
-            }
-            console.log("User: " + newUser.username + " Signed Up.");
-            return resolve({
-              success: true
-            });
-          });
+
           newProfile.save().then(function() {
             if (newProfile.isNew) {
-              errors.error = "Registration error";
+              errors.error = "Couldn't create profile for user";
               return reject(errors);
             }
             console.log("Profile: " + newUser.username + " Created.");
-            return resolve({
-              success: true
+
+            watchedShelf.save().then(function() {
+              if (watchedShelf.isNew) {
+                errors.error = "Couldn't create watched shelf for user";
+                return reject(errors);
+              }
+              console.log(
+                "Shelf: " +
+                  newUser.username +
+                  "." +
+                  watchedShelf.name +
+                  " Created."
+              );
+              planToWatchShelf.save().then(function() {
+                if (planToWatchShelf.isNew) {
+                  errors.error = "Couldn't create plan to watch shelf for user";
+                  return reject(errors);
+                }
+                console.log(
+                  "Shelf: " +
+                    newUser.username +
+                    "." +
+                    planToWatchShelf.name +
+                    " Created."
+                );
+                newUser.save().then(function() {
+                  if (newUser.isNew) {
+                    console.log("The error is here fam");
+                    errors.error = "Registration error";
+                    return reject(errors);
+                  }
+                  console.log("User: " + newUser.username + " Signed Up.");
+
+                  return resolve({
+                    success: true
+                  });
+                });
+              });
             });
           });
         });
@@ -118,7 +161,9 @@ module.exports.login = function(email, password) {
               username: user.username,
               email: user.email,
               displayName: user.displayName,
-              avatar: user.avatar
+              avatar: user.profile.avatar,
+              shelves: user.shelves,
+              ratings: user.ratings
             }; // Create JWT payload, this gives information about the user
 
             // Sign token, returned to the frontend, has user info in the payload.
@@ -156,6 +201,40 @@ module.exports.getProfile = function(userId) {
         return reject(errors);
       } else {
         return resolve(profile);
+      }
+    });
+  });
+};
+
+module.exports.getUser = function(userId) {
+  return new Promise((resolve, reject) => {
+    User.findById(userId).then(user => {
+      if (empty(user)) {
+        console.log("User " + userId + " not found");
+        errors.error = "User not found";
+        return reject(errors);
+      } else {
+        return resolve(user);
+      }
+    });
+  });
+};
+
+module.exports.updateUser = function(userId, newUser) {
+  return new Promise((resolve, reject) => {
+    const { errors, isValid } = validateUserUpdate(newUser);
+
+    // Check validation
+    if (!isValid) {
+      return reject(errors);
+    }
+    User.findByIdAndUpdate(userId, newUser, { new: true }).then(user => {
+      if (empty(user)) {
+        console.log("User " + userId + " not found");
+        errors.error = "User not found";
+        return reject(errors);
+      } else {
+        return resolve(user.ratings);
       }
     });
   });

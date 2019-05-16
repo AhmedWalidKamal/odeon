@@ -29,7 +29,7 @@ router.post("/login", (req, res) => {
   users
     .login(req.body.email, req.body.password)
     .then(data => {
-      console.log("user: " + data.email + " Signed in successfully.");
+      console.log(`${req.body.email} signed in successfully.`);
       res.json(data);
     })
     .catch(err => {
@@ -93,6 +93,46 @@ router.put(
           res.status(400).json(err);
         });
     }
+  }
+);
+
+router.get(
+  "/shelves/:id",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  (req, res) => {
+    const id = req.params.id;
+    users
+      .getUser(id)
+      .then(data => {
+        console.log(data);
+        res.json(data.shelves);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
+  }
+);
+
+router.get(
+  "/ratings/:id",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  (req, res) => {
+    const id = req.params.id;
+    users
+      .getUser(id)
+      .then(data => {
+        console.log(data);
+        res.json(data.ratings);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 );
 

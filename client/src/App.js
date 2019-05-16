@@ -8,12 +8,13 @@ import { setCurrentUser, logout } from "./actions/userActions";
 import "./App.css";
 import store from "./store";
 
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/Footer";
-import Home from "./components/Home";
+import Home from "./components/home/Home";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import ProfileCard from "./components/profile/ProfileCard";
+import MovieCard from "./components/movie/MovieCard";
 
 // Check for jwt token
 if (localStorage.jwtToken) {
@@ -47,14 +48,19 @@ class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <Navbar />
-        <div className="App">
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/profile" component={ProfileCard} />
-          </Switch>
-          <Footer />
+        <div>
+          <div className="App">
+            <Navbar />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/browse/:collection" component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={SignUp} />
+              <Route exact path="/profile" component={ProfileCard} />
+              <Route exact path="/movie/:id" component={MovieCard} />
+            </Switch>
+            <Footer />
+          </div>
         </div>
       </Router>
     );
