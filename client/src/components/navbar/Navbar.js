@@ -8,14 +8,29 @@ import { changeCollectionName } from "../../actions/movieActions";
 import "./navbar.scss";
 
 class Navbar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchQuery: ""
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.performSearch = this.performSearch.bind(this);
+  }
+
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
   performSearch(e) {
     e.preventDefault();
-    console.log("Search");
+    const { searchQuery } = this.state;
+    console.log(searchQuery);
   }
 
   render() {
     const { isAuthenticated, user } = this.props.userReducer;
-    console.log(user);
 
     // Logo
     const Logo = (
@@ -104,10 +119,17 @@ class Navbar extends Component {
       </div>
     );
 
+    const { searchQuery } = this.state;
     // Search
     const Search = (
       <form onSubmit={this.performSearch} id="search" className="Search">
-        <input type="search" placeholder="Search for a title..." />
+        <input
+          type="search"
+          name="searchQuery"
+          value={searchQuery}
+          onChange={this.handleChange}
+          placeholder="Search for a title..."
+        />
       </form>
     );
 

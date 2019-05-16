@@ -45,7 +45,7 @@ export const fetchShelfMovies = shelfId => dispatch => {
 };
 
 export const changeCollectionName = collectionName => dispatch => {
-  console.log(`Chaning collection name to ${collectionName}`);
+  console.log(`Changing collection name to ${collectionName}`);
 
   dispatch({
     type: CHANGE_COLLECTION_NAME,
@@ -78,7 +78,7 @@ export const addMovieToShelf = (movieId, shelfId) => dispatch => {
 
 export const removeMovieFromShelf = (movieId, shelfId) => dispatch => {
   axios
-    .delete("/api/movies/remove-from-shelf", {data: { movieId, shelfId } })
+    .delete("/api/movies/remove-from-shelf", { data: { movieId, shelfId } })
     .then(res => {
       console.log(res);
     })
