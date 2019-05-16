@@ -54,7 +54,6 @@ const parseCredits = function(movieCredits) {
 const createMovie = function(movieInfo, movieCredits) {
   const { cast, directors } = parseCredits(movieCredits);
   const movie = new Movie();
-  movie._id = movieInfo.id;
   movie.id = movieInfo.id;
   movie.title = movieInfo.title;
   movie.imdb_id = movieInfo.imdb_id;
@@ -99,27 +98,58 @@ const getMovie = async function(id) {
               const { base_url, poster_size } = data;
               movie.poster_path =
                 base_url + poster_size + movieInfo.poster_path;
-              movie.save().then(function() {
-                if (!movie.isNew) {
+              movie
+                .save()
+                .then(function() {
+                  if (!movie.isNew) {
+                    console.log(
+                      "Movie " + movie.id + "(" + movie.title + ") Saved"
+                    );
+                  }
+                  return resolve(movie);
+                })
+                .catch(err => {
                   console.log(
-                    "Movie " + movie.id + "(" + movie.title + ") Saved"
+                    "Failed to save movie " +
+                      movie.id +
+                      "(" +
+                      movie.title +
+                      ") " +
+                      JSON.stringify(err)
                   );
-                }
-                return resolve(movie);
-              });
+                  return resolve(movie);
+                });
             })
             .catch(err => {
               return reject(err);
             });
         } else {
-          return resolve(movie);
+          movie
+            .save()
+            .then(function() {
+              if (!movie.isNew) {
+                console.log(
+                  "Movie " + movie.id + "(" + movie.title + ") Saved"
+                );
+              }
+              return resolve(movie);
+            })
+            .catch(err => {
+              console.log(
+                "Failed to save movie " +
+                  movie.id +
+                  "(" +
+                  movie.title +
+                  ") " +
+                  JSON.stringify(err)
+              );
+              return resolve(movie);
+            });
         }
       });
     });
   });
 };
-module.exports.getMovie = getMovie;
-
 module.exports.getMovie = getMovie;
 
 const promiseSerial = funcs =>
@@ -131,25 +161,49 @@ const promiseSerial = funcs =>
 
 const getMovies = function(movieIds) {
   return new Promise((resolve, reject) => {
-    Movie.find()
-      .where("id")
-      .in(movieIds)
+    console.log("Movies: [" + movieIds + "] should be fetched");
+    Movie.find({ id: { $in: movieIds } })
       .then((err, records) => {
+        // TODO: Investigate this error
         if (!empty(err)) {
-          return reject(err);
+          console.log(
+            "Error searching mongodb to get movies [" +
+              movieIds +
+              "] " +
+              JSON.stringify(err)
+          );
+          // return reject(err);
+        }
+        if (empty(records)) {
+          records = [];
         }
         const recordsIds = records.map(record => record.id);
         const moviesToFetch = movieIds.filter(id => !recordsIds.includes(id));
+        console.log(
+          "Movies: [" + recordsIds + "] are fetched from the database"
+        );
+        console.log(
+          "Movies: [" + moviesToFetch + "] will be fetched from TMDB"
+        );
         var movies = moviesToFetch.map(id => () => getMovie(id));
         promiseSerial(movies)
           .then(result => {
             return resolve(result.concat(records));
           })
           .catch(err => {
+            console.log(
+              "Error searching TMDB to get movies [" +
+                movieIds +
+                "] " +
+                JSON.stringify(err)
+            );
             return reject(err);
           });
       })
       .catch(err => {
+        console.log(
+          "Failed to get movies [" + movieIds + "] " + JSON.stringify(err)
+        );
         return reject(err);
       });
   });
@@ -197,6 +251,7 @@ const getShelfMovies = function(shelfId) {
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
+        console.log("shelf: " + JSON.stringify(shelf));
         getMovies(shelf.movies)
           .then(movies => {
             return resolve(movies);
@@ -209,6 +264,21 @@ const getShelfMovies = function(shelfId) {
   });
 };
 module.exports.getShelfMovies = getShelfMovies;
+
+const getShelfMoviesIds = function(shelfId) {
+  return new Promise((resolve, reject) => {
+    Shelf.findById(shelfId).then(shelf => {
+      if (empty(shelf)) {
+        console.log("Shelf " + shelfId + " not found");
+        errors.error = "Shelf not found";
+        return reject(errors);
+      } else {
+        return resolve(shelf.movies);
+      }
+    });
+  });
+};
+module.exports.getShelfMoviesIds = getShelfMoviesIds;
 
 module.exports.addToShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {

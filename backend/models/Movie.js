@@ -49,7 +49,6 @@ const MovieSchema = new Schema({
     {
       id: {
         type: Number,
-        unique: true,
         required: true
       },
       name: {
@@ -62,7 +61,6 @@ const MovieSchema = new Schema({
     {
       id: {
         type: Number,
-        unique: true,
         required: true
       },
       name: {
@@ -75,7 +73,6 @@ const MovieSchema = new Schema({
     {
       id: {
         type: Number,
-        unique: true,
         required: true
       },
       name: {
