@@ -44,6 +44,18 @@ export const fetchShelfMovies = shelfId => dispatch => {
     .catch(err => console.log(err.response.data.error));
 };
 
+export const fetchShelfMoviesIds = shelfId => dispatch => {
+  axios
+    .get(`/api/movies/shelf/ids/${shelfId}`)
+    .then(res => {
+      dispatch({
+        type: FETCH_SHELF,
+        payload: { [shelfId]: res.data }
+      });
+    })
+    .catch(err => console.log(err.response.data.error));
+};
+
 export const changeCollectionName = collectionName => dispatch => {
   dispatch({
     type: CHANGE_COLLECTION_NAME,
@@ -71,6 +83,6 @@ export const addMovieToShelf = (movieId, shelfId) => dispatch => {
 
 export const removeMovieFromShelf = (movieId, shelfId) => dispatch => {
   axios
-    .delete("/api/movies/remove-from-shelf", {data: { movieId, shelfId } })
+    .delete("/api/movies/remove-from-shelf", { data: { movieId, shelfId } })
     .catch(err => console.log(err.response.data.error));
 };
