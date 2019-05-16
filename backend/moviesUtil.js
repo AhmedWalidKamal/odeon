@@ -54,7 +54,6 @@ const parseCredits = function(movieCredits) {
 const createMovie = function(movieInfo, movieCredits) {
   const { cast, directors } = parseCredits(movieCredits);
   const movie = new Movie();
-  movie._id = movieInfo.id;
   movie.id = movieInfo.id;
   movie.title = movieInfo.title;
   movie.imdb_id = movieInfo.imdb_id;
