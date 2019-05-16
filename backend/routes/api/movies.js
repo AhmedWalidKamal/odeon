@@ -43,6 +43,20 @@ router.get("/:id", (req, res) => {
 });
 
 // Get movies given shelf id
+router.get("/shelf/ids/:id", (req, res) => {
+  const shelfId = req.params.id;
+  moviesUtil
+    .getShelfMoviesIds(shelfId)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
+
+// Get movies given shelf id
 router.get("/shelf/:id", (req, res) => {
   const shelfId = req.params.id;
   moviesUtil

@@ -216,6 +216,21 @@ const getShelfMovies = function(shelfId) {
 };
 module.exports.getShelfMovies = getShelfMovies;
 
+const getShelfMoviesIds = function(shelfId) {
+  return new Promise((resolve, reject) => {
+    Shelf.findById(shelfId).then(shelf => {
+      if (empty(shelf)) {
+        console.log("Shelf " + shelfId + " not found");
+        errors.error = "Shelf not found";
+        return reject(errors);
+      } else {
+        return resolve(shelf.movies);
+      }
+    });
+  });
+};
+module.exports.getShelfMoviesIds = getShelfMoviesIds;
+
 module.exports.addToShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
