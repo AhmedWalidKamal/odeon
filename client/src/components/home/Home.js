@@ -11,7 +11,9 @@ class Home extends Component {
     super(props);
   }
 
-  componentWillReceiveProps(newProps) {}
+  componentWillReceiveProps(newProps) {
+    console.log(newProps);
+  }
 
   componentDidMount() {
     const { collection } = this.props.match.params;

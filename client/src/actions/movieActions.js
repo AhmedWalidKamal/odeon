@@ -66,6 +66,8 @@ export const changeCollectionName = collectionName => dispatch => {
     type: CHANGE_COLLECTION_NAME,
     payload: collectionName
   });
+
+  dispatch(fetchMoviesCollection(collectionName));
 };
 
 export const rateMovie = (movieId, rating) => dispatch => {
