@@ -94,7 +94,14 @@ module.exports.getMovie = function(id) {
               const { base_url, poster_size } = data;
               movie.poster_path =
                 base_url + poster_size + movieInfo.poster_path;
-              return resolve(movie);
+              movie.save().then(function() {
+                if (!movie.isNew) {
+                  console.log(
+                    "Movie " + movie.id + "(" + movie.title + ") Saved"
+                  );
+                }
+                return resolve(movie);
+              });
             })
             .catch(err => {
               return reject(err);
@@ -106,6 +113,43 @@ module.exports.getMovie = function(id) {
     });
   });
 };
+
+module.exports.getMovie = getMovie;
+
+const promiseSerial = funcs =>
+  funcs.reduce(
+    (promise, func) =>
+      promise.then(result => func().then(Array.prototype.concat.bind(result))),
+    Promise.resolve([])
+  );
+
+const getMovies = function(movieIds) {
+  return new Promise((resolve, reject) => {
+    Movie.find()
+      .where("id")
+      .in(movieIds)
+      .then((err, records) => {
+        if (!empty(err)) {
+          return reject(err);
+        }
+        const recordsIds = records.map(record => record.id);
+        const moviesToFetch = movieIds.filter(id => !recordsIds.includes(id));
+        var movies = moviesToFetch.map(id => () => getMovie(id));
+        promiseSerial(movies)
+          .then(result => {
+            return resolve(result.concat(records));
+          })
+          .catch(err => {
+            return reject(err);
+          });
+      })
+      .catch(err => {
+        return reject(err);
+      });
+  });
+};
+
+module.exports.getMovies = getMovies;
 
 module.exports.updateRating = function(ratings, movieId, newRating) {
   var updated = false;
@@ -138,6 +182,27 @@ const updateShelf = function(shelfId, newShelf) {
   });
 };
 module.exports.updateShelf = updateShelf;
+
+const getShelfMovies = function(shelfId) {
+  return new Promise((resolve, reject) => {
+    Shelf.findById(shelfId).then(shelf => {
+      if (empty(shelf)) {
+        console.log("Shelf " + shelfId + " not found");
+        errors.error = "Shelf not found";
+        return reject(errors);
+      } else {
+        getMovies(shelf.movies)
+          .then(movies => {
+            return resolve(movies);
+          })
+          .catch(err => {
+            return reject(err);
+          });
+      }
+    });
+  });
+};
+module.exports.getShelfMovies = getShelfMovies;
 
 module.exports.addToShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {

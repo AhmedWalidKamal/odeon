@@ -7,7 +7,8 @@ const MovieSchema = new Schema({
   id: {
     type: Number,
     unique: true,
-    required: true
+    required: true,
+    index: true
   },
   title: {
     type: String,
