@@ -136,6 +136,7 @@ const getMovies = function(movieIds) {
     console.log("Movies: [" + movieIds + "] should be fetched");
     Movie.find({ id: { $in: movieIds } })
       .then((err, records) => {
+        // TODO: Investigate this error
         if (!empty(err)) {
           console.log(
             "Error searching mongodb to get movies [" +
@@ -143,7 +144,7 @@ const getMovies = function(movieIds) {
               "] " +
               JSON.stringify(err)
           );
-          return reject(err);
+          // return reject(err);
         }
         if (empty(records)) {
           records = [];
