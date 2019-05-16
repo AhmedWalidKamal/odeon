@@ -109,6 +109,14 @@ const getMovie = async function(id) {
                   return resolve(movie);
                 })
                 .catch(err => {
+                  console.log(
+                    "Failed to save movie " +
+                      movie.id +
+                      "(" +
+                      movie.title +
+                      ") " +
+                      JSON.stringify(err)
+                  );
                   return resolve(movie);
                 });
             })
@@ -116,7 +124,27 @@ const getMovie = async function(id) {
               return reject(err);
             });
         } else {
-          return resolve(movie);
+          movie
+            .save()
+            .then(function() {
+              if (!movie.isNew) {
+                console.log(
+                  "Movie " + movie.id + "(" + movie.title + ") Saved"
+                );
+              }
+              return resolve(movie);
+            })
+            .catch(err => {
+              console.log(
+                "Failed to save movie " +
+                  movie.id +
+                  "(" +
+                  movie.title +
+                  ") " +
+                  JSON.stringify(err)
+              );
+              return resolve(movie);
+            });
         }
       });
     });
