@@ -98,14 +98,19 @@ const getMovie = async function(id) {
               const { base_url, poster_size } = data;
               movie.poster_path =
                 base_url + poster_size + movieInfo.poster_path;
-              movie.save().then(function() {
-                if (!movie.isNew) {
-                  console.log(
-                    "Movie " + movie.id + "(" + movie.title + ") Saved"
-                  );
-                }
-                return resolve(movie);
-              });
+              movie
+                .save()
+                .then(function() {
+                  if (!movie.isNew) {
+                    console.log(
+                      "Movie " + movie.id + "(" + movie.title + ") Saved"
+                    );
+                  }
+                  return resolve(movie);
+                })
+                .catch(err => {
+                  return resolve(movie);
+                });
             })
             .catch(err => {
               return reject(err);
@@ -119,8 +124,6 @@ const getMovie = async function(id) {
 };
 module.exports.getMovie = getMovie;
 
-module.exports.getMovie = getMovie;
-
 const promiseSerial = funcs =>
   funcs.reduce(
     (promise, func) =>
@@ -130,17 +133,21 @@ const promiseSerial = funcs =>
 
 const getMovies = function(movieIds) {
   return new Promise((resolve, reject) => {
-    Movie.find()
-      .where("id")
-      .in(movieIds)
+    console.log("Movies: [" + movieIds + "] should be fetched");
+    Movie.find({ id: { $in: movieIds } })
       .then((err, records) => {
         if (!empty(err)) {
+          console.log(
+            "Error searching mongodb to get movies [" +
+              movieIds +
+              "] " +
+              JSON.stringify(err)
+          );
           return reject(err);
         }
         if (empty(records)) {
           records = [];
         }
-        console.log("Movies: [" + movieIds + "] should be fetched");
         const recordsIds = records.map(record => record.id);
         const moviesToFetch = movieIds.filter(id => !recordsIds.includes(id));
         console.log(
@@ -155,10 +162,19 @@ const getMovies = function(movieIds) {
             return resolve(result.concat(records));
           })
           .catch(err => {
+            console.log(
+              "Error searching TMDB to get movies [" +
+                movieIds +
+                "] " +
+                JSON.stringify(err)
+            );
             return reject(err);
           });
       })
       .catch(err => {
+        console.log(
+          "Failed to get movies [" + movieIds + "] " + JSON.stringify(err)
+        );
         return reject(err);
       });
   });
@@ -206,6 +222,7 @@ const getShelfMovies = function(shelfId) {
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
+        console.log("shelf: " + JSON.stringify(shelf));
         getMovies(shelf.movies)
           .then(movies => {
             return resolve(movies);
