@@ -444,3 +444,21 @@ a, a:hover {
     font-size: 28px;
   }
 }
+
+.c3 text,
+.c3-legend-item {
+  fill: darkgrey;
+  font-family: 'Montserrat', sans-serif;
+ }
+
+ .c3-chart-arc path {
+  stroke: #303130;
+ }
+
+ .inline {
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  display: inline-block;
+  text-align: center;
+ }
