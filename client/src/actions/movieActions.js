@@ -5,7 +5,8 @@ import {
   FETCH_COLLECTION,
   FETCH_SHELF,
   CHANGE_COLLECTION_NAME,
-  MOVIE_RATING
+  MOVIE_RATING,
+  SEARCH_QUERY
 } from "./types";
 
 export const fetchMovie = movieId => dispatch => {
@@ -30,6 +31,20 @@ export const fetchMoviesCollection = collectionName => dispatch => {
       });
     })
     .catch(err => console.log(err.response.data.error));
+};
+
+export const search = (searchQuery, pages) => dispatch => {
+  pages = pages === null ? pages : 1;
+  axios
+    .get(`/api/movies/search?query=${searchQuery}&page=${pages}`)
+    .then(res => {
+      console.log(res.data);
+      dispatch({
+        type: SEARCH_QUERY,
+        payload: res.data.results
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 export const fetchShelfMovies = shelfId => dispatch => {

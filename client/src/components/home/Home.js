@@ -11,6 +11,8 @@ class Home extends Component {
     super(props);
   }
 
+  componentWillReceiveProps(newProps) {}
+
   componentDidMount() {
     const { collection } = this.props.match.params;
     console.log(this.props.match.params);
@@ -20,16 +22,16 @@ class Home extends Component {
     } else {
       this.props.fetchMoviesCollection("popular");
     }
-
-
-
   }
 
   render() {
-    console.log(this.props);
-    let moviePosters = this.props.movieReducer.movies.slice(1, 15).map(movie => {
-      return <MoviePoster key={movie.id} movie={movie} />;
-    });
+    console.log("Rendering Home...");
+    console.log(this.props.movieReducer.movies);
+    let moviePosters = this.props.movieReducer.movies
+      .slice(0, 15)
+      .map(movie => {
+        return <MoviePoster key={movie.id} movie={movie} />;
+      });
 
     const { collection } = this.props.match.params;
 

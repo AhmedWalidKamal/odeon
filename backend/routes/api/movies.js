@@ -13,8 +13,8 @@ const moviesUtil = require("../../moviesUtil");
 keys = require("../../config/keys");
 
 router.get("/search", (req, res) => {
-  const query = req.body.query;
-  const page = req.body.page || 1;
+  const query = req.query.query;
+  const page = req.query.page || 1;
   console.log("Searching for query=" + query + ", page=" + page);
   moviesUtil
     .searchMovies(query, page)

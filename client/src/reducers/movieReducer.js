@@ -3,6 +3,7 @@ import {
   FETCH_COLLECTION,
   FETCH_SHELF,
   CHANGE_COLLECTION_NAME,
+  SEARCH_QUERY
 } from "../actions/types";
 
 const initialState = {
@@ -25,10 +26,15 @@ export default function(state = initialState, action) {
         ...state,
         movies: action.payload
       };
+    case SEARCH_QUERY:
+      return {
+        ...state,
+        movies: action.payload
+      };
     case FETCH_SHELF:
       return {
         ...state,
-        shelves: {...state.shelves, ...action.payload}
+        shelves: { ...state.shelves, ...action.payload }
       };
     case CHANGE_COLLECTION_NAME:
       console.log("MATCHED");
