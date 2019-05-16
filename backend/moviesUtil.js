@@ -140,6 +140,7 @@ const getMovies = function(movieIds) {
         if (empty(records)) {
           records = [];
         }
+        console.log("Movies: [" + movieIds + "] should be fetched");
         const recordsIds = records.map(record => record.id);
         const moviesToFetch = movieIds.filter(id => !recordsIds.includes(id));
         console.log(
