@@ -137,6 +137,9 @@ const getMovies = function(movieIds) {
         if (!empty(err)) {
           return reject(err);
         }
+        if (empty(records)) {
+          records = [];
+        }
         const recordsIds = records.map(record => record.id);
         const moviesToFetch = movieIds.filter(id => !recordsIds.includes(id));
         console.log(
