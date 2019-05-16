@@ -140,6 +140,12 @@ const getMovies = function(movieIds) {
         }
         const recordsIds = records.map(record => record.id);
         const moviesToFetch = movieIds.filter(id => !recordsIds.includes(id));
+        console.log(
+          "Movies: [" + recordsIds + "] are fetched from the database"
+        );
+        console.log(
+          "Movies: [" + moviesToFetch + "] will be fetched from TMDB"
+        );
         var movies = moviesToFetch.map(id => () => getMovie(id));
         promiseSerial(movies)
           .then(result => {
