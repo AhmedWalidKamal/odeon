@@ -23,7 +23,7 @@ class ProfileCard extends Component {
   }
 
   getShelfMovies = shelfMovies => {
-    var moviePosters = shelfMovies.map((movie, i) => {
+    var moviePosters = shelfMovies.slice(0, 4).map((movie, i) => {
       return <MoviePoster key={i} movie={movie} />;
     });
     return moviePosters;

@@ -15,7 +15,7 @@ import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import ProfileCard from "./components/profile/ProfileCard";
 import MovieCard from "./components/movie/MovieCard";
-import MovieDiaryEntry from "./components/diary/MovieDiaryEntry";
+import DiaryGrid from "./components/diary/DiaryGrid";
 
 // Check for jwt token
 if (localStorage.jwtToken) {
@@ -54,7 +54,7 @@ class App extends Component {
               <Route exact path="/signup" component={SignUp} />
               <Route exact path="/profile" component={ProfileCard} />
               <Route exact path="/movie/:id" component={MovieCard} />
-              <Route exact path="/diary" component={MovieDiaryEntry} />
+              <Route exact path="/diary" component={DiaryGrid} />
             </Switch>
             <Footer />
           </div>
