@@ -5,7 +5,7 @@ $blue-2: lighten($blue, 4%);
 $gray: #d7d7d7;
 $gray-2: #f5f5f5;
 $bg: #fff;
-$link-color: #4584ee;
+$link-color: indianred;
 $search-bg: #fff;
 $box-shadow: 0 0 0 1px rgba(#000, 0.1), 0 2px 8px rgba(#000, 0.2);
 $label-color: darkgrey;
@@ -30,7 +30,8 @@ $label-top-margin: 275px;
   align-content: space-between;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
-  padding-left: 10rem;
+  margin: 0 auto;
+  // width: 100%;
   justify-content: center;
 
   a {
@@ -40,10 +41,10 @@ $label-top-margin: 275px;
     border-radius: 4px;
     width: $poster-width;
     // height: $poster-height;
-    margin: 1rem;
+    // margin: 1rem;
     // line-height: $poster-height;
-    text-align: center;
-    color: $label-color;
+    // text-align: center;
+    // color: $label-color;
     box-sizing: border-box;
     display: inline-block;
     vertical-align: middle;
@@ -72,6 +73,10 @@ $label-top-margin: 275px;
         height: 1rem;
         text-align: center;
         text-shadow: none;
+
+        &:hover {
+          color: $link-color;
+        }
       }
     }
 
@@ -81,6 +86,13 @@ $label-top-margin: 275px;
 
     img {
       width: $poster-width * 2/3;
+
+      &:hover {
+        transition-property: -moz-filter, -ms-filter, -o-filter, -webkit-filter, filter, transform;
+        transition-duration: 0.75s;
+        transform: scale(1.5);
+        filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8);
+      }
     }
 
     + &:nth-child(3n) {
@@ -102,7 +114,13 @@ $label-top-margin: 275px;
   font-family: $label-family;
   font-weight: $label-weight;
   color: $label-color;
-  display: inline-block;
+  display: inline-block;  
+}
+
+.title {
+  &:hover {
+    color: $link-color;
+  }
 }
 
 //--------------------

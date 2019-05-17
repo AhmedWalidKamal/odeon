@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import "./diary.scss";
 
 class MovieDiaryEntry extends Component {
   render() {
@@ -10,14 +11,13 @@ class MovieDiaryEntry extends Component {
     };
 
     return (
-      <div>
-        <div style={inlineStyle}>12 May</div>
-        {/* TODO: replace with watched_date */}
+      <div className='diary'>
+        <div className="inline">{new Date(watchDate).toDateString()}</div>
         <Link to={`/movie/${id}`}>
           <img src={poster_path} alt="movie poster" />
         </Link>
         <Link to={`/movie/${id}`}>
-          <div style={inlineStyle}>{title}</div>
+          <div class="inline title">{title}</div>
         </Link>
       </div>
     );
