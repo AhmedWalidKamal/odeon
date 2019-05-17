@@ -72,7 +72,7 @@ const createMovie = function(movieInfo, movieCredits) {
   return movie;
 };
 
-const getMovie = async function(id) {
+const getMovieTMDB = async function(id) {
   return new Promise((resolve, reject) => {
     tmdb.movieInfo({ id }, (movieErr, movieInfo) => {
       const errors = {};
@@ -151,8 +151,41 @@ const getMovie = async function(id) {
     });
   });
 };
+module.exports.getMovieTMDB = getMovieTMDB;
+const getMovie = async function(id) {
+  return new Promise((resolve, reject) => {
+    console.log("Movie: " + id + " should be fetched");
+    Movie.findOne()
+      .where("id")
+      .equals(id)
+      .then(record => {
+        if (empty(record)) {
+          console.log("Movie: " + id + " will be fetched from TMDB");
+          getMovieTMDB(id)
+            .then(movie => {
+              return resolve(movie);
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        } else {
+          console.log("Movie: " + id + " is fetched from database");
+          return resolve(record);
+        }
+      })
+      .catch(err => {
+        console.log("Movie: " + id + " will be fetched from TMDB");
+        getMovieTMDB(id)
+          .then(movie => {
+            return resolve(movie);
+          })
+          .catch(err => {
+            return reject(err);
+          });
+      });
+  });
+};
 module.exports.getMovie = getMovie;
-
 const promiseSerial = funcs =>
   funcs.reduce(
     (promise, func) =>
@@ -178,7 +211,7 @@ const getMovies = function(movieIds) {
         console.log(
           "Movies: [" + moviesToFetch + "] will be fetched from TMDB"
         );
-        var movies = moviesToFetch.map(id => () => getMovie(id));
+        var movies = moviesToFetch.map(id => () => getMovieTMDB(id));
         promiseSerial(movies)
           .then(result => {
             return resolve(result.concat(records));
