@@ -143,24 +143,77 @@ describe("Statistics validation", () => {
   it("Test movies count per rating with valid data for a single movie", () => {
     console.log(JSON.stringify(formatRatings([3.5])));
     expect(moviesUtil.countMoviesPerRating(formatRatings([3.5]))).toEqual({
-      "3.5": 1
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "0.5": 0,
+      "1.5": 0,
+      "2.5": 0,
+      "3.5": 1,
+      "4.5": 0
     });
   });
   it("Test movies count per rating with valid data for multiple movies", () => {
     expect(moviesUtil.countMoviesPerRating(formatRatings([3.5, 4, 5]))).toEqual(
-      { "3.5": 1, "4": 1, "5": 1 }
+      {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 1,
+        "5": 1,
+        "0.5": 0,
+        "1.5": 0,
+        "2.5": 0,
+        "3.5": 1,
+        "4.5": 0
+      }
     );
   });
   it("Test movies count per rating with valid data for multiple movies with duplicate ratings", () => {
     expect(
       moviesUtil.countMoviesPerRating(formatRatings([3.5, 4, 5, 4, 4, 3.5, 1]))
-    ).toEqual({ "3.5": 2, "4": 3, "5": 1, "1": 1 });
+    ).toEqual({
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 3,
+      "5": 1,
+      "0.5": 0,
+      "1.5": 0,
+      "2.5": 0,
+      "3.5": 2,
+      "4.5": 0
+    });
   });
   it("Test movies count per rating with no ratings", () => {
-    expect(moviesUtil.countMoviesPerRating(formatRatings([]))).toEqual({});
+    expect(moviesUtil.countMoviesPerRating(formatRatings([]))).toEqual({
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "0.5": 0,
+      "1.5": 0,
+      "2.5": 0,
+      "3.5": 0,
+      "4.5": 0
+    });
   });
   it("Test movies count per rating with null movies", () => {
-    expect(moviesUtil.countMoviesPerRating(null)).toEqual({});
+    expect(moviesUtil.countMoviesPerRating(null)).toEqual({
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "0.5": 0,
+      "1.5": 0,
+      "2.5": 0,
+      "3.5": 0,
+      "4.5": 0
+    });
   });
   it("Test movies count per rating with a single movie with null rating", () => {
     expect(() =>
@@ -170,7 +223,18 @@ describe("Statistics validation", () => {
   it("Test movies count per month with valid data for a single movie", () => {
     console.log(JSON.stringify(formatShelf([new Date()])));
     expect(moviesUtil.countMoviesPerMonth(formatShelf([new Date()]))).toEqual({
-      "May 2019": 1
+      "January 2019": 0,
+      "February 2019": 0,
+      "March 2019": 0,
+      "April 2019": 0,
+      "May 2019": 1,
+      "June 2019": 0,
+      "July 2019": 0,
+      "August 2019": 0,
+      "September 2019": 0,
+      "October 2019": 0,
+      "November 2019": 0,
+      "December 2019": 0
     });
   });
   it("Test movies count per month with valid data for multiple movies", () => {
@@ -179,8 +243,18 @@ describe("Statistics validation", () => {
         formatShelf([new Date(), new Date("March 21, 2019")])
       )
     ).toEqual({
+      "January 2019": 0,
+      "February 2019": 0,
+      "March 2019": 1,
+      "April 2019": 0,
       "May 2019": 1,
-      "March 2019": 1
+      "June 2019": 0,
+      "July 2019": 0,
+      "August 2019": 0,
+      "September 2019": 0,
+      "October 2019": 0,
+      "November 2019": 0,
+      "December 2019": 0
     });
   });
   it("Test movies count per month with valid data for multiple movies with duplicate dates", () => {
@@ -189,18 +263,54 @@ describe("Statistics validation", () => {
         formatShelf([new Date(), new Date("March 21, 2019"), new Date()])
       )
     ).toEqual({
+      "January 2019": 0,
+      "February 2019": 0,
+      "March 2019": 1,
+      "April 2019": 0,
       "May 2019": 2,
-      "March 2019": 1
+      "June 2019": 0,
+      "July 2019": 0,
+      "August 2019": 0,
+      "September 2019": 0,
+      "October 2019": 0,
+      "November 2019": 0,
+      "December 2019": 0
     });
   });
   it("Test movies count per month with no movies", () => {
-    expect(moviesUtil.countMoviesPerMonth(formatShelf([]))).toEqual({});
+    expect(moviesUtil.countMoviesPerMonth(formatShelf([]))).toEqual({
+      "January 2019": 0,
+      "February 2019": 0,
+      "March 2019": 0,
+      "April 2019": 0,
+      "May 2019": 0,
+      "June 2019": 0,
+      "July 2019": 0,
+      "August 2019": 0,
+      "September 2019": 0,
+      "October 2019": 0,
+      "November 2019": 0,
+      "December 2019": 0
+    });
   });
   it("Test movies count per month with null shelf", () => {
     expect(() => moviesUtil.countMoviesPerMonth(null)).toThrow();
   });
   it("Test movies count per month with null movies", () => {
-    expect(moviesUtil.countMoviesPerMonth({ movies: null })).toEqual({});
+    expect(moviesUtil.countMoviesPerMonth({ movies: null })).toEqual({
+      "January 2019": 0,
+      "February 2019": 0,
+      "March 2019": 0,
+      "April 2019": 0,
+      "May 2019": 0,
+      "June 2019": 0,
+      "July 2019": 0,
+      "August 2019": 0,
+      "September 2019": 0,
+      "October 2019": 0,
+      "November 2019": 0,
+      "December 2019": 0
+    });
   });
   it("Test movies count per month with with null date", () => {
     expect(() =>
@@ -213,7 +323,18 @@ describe("Statistics validation", () => {
         formatShelf([new Date(), new Date("March 21, 2021"), new Date()])
       )
     ).toEqual({
-      "May 2019": 2
+      "January 2019": 0,
+      "February 2019": 0,
+      "March 2019": 0,
+      "April 2019": 0,
+      "May 2019": 2,
+      "June 2019": 0,
+      "July 2019": 0,
+      "August 2019": 0,
+      "September 2019": 0,
+      "October 2019": 0,
+      "November 2019": 0,
+      "December 2019": 0
     });
   });
   it("Test movies count per month with valid data with dates out of range 2", () => {
@@ -222,7 +343,18 @@ describe("Statistics validation", () => {
         formatShelf([new Date(), new Date("March 21, 2015"), new Date()])
       )
     ).toEqual({
-      "May 2019": 2
+      "January 2019": 0,
+      "February 2019": 0,
+      "March 2019": 0,
+      "April 2019": 0,
+      "May 2019": 2,
+      "June 2019": 0,
+      "July 2019": 0,
+      "August 2019": 0,
+      "September 2019": 0,
+      "October 2019": 0,
+      "November 2019": 0,
+      "December 2019": 0
     });
   });
 });
