@@ -213,7 +213,7 @@ const getMovies = function(movieIds) {
         var movies = moviesToFetch.map(id => () => getMovieTMDB(id));
         promiseSerial(movies)
           .then(result => {
-            return resolve(result.concat(records));
+            return resolve(result.concat(records.map(movie => movie._doc)));
           })
           .catch(err => {
             console.log(
