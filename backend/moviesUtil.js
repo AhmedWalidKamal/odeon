@@ -54,7 +54,7 @@ const parseCredits = function(movieCredits) {
 const createMovie = function(movieInfo, movieCredits) {
   const { cast, directors } = parseCredits(movieCredits);
   const movie = new Movie();
-  movie.id = movieInfo.id;
+  movie.id = parseInt(movieInfo.id);
   movie.title = movieInfo.title;
   movie.imdb_id = movieInfo.imdb_id;
   movie.release_date = new Date(movieInfo.release_date);
@@ -252,7 +252,7 @@ const getShelfMovies = function(shelfId) {
         return reject(errors);
       } else {
         console.log("shelf: " + JSON.stringify(shelf));
-        getMovies(shelf.movies)
+        getMovies(shelf.movies.map(movie => movie.movieId))
           .then(movies => {
             return resolve(movies);
           })
@@ -273,7 +273,7 @@ const getShelfMoviesIds = function(shelfId) {
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
-        return resolve(shelf.movies);
+        return resolve(shelf.movies.map(movie => movie.movieId));
       }
     });
   });
@@ -290,8 +290,8 @@ module.exports.addToShelf = function(shelfId, movieId) {
       } else {
         console.log(shelf.movies);
 
-        if (!shelf.movies.includes(movieId)) {
-          shelf.movies.push(movieId);
+        if (!shelf.movies.map(movie => movie.movieId).includes(movieId)) {
+          shelf.movies.push({ movieId, watchDate: Date.now() });
           updateShelf(shelfId, shelf).then(success => {
             return resolve({ success });
           });
@@ -313,7 +313,7 @@ module.exports.removeFromShelf = function(shelfId, movieId) {
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
-        var index = shelf.movies.indexOf(movieId);
+        var index = shelf.movies.map(movie => movie.movieId).indexOf(movieId);
         if (index > -1) {
           shelf.movies.splice(index, 1);
           updateShelf(shelfId, shelf).then(success => {
