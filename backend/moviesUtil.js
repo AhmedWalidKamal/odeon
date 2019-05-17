@@ -166,17 +166,7 @@ const getMovies = function(movieIds) {
     Movie.find()
       .where("id")
       .in(movieIds)
-      .then((records, err) => {
-        // TODO: Investigate why callback parameters are reversed
-        if (!empty(err)) {
-          console.log(
-            "Error searching mongodb to get movies [" +
-              movieIds +
-              "] " +
-              JSON.stringify(err)
-          );
-          // return reject(err);
-        }
+      .then(records => {
         if (empty(records)) {
           records = [];
         }
