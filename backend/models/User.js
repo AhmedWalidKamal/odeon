@@ -37,8 +37,7 @@ const UserSchema = new Schema({
   ratings: [
     {
       movieId: {
-        type: Number,
-        unique: true
+        type: Number
       },
       rating: {
         type: Number

@@ -8,6 +8,7 @@ const MovieSchema = new Schema({
   id: {
     type: Number,
     unique: true,
+    dropDups: true,
     required: true,
     index: true
   },
