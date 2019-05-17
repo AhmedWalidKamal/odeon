@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import C3Chart from 'react-c3js';
 import 'c3/c3.css';
-import { d3 } from 'd3';
-
 
 import { fetchProfile } from "../../actions/profileActions";
 import { fetchShelfMovies } from "../../actions/movieActions";
@@ -111,6 +109,7 @@ class ProfileCard extends Component {
     const { profile } = this.props.profileReducer;
     const { user } = this.props.userReducer;
     const { shelves } = this.props.movieReducer;
+
     return (
       <div>
         <div className="wrapper">
