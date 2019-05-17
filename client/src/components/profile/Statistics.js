@@ -89,7 +89,10 @@ class Statistics extends Component {
       genres_piechart.data.columns = Object.entries(countMoviesPerGenre);
       average_ratings_barchart.data.columns = Object.entries(
         countMoviesPerRating
-      );
+      ).map(entry => {
+        entry[0] = parseFloat(entry[0]).toFixed(1)
+        return entry;
+      });
       average_ratings_barchart.data.columns.sort(function(a, b) {
         return a[0] - b[0];
       });
