@@ -14,7 +14,7 @@ import "./movieCard.scss";
 
 const isEmpty = require("is-empty");
 
-const shelvesNames = {
+const shelfNames = {
   WATCHED: 1,
   PLAN_TO_WATCH: 2
 };
@@ -30,44 +30,51 @@ class MovieCard extends Component {
   }
 
   componentDidMount() {
-    this.props.movieReducer.movie = undefined;
-    this.props.movieReducer.shelves = undefined;
+    this.props.movieReducer.movie = null;
+    this.props.movieReducer.shelves = null;
     this.props.fetchMovie(this.props.match.params.id);
-    this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Watched"]);
-    this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Plan to Watch"]);
-    this.watched = false;
-    this.planToWatch = false;
+    if (this.props.userReducer.isAuthenticated) {
+      this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Watched"]);
+      this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Plan to Watch"]);
+      this.watched = false;
+      this.planToWatch = false;
+    }
   }
 
-  handleIconOnClick = (event, shelfName, movieId, shelfId) => {
+  handleIconOnClick = (event, shelfName, movieId) => {
     event.preventDefault();
-    if (shelvesNames.WATCHED === shelfName) {
+    if (shelfNames.WATCHED === shelfName) {
       if (this.watched === true) {
         this.watched = false;
-        this.props.removeMovieFromShelf(movieId, shelfId);
+        this.props.removeMovieFromShelf(movieId, this.props.userReducer.user.shelves["Watched"]);
       } else {
         this.watched = true;
-        this.props.addMovieToShelf(movieId, shelfId);
+        this.props.addMovieToShelf(movieId, this.props.userReducer.user.shelves["Watched"]);
       }
-    } else if (shelvesNames.PLAN_TO_WATCH === shelfName) {
+    } else if (shelfNames.PLAN_TO_WATCH === shelfName) {
       if (this.planToWatch === true) {
         this.planToWatch = false;
-        this.props.removeMovieFromShelf(movieId, shelfId);
+        this.props.removeMovieFromShelf(movieId, this.props.userReducer.user.shelves["Plan to Watch"]);
       } else {
         this.planToWatch = true;
-        this.props.addMovieToShelf(movieId, shelfId);
+        this.props.addMovieToShelf(movieId, this.props.userReducer.user.shelves["Plan to Watch"]);
       }
     }
   };
 
-  getGenres = genres => {
+  getGenres = (genres, size = 4) => {
     var genreNames = genres.map(({ name }) => name);
-    return genreNames.join(", ");
+    if (genreNames.length > size) {
+      genreNames = genreNames.slice(0, size);
+      return genreNames.join(", ");
+    } else {
+      return genreNames.join(", ");
+    }
   };
 
   renderNames = (persons, size = 4) => {
-    var names = persons.map(person => {
-      return <li key={person.id}>{person.name}</li>;
+    var names = persons.map((person, i) => {
+      return <li key={i}>{person.name}</li>;
     });
     if (names.length > size) {
       return names.slice(0, size);
@@ -86,7 +93,7 @@ class MovieCard extends Component {
     }
 
     var initRating = 0;
-    if (movie !== undefined) {
+    if (!isEmpty(movie) && this.props.userReducer.isAuthenticated) {
       ratings.forEach(rating => {
         if (rating.movieId === movie.id) {
           initRating = rating.rating;
@@ -94,8 +101,9 @@ class MovieCard extends Component {
       });
     }
 
-    if (shelves !== undefined
-          && movie !== undefined
+    if (this.props.userReducer.isAuthenticated
+          && !isEmpty(shelves)
+          && !isEmpty(movie)
           && !isEmpty(shelves[this.props.userReducer.user.shelves["Watched"]])) {
       shelves[this.props.userReducer.user.shelves["Watched"]].forEach(movieId => {
         if (movieId === movie.id) {
@@ -104,8 +112,9 @@ class MovieCard extends Component {
       });
     }
 
-    if (shelves !== undefined
-          && movie !== undefined
+    if (this.props.userReducer.isAuthenticated
+          && !isEmpty(shelves)
+          && !isEmpty(movie)
           && !isEmpty(shelves[this.props.userReducer.user.shelves["Plan to Watch"]])) {
       shelves[this.props.userReducer.user.shelves["Plan to Watch"]].forEach(movieId => {
         if (movieId === movie.id) {
@@ -170,22 +179,35 @@ class MovieCard extends Component {
               </div>
 
               <div className="icon-bar">
-                <a href="#" onClick={(event) => {
-                    this.handleIconOnClick(event, shelvesNames.WATCHED, movie.id, this.props.userReducer.user.shelves["Watched"])}}>
-                  {this.watched === true ? (
-                    <i className="fas fa-eye checked" />
-                  ) : (
-                    <i className="fas fa-eye" />
-                  )}
-                </a>
-                <a href="#" onClick={(event) => {
-                    this.handleIconOnClick(event, shelvesNames.PLAN_TO_WATCH, movie.id, this.props.userReducer.user.shelves["Plan to Watch"])}}>
-                  {this.planToWatch === true ? (
-                    <i className="fas fa-plus checked" />
-                  ) : (
-                    <i className="fas fa-plus" />
-                  )}
-                </a>
+                {this.props.userReducer.isAuthenticated ? (
+                  <div>
+                    <a href="#" onClick={(event) => {
+                        this.handleIconOnClick(event, shelfNames.WATCHED, movie.id)}}>
+                        {this.watched === true ? (
+                          <i className="fas fa-eye checked" />
+                        ) : (
+                          <i className="fas fa-eye" />
+                        )}
+                    </a>
+                    <a href="#" onClick={(event) => {
+                        this.handleIconOnClick(event, shelfNames.PLAN_TO_WATCH, movie.id)}}>
+                      {this.planToWatch === true ? (
+                        <i className="fas fa-plus checked" />
+                      ) : (
+                        <i className="fas fa-plus" />
+                      )}
+                    </a>
+                  </div>
+                ) : (
+                  <div>
+                    <a href="#">
+                      <i className="fas fa-eye dimmed" />
+                    </a>
+                    <a href="#">
+                      <i className="fas fa-plus dimmed" />
+                    </a>
+                  </div>
+                )}
               </div>
 
               <div className="film-card__subtitle">Overview</div>
