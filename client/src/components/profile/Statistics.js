@@ -4,8 +4,9 @@ import { connect } from "react-redux";
 import { fetchStatistics } from "../../actions/userActions";
 import C3Chart from "react-c3js";
 import "c3/c3.css";
-
 import "./profileCard.scss";
+
+const isEmpty = require("is-empty");
 
 const c3_color_pattern = [
   "#cd5c5c",
@@ -18,14 +19,7 @@ const c3_color_pattern = [
 ];
 const genres_piechart = {
   data: {
-    columns: [
-      ["data1", 30],
-      ["data2", 40],
-      ["data3", 50],
-      ["data4", 20],
-      ["data5", 10],
-      ["data6", 8]
-    ],
+    columns: [],
     type: "pie"
   },
   color: {
@@ -57,38 +51,14 @@ const barchart = {
 
 const watched_this_year_barchart = {
   data: {
-    columns: [
-      // TODO: replace with months in current year
-      ["Jan 2019", 5],
-      ["Feb 2019", 6],
-      ["Mar 2019", 9],
-      ["Apr 2019", 6],
-      ["May 2019", 4],
-      ["Jun 2019", 12],
-      ["Jul 2019", 10],
-      ["Aug 2019", 8],
-      ["Sep 2019", 20],
-      ["Oct 2019", 18],
-      ["Nov 2019", 15],
-      ["Dec 2019", 8]
-    ],
+    columns: [],
     type: "bar"
   }
 };
 
 const average_ratings_barchart = {
   data: {
-    columns: [
-      ["0.5", 5],
-      ["1.0", 10],
-      ["1.5", 15],
-      ["2.0", 20],
-      ["3.0", 25],
-      ["3.5", 35],
-      ["4.0", 30],
-      ["4.5", 25],
-      ["5.0", 15]
-    ],
+    columns: [],
     type: "bar"
   },
   size: {
@@ -109,7 +79,26 @@ class Statistics extends Component {
   render() {
     const { statistics } = this.props.userReducer;
     console.log(statistics);
+    if (!isEmpty(statistics)) {
+      const {
+        countMoviesPerGenre,
+        countMoviesPerMonth,
+        countMoviesPerRating
+      } = statistics;
 
+      genres_piechart.data.columns = Object.entries(countMoviesPerGenre);
+      average_ratings_barchart.data.columns = Object.entries(
+        countMoviesPerRating
+      );
+      average_ratings_barchart.data.columns.sort(function(a, b) {
+        return a[0] - b[0];
+      });
+      console.log(average_ratings_barchart.data.columns);
+
+      watched_this_year_barchart.data.columns = Object.entries(
+        countMoviesPerMonth
+      );
+    }
     return (
       <div>
         <div className="content__subtitle">Statistics</div>
