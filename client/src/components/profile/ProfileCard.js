@@ -32,6 +32,7 @@ class ProfileCard extends Component {
     const { profile } = this.props.profileReducer;
     const { user } = this.props.userReducer;
     const { shelves } = this.props.movieReducer;
+
     return (
       <div>
         <div className="wrapper">
@@ -144,9 +145,6 @@ class ProfileCard extends Component {
             <div>
               <div className="content__subtitle">Watched</div>
               <div className="grid">
-                {this.getShelfMovies(shelves[user.shelves[0]])}
-              </div>
-              <div className="grid">
                 {this.getShelfMovies(shelves[user.shelves["Watched"]])}
               </div>
             </div>
@@ -158,9 +156,6 @@ class ProfileCard extends Component {
           !isEmpty(shelves[user.shelves["Plan to Watch"]]) ? (
             <div>
               <div className="content__subtitle">Watchlist</div>
-              <div className="grid">
-                {this.getShelfMovies(shelves[user.shelves[1]])}
-              </div>
               <div className="grid">
                 {this.getShelfMovies(shelves[user.shelves["Plan to Watch"]])}
               </div>

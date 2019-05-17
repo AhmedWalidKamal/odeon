@@ -138,8 +138,6 @@ router.get("/statistics/:id", (req, res) => {
             metrics.countMoviesPerGenre = moviesUtil.countMoviesPerGenre(
               movies
             );
-
-            console.log(metrics);
             res.json(metrics);
           })
           .catch(err => {
