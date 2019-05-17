@@ -48,11 +48,9 @@ router.get(
     users
       .getProfile(id)
       .then(data => {
-        console.log(data);
         res.json(data);
       })
       .catch(err => {
-        console.log(err);
         res.status(400).json(err);
       });
   }
@@ -85,11 +83,9 @@ router.put(
       users
         .editProfile(_id, displayName, avatar, social, location, bio)
         .then(data => {
-          console.log(data);
           res.json(data);
         })
         .catch(err => {
-          console.log(err);
           res.status(400).json(err);
         });
     }
@@ -106,11 +102,9 @@ router.get(
     users
       .getUser(id)
       .then(data => {
-        console.log(data);
         res.json(data.shelves);
       })
       .catch(err => {
-        console.log(err);
         res.status(400).json(err);
       });
   }
@@ -126,11 +120,9 @@ router.get(
     users
       .getUser(id)
       .then(data => {
-        console.log(data);
         res.json(data.ratings);
       })
       .catch(err => {
-        console.log(err);
         res.status(400).json(err);
       });
   }

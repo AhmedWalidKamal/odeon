@@ -19,11 +19,9 @@ router.get("/search", (req, res) => {
   moviesUtil
     .searchMovies(query, page)
     .then(data => {
-      console.log(data);
       res.json(data);
     })
     .catch(err => {
-      console.log(err);
       res.status(400).json(err);
     });
 });
@@ -33,11 +31,9 @@ router.get("/:id", (req, res) => {
   moviesUtil
     .getMovie(id)
     .then(data => {
-      // console.log(data);
       res.json(data);
     })
     .catch(err => {
-      console.log(err);
       res.status(400).json(err);
     });
 });
@@ -51,7 +47,6 @@ router.get("/shelf/ids/:id", (req, res) => {
       res.json(data);
     })
     .catch(err => {
-      console.log(err);
       res.status(400).json(err);
     });
 });
@@ -65,7 +60,6 @@ router.get("/shelf/:id", (req, res) => {
       res.json(data);
     })
     .catch(err => {
-      console.log(err);
       res.status(400).json(err);
     });
 });
@@ -79,23 +73,16 @@ router.put(
     const info = decode(req.headers.authorization);
     const movieId = parseInt(req.params.id);
     const newRating = parseFloat(req.body.rating);
-    console.log("New Rating:");
-    console.log(newRating);
-    console.log("token info:");
-    console.log(info);
+
     users.getUser(info.id).then(user => {
       user.ratings = moviesUtil.updateRating(user.ratings, movieId, newRating);
       errors = {};
       users
         .updateUser(info.id, user)
         .then(data => {
-          console.log("new ratings");
-
-          console.log(data);
           res.json(data);
         })
         .catch(err => {
-          console.log(err);
           res.status(400).json(err);
         });
     });
@@ -111,10 +98,6 @@ router.put(
     const info = decode(req.headers.authorization);
     const { movieId, shelfId } = req.body;
 
-    console.log(`AddMovie(ShelfId=${shelfId}, MovieId=${movieId})`);
-    console.log("token info:");
-    console.log(info);
-
     errors = {};
 
     users.getUser(info.id).then(user => {
@@ -125,11 +108,9 @@ router.put(
         moviesUtil
           .addToShelf(shelfId, parseInt(movieId))
           .then(data => {
-            console.log(data);
             res.json(data);
           })
           .catch(err => {
-            console.log(err);
             res.status(400).json(err);
           });
       }
@@ -146,11 +127,7 @@ router.delete(
     const info = decode(req.headers.authorization);
     const movieId = req.body.movieId;
     const shelfId = req.body.shelfId;
-    console.log(
-      "RemoveMovie(ShelfId=" + shelfId + ", MovieId=" + movieId + ")"
-    );
-    console.log("token info:");
-    console.log(info);
+
     errors = {};
     users.getUser(info.id).then(user => {
       if (!user.shelves.map(shelf => shelf.toString()).includes(shelfId)) {
@@ -160,11 +137,9 @@ router.delete(
         moviesUtil
           .removeFromShelf(shelfId, parseInt(movieId))
           .then(data => {
-            console.log(data);
             res.json(data);
           })
           .catch(err => {
-            console.log(err);
             res.status(400).json(err);
           });
       }
@@ -181,7 +156,6 @@ router.get("/collection/:name", (req, res) => {
       res.json(data);
     })
     .catch(err => {
-      console.log(err);
       res.status(400).json(err);
     });
 });

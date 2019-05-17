@@ -82,7 +82,6 @@ const getMovie = async function(id) {
         errors.error = "Empty Movie Response";
         return reject(errors);
       }
-      console.log(movieInfo.title);
       tmdb.movieCredits({ id }, (credErr, movieCredits) => {
         if (credErr) {
           return reject(credErr);
@@ -161,10 +160,9 @@ const promiseSerial = funcs =>
 
 const getMovies = function(movieIds) {
   return new Promise((resolve, reject) => {
-    console.log("Movies: [" + movieIds + "] should be fetched");
+    // console.log("Movies: [" + movieIds + "] should be fetched");
     Movie.find({ id: { $in: movieIds } })
-      .then((err, records) => {
-        // TODO: Investigate this error
+      .then((records, err) => {
         if (!empty(err)) {
           console.log(
             "Error searching mongodb to get movies [" +
@@ -230,7 +228,6 @@ const updateShelf = function(shelfId, newShelf) {
   return new Promise((resolve, reject) => {
     Shelf.findByIdAndUpdate(shelfId, newShelf).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
@@ -247,7 +244,6 @@ const getShelfMovies = function(shelfId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
@@ -269,7 +265,6 @@ const getShelfMoviesIds = function(shelfId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
@@ -284,7 +279,6 @@ module.exports.addToShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
@@ -309,7 +303,6 @@ module.exports.removeFromShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
