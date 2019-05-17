@@ -78,7 +78,6 @@ class Statistics extends Component {
 
   render() {
     const { statistics } = this.props.userReducer;
-    console.log(statistics);
     if (!isEmpty(statistics)) {
       const {
         countMoviesPerGenre,
@@ -96,8 +95,6 @@ class Statistics extends Component {
       average_ratings_barchart.data.columns.sort(function(a, b) {
         return a[0] - b[0];
       });
-      console.log(average_ratings_barchart.data.columns);
-
       watched_this_year_barchart.data.columns = Object.entries(
         countMoviesPerMonth
       );

@@ -14,11 +14,15 @@ import "./movieCard.scss";
 
 const isEmpty = require("is-empty");
 
+const shelvesNames = {
+  WATCHED: 1,
+  PLAN_TO_WATCH: 2
+};
+
 class MovieCard extends Component {
   constructor(props) {
     super(props);
     this.rateMovie = this.rateMovie.bind(this);
-    this.watched = false;
   }
 
   rateMovie(rating) {
@@ -26,19 +30,33 @@ class MovieCard extends Component {
   }
 
   componentDidMount() {
-    this.watched = false;
+    this.props.movieReducer.movie = undefined;
+    this.props.movieReducer.shelves = undefined;
     this.props.fetchMovie(this.props.match.params.id);
     this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Watched"]);
+    this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Plan to Watch"]);
+    this.watched = false;
+    this.planToWatch = false;
   }
 
-  handleWatchedOnClick = (event, movieId, shelfId) => {
+  handleIconOnClick = (event, shelfName, movieId, shelfId) => {
     event.preventDefault();
-    if (this.watched === true) {
-      this.watched = false;
-      this.props.removeMovieFromShelf(movieId, shelfId);
-    } else {
-      this.watched = true;
-      this.props.addMovieToShelf(movieId, shelfId);
+    if (shelvesNames.WATCHED === shelfName) {
+      if (this.watched === true) {
+        this.watched = false;
+        this.props.removeMovieFromShelf(movieId, shelfId);
+      } else {
+        this.watched = true;
+        this.props.addMovieToShelf(movieId, shelfId);
+      }
+    } else if (shelvesNames.PLAN_TO_WATCH === shelfName) {
+      if (this.planToWatch === true) {
+        this.planToWatch = false;
+        this.props.removeMovieFromShelf(movieId, shelfId);
+      } else {
+        this.planToWatch = true;
+        this.props.addMovieToShelf(movieId, shelfId);
+      }
     }
   };
 
@@ -74,10 +92,22 @@ class MovieCard extends Component {
       }
     });
 
-    if (!isEmpty(shelves)) {
+    if (shelves !== undefined
+          && movie !== undefined
+          && !isEmpty(shelves[this.props.userReducer.user.shelves["Watched"]])) {
       shelves[this.props.userReducer.user.shelves["Watched"]].forEach(movieId => {
         if (movieId === movie.id) {
           this.watched = true;
+        }
+      });
+    }
+
+    if (shelves !== undefined
+          && movie !== undefined
+          && !isEmpty(shelves[this.props.userReducer.user.shelves["Plan to Watch"]])) {
+      shelves[this.props.userReducer.user.shelves["Plan to Watch"]].forEach(movieId => {
+        if (movieId === movie.id) {
+          this.planToWatch = true;
         }
       });
     }
@@ -139,15 +169,20 @@ class MovieCard extends Component {
 
               <div className="icon-bar">
                 <a href="#" onClick={(event) => {
-                    this.handleWatchedOnClick(event, movie.id, this.props.userReducer.user.shelves["Watched"])}}>
+                    this.handleIconOnClick(event, shelvesNames.WATCHED, movie.id, this.props.userReducer.user.shelves["Watched"])}}>
                   {this.watched === true ? (
                     <i className="fas fa-eye checked" />
                   ) : (
                     <i className="fas fa-eye" />
                   )}
                 </a>
-                <a href="#">
-                  <i className="fas fa-plus" />
+                <a href="#" onClick={(event) => {
+                    this.handleIconOnClick(event, shelvesNames.PLAN_TO_WATCH, movie.id, this.props.userReducer.user.shelves["Plan to Watch"])}}>
+                  {this.planToWatch === true ? (
+                    <i className="fas fa-plus checked" />
+                  ) : (
+                    <i className="fas fa-plus" />
+                  )}
                 </a>
               </div>
 
