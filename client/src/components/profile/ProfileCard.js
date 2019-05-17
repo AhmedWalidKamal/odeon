@@ -145,7 +145,7 @@ class ProfileCard extends Component {
           {!isEmpty(shelves) && !isEmpty(shelves[user.shelves["Watched"]]) ? (
             <div>
               <div className="content__subtitle">
-                <Link className="Link" to="/diary">
+                <Link className="Link  content__link" to="/diary">
                   Watched
                 </Link>
               </div>
