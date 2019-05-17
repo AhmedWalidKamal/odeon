@@ -85,44 +85,62 @@ module.exports.register = function(username, email, password) {
             }
             console.log("Profile: " + newUser.username + " Created.");
 
-            watchedShelf.save().then(function() {
-              if (watchedShelf.isNew) {
-                errors.error = "Couldn't create watched shelf for user";
-                return reject(errors);
-              }
-              console.log(
-                "Shelf: " +
-                  newUser.username +
-                  "." +
-                  watchedShelf.name +
-                  " Created."
-              );
-              planToWatchShelf.save().then(function() {
-                if (planToWatchShelf.isNew) {
-                  errors.error = "Couldn't create plan to watch shelf for user";
+            watchedShelf
+              .save()
+              .then(function() {
+                if (watchedShelf.isNew) {
+                  errors.error = "Couldn't create watched shelf for user";
                   return reject(errors);
                 }
                 console.log(
                   "Shelf: " +
                     newUser.username +
                     "." +
-                    planToWatchShelf.name +
+                    watchedShelf.name +
                     " Created."
                 );
-                newUser.save().then(function() {
-                  if (newUser.isNew) {
-                    console.log("The error is here fam");
-                    errors.error = "Registration error";
-                    return reject(errors);
-                  }
-                  console.log("User: " + newUser.username + " Signed Up.");
+                planToWatchShelf
+                  .save()
+                  .then(function() {
+                    if (planToWatchShelf.isNew) {
+                      errors.error =
+                        "Couldn't create plan to watch shelf for user";
+                      return reject(errors);
+                    }
+                    console.log(
+                      "Shelf: " +
+                        newUser.username +
+                        "." +
+                        planToWatchShelf.name +
+                        " Created."
+                    );
+                    newUser.save().then(function() {
+                      if (newUser.isNew) {
+                        console.log("The error is here fam");
+                        errors.error = "Registration error";
+                        return reject(errors);
+                      }
+                      console.log("User: " + newUser.username + " Signed Up.");
 
-                  return resolve({
-                    success: true
+                      return resolve({
+                        success: true
+                      });
+                    });
+                  })
+                  .catch(err => {
+                    console.log("Couldn't save to-watch shelf");
+                    console.log(err);
+                    errors.error =
+                      "Couldn't create plan to watch shelf for user";
+                    return reject(errors);
                   });
-                });
+              })
+              .catch(err => {
+                console.log("Couldn't save watched shelf");
+                console.log(err);
+                errors.error = "Couldn't create watched shelf for user";
+                return reject(errors);
               });
-            });
           });
         });
       });
