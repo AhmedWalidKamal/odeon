@@ -163,9 +163,11 @@ const promiseSerial = funcs =>
 const getMovies = function(movieIds) {
   return new Promise((resolve, reject) => {
     console.log("Movies: [" + movieIds + "] should be fetched");
-    Movie.find({ id: { $in: movieIds } })
-      .then((err, records) => {
-        // TODO: Investigate this error
+    Movie.find()
+      .where("id")
+      .in(movieIds)
+      .then((records, err) => {
+        // TODO: Investigate why callback parameters are reversed
         if (!empty(err)) {
           console.log(
             "Error searching mongodb to get movies [" +
