@@ -26,6 +26,7 @@ class MovieCard extends Component {
   }
 
   componentDidMount() {
+    this.watched = false;
     this.props.fetchMovie(this.props.match.params.id);
     this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves[0]); //watched shelf
   }

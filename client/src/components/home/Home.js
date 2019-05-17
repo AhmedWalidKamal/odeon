@@ -19,8 +19,8 @@ class Home extends Component {
   render() {
     let moviePosters = this.props.movieReducer.movies
       .slice(0, 15)
-      .map(movie => {
-        return <MoviePoster key={movie.id} movie={movie} />;
+      .map((movie, i) => {
+        return <MoviePoster key={i} movie={movie} />;
       });
 
     const { collection } = this.props.match.params;
