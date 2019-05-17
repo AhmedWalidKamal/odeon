@@ -109,8 +109,6 @@ class ProfileCard extends Component {
     const { profile } = this.props.profileReducer;
     const { user } = this.props.userReducer;
     const { shelves } = this.props.movieReducer;
-    console.log(user);
-    console.log(shelves);
     return (
       <div>
         <div className="wrapper">

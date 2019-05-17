@@ -63,6 +63,9 @@ class MovieCard extends Component {
     const { shelves } = this.props.movieReducer;
     var ratings = this.props.userReducer.user.ratings;
 
+    console.log(this.props.userReducer.user);
+    console.log(shelves);
+
     if (ratings == null) {
       ratings = [];
     }
