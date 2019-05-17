@@ -1,99 +1,118 @@
+@import url("/fonts/montserrat.css");
+
+$blue: #4584ee;
+$blue-2: lighten($blue, 4%);
+$gray: #d7d7d7;
+$gray-2: #f5f5f5;
+$bg: #fff;
+$link-color: #4584ee;
+$search-bg: #fff;
+$box-shadow: 0 0 0 1px rgba(#000, 0.1), 0 2px 8px rgba(#000, 0.2);
+$label-color: darkgrey;
+$label-shadow: 0 0 2px rgba(#fff, 0);
+$label-family: "Montserrat", sans-serif;
+$label-weight: 900;
+$label-size: 14px;
+
+$poster-width: 180px;
+// $poster-height: 260px;
+$label-top-margin: 275px;
+
 .diary {
-    padding-top: 1rem;
+  padding-top: 1rem;
+  color: inherit;
+  // display: -webkit-box;
+  // display: -ms-flexbox;
+  display: inline-block;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -ms-flex-line-pack: justify;
+  align-content: space-between;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  padding-left: 10rem;
+  justify-content: center;
+
+  a {
     color: inherit;
-    // display: -webkit-box;
-    // display: -ms-flexbox;
-    display: inline-block;
-    -ms-flex-flow: row wrap;
-    flex-flow: row wrap;
-    -ms-flex-line-pack: justify;
-    align-content: space-between;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    padding-left: 10rem;
-    justify-content: center;
-  
-    a {
-      color: inherit;
-      font-size: 1.3rem;
-      // background: black;
-      border-radius: 4px;
-      width: $poster-width;
-      // height: $poster-height;
-      margin: 1rem;
-      // line-height: $poster-height;
-      text-align: center;
-      color: $link-color;
-      box-sizing: border-box;
-      display: inline-block;
-      vertical-align: middle;
-  
-      span {
-        &:nth-child(1) {
-          font-family: Material-Icons;
-          padding-right: 0;
-          font-size: 55px;
-        }
-  
-        &#title {
-          opacity: 0;
-          position: absolute;
-          font-size: $label-size;
-          font-family: $label-family;
-          font-weight: $label-weight;
-          //text-shadow: 0 0 1px rgba(black, 0.2);
-          text-rendering: optimizeLegibility;
-          transition: all ease-in-out 150ms;
-          position: absolute;
-          top: $label-top-margin;
-          left: 0;
-          color: $label-color;
-          width: $poster-width;
-          height: 1rem;
-          text-align: center;
-          text-shadow: none;
-        }
-      }
-  
-      &:hover span#title {
-        opacity: 0;
-      }
-  
-      img {
-        width: $poster-width*2/3;
-      }
-  
-      + &:nth-child(3n) {
-        page-break-after: always;
-      }
-  
-      &:hover,
-      &:focus,
-      &:active {
-        // transform: translateY(-5px);
-        text-decoration: none;
-        color: $link-color;
-      }
-    }
-  }
-  
-  .inline {
-    font-size: $label-size;
-    font-family: $label-family;
-    font-weight: $label-weight;
+    font-size: 1.3rem;
+    // background: black;
+    border-radius: 4px;
+    width: $poster-width;
+    // height: $poster-height;
+    margin: 1rem;
+    // line-height: $poster-height;
+    text-align: center;
     color: $label-color;
+    box-sizing: border-box;
     display: inline-block;
-  }
-  
-  
-  //--------------------
-  
-  .content {
-    margin-top: 150px;
-    &__subtitle {
-      color:darkgray;
-      margin-left: 30px;
-      font-weight: 700;
-      font-size: 28px;
+    vertical-align: middle;
+
+    span {
+      &:nth-child(1) {
+        font-family: Material-Icons;
+        padding-right: 0;
+        font-size: 55px;
+      }
+
+      &#title {
+        opacity: 0;
+        position: absolute;
+        font-size: $label-size;
+        font-family: $label-family;
+        font-weight: $label-weight;
+        //text-shadow: 0 0 1px rgba(black, 0.2);
+        text-rendering: optimizeLegibility;
+        transition: all ease-in-out 150ms;
+        position: absolute;
+        top: $label-top-margin;
+        left: 0;
+        color: $label-color;
+        width: $poster-width;
+        height: 1rem;
+        text-align: center;
+        text-shadow: none;
+      }
+    }
+
+    &:hover span#title {
+      opacity: 0;
+    }
+
+    img {
+      width: $poster-width * 2/3;
+    }
+
+    + &:nth-child(3n) {
+      page-break-after: always;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      // transform: translateY(-5px);
+      text-decoration: none;
+      color: $link-color;
     }
   }
+}
+
+.inline {
+  font-size: $label-size;
+  font-family: $label-family;
+  font-weight: $label-weight;
+  color: $label-color;
+  display: inline-block;
+}
+
+//--------------------
+
+.content {
+  margin-top: 150px;
+  &__subtitle {
+    color: darkgray;
+    margin-left: 30px;
+    font-weight: 700;
+    font-size: 28px;
+  }
+}
