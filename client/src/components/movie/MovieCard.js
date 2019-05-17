@@ -86,11 +86,13 @@ class MovieCard extends Component {
     }
 
     var initRating = 0;
-    ratings.forEach(rating => {
-      if (rating.movieId === movie.id) {
-        initRating = rating.rating;
-      }
-    });
+    if (movie !== undefined) {
+      ratings.forEach(rating => {
+        if (rating.movieId === movie.id) {
+          initRating = rating.rating;
+        }
+      });
+    }
 
     if (shelves !== undefined
           && movie !== undefined
