@@ -280,7 +280,18 @@ const getShelfMovies = function(shelfId) {
         console.log("shelf: " + JSON.stringify(shelf));
         getMovies(shelf.movies.map(movie => movie.movieId))
           .then(movies => {
-            return resolve(movies);
+            const newMovies = [];
+            const watchDates = {};
+            shelf.movies.forEach(movie => {
+              watchDates[movie.movieId.toString()] = movie.watchDate;
+            });
+            for (var i = 0; i < movies.length; i++) {
+              newMovies.push({
+                ...movies[i],
+                watchDate: watchDates[movies[i].id.toString()]
+              });
+            }
+            return resolve(newMovies);
           })
           .catch(err => {
             return reject(err);
