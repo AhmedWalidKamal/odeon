@@ -155,8 +155,9 @@ module.exports.login = function(email, password) {
         bcrypt.compare(password, user.password).then(isMatch => {
           if (isMatch) {
             // user matched
-            const shelvesPayload = user.shelves.map(shelf => {
-              return { name: shelf.name, id: shelf._id };
+            let shelvesPayload = new Object();
+            user.shelves.forEach(shelf => {
+              shelvesPayload[shelf.name] = shelf._id;
             });
 
             console.log("Shelves Payload: " + JSON.stringify(shelvesPayload));

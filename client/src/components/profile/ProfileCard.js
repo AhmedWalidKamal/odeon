@@ -94,8 +94,13 @@ const average_ratings_barchart = {
 
 class ProfileCard extends Component {
   componentDidMount() {
+    const { shelves } = this.props.userReducer.user;
     this.props.fetchProfile(this.props.userReducer.user.id);
-    this.props.userReducer.user.shelves.map(this.props.fetchShelfMovies);
+    for (var shelfName in shelves) {
+      if (shelves.hasOwnProperty(shelfName)) {
+        this.props.fetchShelfMovies(shelves[shelfName])
+      }
+    }
   }
 
   getShelfMovies = shelfMovies => {
@@ -153,7 +158,7 @@ class ProfileCard extends Component {
               </div>
               <div className="profile-card-inf">
                 <div className="profile-card-inf__item">
-                  {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+                  {!isEmpty(shelves) && !isEmpty(shelves[user.shelves["Watched"]]) ? (
                     <div className="profile-card-inf__title">{shelves[user.shelves["Watched"]].length}</div>
                   ) : (
                     <div className="profile-card-inf__title">0</div>
