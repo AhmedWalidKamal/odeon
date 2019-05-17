@@ -23,8 +23,6 @@ class MovieCard extends Component {
   constructor(props) {
     super(props);
     this.rateMovie = this.rateMovie.bind(this);
-    this.watched = false;
-    this.planToWatch = false;
   }
 
   rateMovie(rating) {
@@ -32,9 +30,13 @@ class MovieCard extends Component {
   }
 
   componentDidMount() {
+    this.props.movieReducer.movie = undefined;
+    this.props.movieReducer.shelves = undefined;
     this.props.fetchMovie(this.props.match.params.id);
     this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Watched"]);
     this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Plan to Watch"]);
+    this.watched = false;
+    this.planToWatch = false;
   }
 
   handleIconOnClick = (event, shelfName, movieId, shelfId) => {
@@ -79,8 +81,6 @@ class MovieCard extends Component {
     const { shelves } = this.props.movieReducer;
     var ratings = this.props.userReducer.user.ratings;
 
-    console.log(this.planToWatch);
-
     if (ratings == null) {
       ratings = [];
     }
@@ -92,7 +92,9 @@ class MovieCard extends Component {
       }
     });
 
-    if (!isEmpty(shelves[this.props.userReducer.user.shelves["Watched"]])) {
+    if (shelves !== undefined
+          && movie !== undefined
+          && !isEmpty(shelves[this.props.userReducer.user.shelves["Watched"]])) {
       shelves[this.props.userReducer.user.shelves["Watched"]].forEach(movieId => {
         if (movieId === movie.id) {
           this.watched = true;
@@ -100,7 +102,9 @@ class MovieCard extends Component {
       });
     }
 
-    if (!isEmpty(shelves[this.props.userReducer.user.shelves["Plan to Watch"]])) {
+    if (shelves !== undefined
+          && movie !== undefined
+          && !isEmpty(shelves[this.props.userReducer.user.shelves["Plan to Watch"]])) {
       shelves[this.props.userReducer.user.shelves["Plan to Watch"]].forEach(movieId => {
         if (movieId === movie.id) {
           this.planToWatch = true;
