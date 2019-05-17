@@ -12,7 +12,7 @@ import "./profileCard.scss";
 import MoviePoster from "../home/MoviePoster";
 
 const isEmpty = require("is-empty");
- 
+
 const c3_color_pattern = ['#cd5c5c',	'#ba5353', '#a74b4b',	'#954242',	'#823a3a',	'#6f3232', '#5d2929']
 const genres_piechart = {
   data: {
@@ -46,7 +46,7 @@ const barchart = {
   axis: {
     y: {
       show: false
-    }, 
+    },
     x: {
       show: false
     }
@@ -99,6 +99,13 @@ class ProfileCard extends Component {
     this.props.fetchProfile(this.props.userReducer.user.id);
     this.props.userReducer.user.shelves.map(this.props.fetchShelfMovies);
   }
+
+  getShelfMovies = shelfMovies => {
+    var moviePosters = shelfMovies.map(movie => {
+      return <MoviePoster key={movie.id} movie={movie} />;
+    });
+    return moviePosters;
+  };
 
   render() {
     const { profile } = this.props.profileReducer;
@@ -229,7 +236,7 @@ class ProfileCard extends Component {
           )}
 
           <div className="content__subtitle">
-            Statistics            
+            Statistics
           </div>
 
           <div className="inline">
@@ -238,7 +245,7 @@ class ProfileCard extends Component {
             <C3Chart className="inline" data={average_ratings_barchart.data} color={barchart.color} axis={barchart.axis} size={average_ratings_barchart.size} />
           </div>
         </div>
-        
+
 
         <svg hidden="hidden">
           <defs>
@@ -292,13 +299,6 @@ class ProfileCard extends Component {
       </div>
     );
   }
-
-  getShelfMovies = shelfMovies => {
-    var moviePosters = shelfMovies.map(movie => {
-      return <MoviePoster key={movie.id} movie={movie} />;
-    });
-    return moviePosters;
-  };
 }
 
 ProfileCard.propTypes = {
