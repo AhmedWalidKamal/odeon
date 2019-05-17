@@ -109,7 +109,8 @@ class ProfileCard extends Component {
     const { profile } = this.props.profileReducer;
     const { user } = this.props.userReducer;
     const { shelves } = this.props.movieReducer;
-
+    console.log(user);
+    console.log(shelves);
     return (
       <div>
         <div className="wrapper">
@@ -155,7 +156,7 @@ class ProfileCard extends Component {
               <div className="profile-card-inf">
                 <div className="profile-card-inf__item">
                   {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
-                    <div className="profile-card-inf__title">{shelves[user.shelves[0]].length}</div>
+                    <div className="profile-card-inf__title">{shelves[user.shelves["Watched"]].length}</div>
                   ) : (
                     <div className="profile-card-inf__title">0</div>
                   )}
@@ -212,23 +213,23 @@ class ProfileCard extends Component {
         </div>
 
         <div className="content">
-          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves["Watched"]]) ? (
             <div>
               <div className="content__subtitle">
                 Watched
               </div>
-              <div className="grid">{this.getShelfMovies(shelves[user.shelves[0]])}</div>
+              <div className="grid">{this.getShelfMovies(shelves[user.shelves["Watched"]])}</div>
             </div>
           ) : (
             <div></div>
           )}
 
-          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[1]]) ? (
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves["Plan to Watch"]]) ? (
             <div>
               <div className="content__subtitle">
                 Watchlist
               </div>
-              <div className="grid">{this.getShelfMovies(shelves[user.shelves[1]])}</div>
+              <div className="grid">{this.getShelfMovies(shelves[user.shelves["Plan to Watch"]])}</div>
             </div>
           ) : (
             <div></div>

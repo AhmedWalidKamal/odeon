@@ -28,7 +28,7 @@ class MovieCard extends Component {
   componentDidMount() {
     this.watched = false;
     this.props.fetchMovie(this.props.match.params.id);
-    this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves[0]); //watched shelf
+    this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Watched"]);
   }
 
   handleWatchedOnClick = (event, movieId, shelfId) => {
@@ -75,7 +75,7 @@ class MovieCard extends Component {
     });
 
     if (!isEmpty(shelves)) {
-      shelves[this.props.userReducer.user.shelves[0]].forEach(movieId => {
+      shelves[this.props.userReducer.user.shelves["Watched"]].forEach(movieId => {
         if (movieId === movie.id) {
           this.watched = true;
         }
@@ -138,7 +138,8 @@ class MovieCard extends Component {
               </div>
 
               <div className="icon-bar">
-                <a href="#" onClick={(event) => {this.handleWatchedOnClick(event, movie.id, this.props.userReducer.user.shelves[0])}}>
+                <a href="#" onClick={(event) => {
+                    this.handleWatchedOnClick(event, movie.id, this.props.userReducer.user.shelves["Watched"])}}>
                   {this.watched === true ? (
                     <i className="fas fa-eye checked" />
                   ) : (
@@ -146,10 +147,7 @@ class MovieCard extends Component {
                   )}
                 </a>
                 <a href="#">
-                  <i className="fas fa-heart" />
-                </a>
-                <a href="#">
-                  <i className="fas fa-history" />
+                  <i className="fas fa-plus" />
                 </a>
               </div>
 
