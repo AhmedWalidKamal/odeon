@@ -314,7 +314,7 @@ module.exports.addToShelf = function(shelfId, movieId) {
         if (!shelf.movies.map(movie => movie.movieId).includes(movieId)) {
           shelf.movies.push({ movieId, watchDate: Date.now() });
           updateShelf(shelfId, shelf).then(success => {
-            return resolve({ success });
+            return resolve({ shelf, success });
           });
         } else {
           errors.error = "Shelf already contains movieId = " + movieId;
@@ -337,7 +337,7 @@ module.exports.removeFromShelf = function(shelfId, movieId) {
         if (index > -1) {
           shelf.movies.splice(index, 1);
           updateShelf(shelfId, shelf).then(success => {
-            return resolve({ success });
+            return resolve({ shelf, success });
           });
         } else {
           errors.error = "Shelf does not contain movieId = " + movieId;

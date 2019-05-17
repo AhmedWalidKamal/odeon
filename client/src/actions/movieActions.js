@@ -95,6 +95,13 @@ export const rateMovie = (movieId, rating) => dispatch => {
 export const addMovieToShelf = (movieId, shelfId) => dispatch => {
   axios
     .put("/api/movies/add-to-shelf", { movieId, shelfId })
+    .then(res => {
+      dispatch({
+        type: FETCH_SHELF,
+        payload: { [shelfId]: res.data.shelf.movies}
+      });
+      console.log(res);
+    })
     .catch(err => console.log(err.response.data.error));
 };
 
@@ -102,6 +109,10 @@ export const removeMovieFromShelf = (movieId, shelfId) => dispatch => {
   axios
     .delete("/api/movies/remove-from-shelf", { data: { movieId, shelfId } })
     .then(res => {
+      dispatch({
+        type: FETCH_SHELF,
+        payload: { [shelfId]: res.data.shelf.movies}
+      });
       console.log(res);
     })
     .catch(err => console.log(err.response.data.error));

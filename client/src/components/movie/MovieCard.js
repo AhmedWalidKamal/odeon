@@ -19,7 +19,6 @@ class MovieCard extends Component {
     super(props);
     this.rateMovie = this.rateMovie.bind(this);
     this.watched = false;
-    this.state = { toggleWatchedIcon: false };
   }
 
   rateMovie(rating) {
@@ -40,7 +39,6 @@ class MovieCard extends Component {
       this.watched = true;
       this.props.addMovieToShelf(movieId, shelfId);
     }
-    this.setState({ toggleWatchedIcon: !this.state.toggleWatchedIcon });
   };
 
   getGenres = genres => {
