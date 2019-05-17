@@ -6,18 +6,27 @@ import { fetchProfile } from "../../actions/profileActions";
 import { fetchShelfMovies } from "../../actions/movieActions";
 import "./profileCard.scss";
 import MoviePoster from "../home/MoviePoster";
+import Statistics from "./Statistics";
 
 const isEmpty = require("is-empty");
 
 class ProfileCard extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    const { shelves } = this.props.userReducer.user;
+    this.props.fetchProfile(this.props.userReducer.user.id);
+    for (var shelfName in shelves) {
+      if (shelves.hasOwnProperty(shelfName)) {
+        this.props.fetchShelfMovies(shelves[shelfName]);
+      }
+    }
   }
 
-  componentDidMount() {
-    this.props.fetchProfile(this.props.userReducer.user.id);
-    this.props.userReducer.user.shelves.map(this.props.fetchShelfMovies);
-  }
+  getShelfMovies = shelfMovies => {
+    var moviePosters = shelfMovies.map((movie, i) => {
+      return <MoviePoster key={i} movie={movie} />;
+    });
+    return moviePosters;
+  };
 
   render() {
     const { profile } = this.props.profileReducer;
@@ -29,7 +38,7 @@ class ProfileCard extends Component {
         <div className="wrapper">
           <div className="profile-card js-profile-card">
             <div className="profile-card__img">
-              <img src={profile.avatar} alt="profile card" />
+              <img src={profile.avatar} alt="profile avatar" />
             </div>
             <div className="profile-card__cnt js-profile-cnt">
               {!isEmpty(profile) && !isEmpty(profile.displayName) ? (
@@ -68,8 +77,11 @@ class ProfileCard extends Component {
               </div>
               <div className="profile-card-inf">
                 <div className="profile-card-inf__item">
-                  {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
-                    <div className="profile-card-inf__title">{shelves[user.shelves[0]].length}</div>
+                  {!isEmpty(shelves) &&
+                  !isEmpty(shelves[user.shelves["Watched"]]) ? (
+                    <div className="profile-card-inf__title">
+                      {shelves[user.shelves["Watched"]].length}
+                    </div>
                   ) : (
                     <div className="profile-card-inf__title">0</div>
                   )}
@@ -90,6 +102,7 @@ class ProfileCard extends Component {
                   href="https://www.facebook.com/"
                   className="profile-card-social__item facebook"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <span className="icon-font">
                     <svg className="icon">
@@ -101,6 +114,7 @@ class ProfileCard extends Component {
                   href="https://twitter.com/"
                   className="profile-card-social__item twitter"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <span className="icon-font">
                     <svg className="icon">
@@ -112,6 +126,7 @@ class ProfileCard extends Component {
                   href="http://website.com/"
                   className="profile-card-social__item link"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <span className="icon-font">
                     <svg className="icon">
@@ -126,27 +141,29 @@ class ProfileCard extends Component {
         </div>
 
         <div className="content">
-          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves["Watched"]]) ? (
             <div>
-              <div className="content__subtitle">
-                Watched
+              <div className="content__subtitle">Watched</div>
+              <div className="grid">
+                {this.getShelfMovies(shelves[user.shelves["Watched"]])}
               </div>
-              <div className="grid">{this.getShelfMovies(shelves[user.shelves[0]])}</div>
             </div>
           ) : (
-            <div></div>
+            <div />
           )}
 
-          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[1]]) ? (
+          {!isEmpty(shelves) &&
+          !isEmpty(shelves[user.shelves["Plan to Watch"]]) ? (
             <div>
-              <div className="content__subtitle">
-                Watchlist
+              <div className="content__subtitle">Watchlist</div>
+              <div className="grid">
+                {this.getShelfMovies(shelves[user.shelves["Plan to Watch"]])}
               </div>
-              <div className="grid">{this.getShelfMovies(shelves[user.shelves[1]])}</div>
             </div>
           ) : (
-            <div></div>
+            <div />
           )}
+          <Statistics />
         </div>
 
         <svg hidden="hidden">
@@ -201,14 +218,6 @@ class ProfileCard extends Component {
       </div>
     );
   }
-
-  getShelfMovies = shelfMovies => {
-    console.log(shelfMovies);
-    var moviePosters = shelfMovies.map(movie => {
-      return <MoviePoster key={movie.id} movie={movie} />;
-    });
-    return moviePosters;
-  };
 }
 
 ProfileCard.propTypes = {

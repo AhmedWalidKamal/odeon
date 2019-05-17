@@ -85,44 +85,62 @@ module.exports.register = function(username, email, password) {
             }
             console.log("Profile: " + newUser.username + " Created.");
 
-            watchedShelf.save().then(function() {
-              if (watchedShelf.isNew) {
-                errors.error = "Couldn't create watched shelf for user";
-                return reject(errors);
-              }
-              console.log(
-                "Shelf: " +
-                  newUser.username +
-                  "." +
-                  watchedShelf.name +
-                  " Created."
-              );
-              planToWatchShelf.save().then(function() {
-                if (planToWatchShelf.isNew) {
-                  errors.error = "Couldn't create plan to watch shelf for user";
+            watchedShelf
+              .save()
+              .then(function() {
+                if (watchedShelf.isNew) {
+                  errors.error = "Couldn't create watched shelf for user";
                   return reject(errors);
                 }
                 console.log(
                   "Shelf: " +
                     newUser.username +
                     "." +
-                    planToWatchShelf.name +
+                    watchedShelf.name +
                     " Created."
                 );
-                newUser.save().then(function() {
-                  if (newUser.isNew) {
-                    console.log("The error is here fam");
-                    errors.error = "Registration error";
-                    return reject(errors);
-                  }
-                  console.log("User: " + newUser.username + " Signed Up.");
+                planToWatchShelf
+                  .save()
+                  .then(function() {
+                    if (planToWatchShelf.isNew) {
+                      errors.error =
+                        "Couldn't create plan to watch shelf for user";
+                      return reject(errors);
+                    }
+                    console.log(
+                      "Shelf: " +
+                        newUser.username +
+                        "." +
+                        planToWatchShelf.name +
+                        " Created."
+                    );
+                    newUser.save().then(function() {
+                      if (newUser.isNew) {
+                        console.log("The error is here fam");
+                        errors.error = "Registration error";
+                        return reject(errors);
+                      }
+                      console.log("User: " + newUser.username + " Signed Up.");
 
-                  return resolve({
-                    success: true
+                      return resolve({
+                        success: true
+                      });
+                    });
+                  })
+                  .catch(err => {
+                    console.log("Couldn't save to-watch shelf");
+                    console.log(err);
+                    errors.error =
+                      "Couldn't create plan to watch shelf for user";
+                    return reject(errors);
                   });
-                });
+              })
+              .catch(err => {
+                console.log("Couldn't save watched shelf");
+                console.log(err);
+                errors.error = "Couldn't create watched shelf for user";
+                return reject(errors);
               });
-            });
           });
         });
       });
@@ -145,6 +163,7 @@ module.exports.login = function(email, password) {
     User.findOne({
       email
     })
+      .populate("shelves")
       .populate("profile", ["displayName", "avatar"])
       .then(user => {
         if (!user) {
@@ -154,7 +173,13 @@ module.exports.login = function(email, password) {
         bcrypt.compare(password, user.password).then(isMatch => {
           if (isMatch) {
             // user matched
-            console.log(user);
+            let shelvesPayload = new Object();
+            user.shelves.forEach(shelf => {
+              shelvesPayload[shelf.name] = shelf._id;
+            });
+
+            console.log("Shelves Payload: " + JSON.stringify(shelvesPayload));
+
             const payload = {
               id: user._id,
               profileId: user.profile._id,
@@ -162,10 +187,10 @@ module.exports.login = function(email, password) {
               email: user.email,
               displayName: user.displayName,
               avatar: user.profile.avatar,
-              shelves: user.shelves,
+              shelves: shelvesPayload,
               ratings: user.ratings
             }; // Create JWT payload, this gives information about the user
-
+            console.log("Login with payload: " + JSON.stringify(payload));
             // Sign token, returned to the frontend, has user info in the payload.
             jwt.sign(
               payload,
@@ -208,15 +233,17 @@ module.exports.getProfile = function(userId) {
 
 module.exports.getUser = function(userId) {
   return new Promise((resolve, reject) => {
-    User.findById(userId).then(user => {
-      if (empty(user)) {
-        console.log("User " + userId + " not found");
-        errors.error = "User not found";
-        return reject(errors);
-      } else {
-        return resolve(user);
-      }
-    });
+    User.findById(userId)
+      .populate("shelves")
+      .then(user => {
+        if (empty(user)) {
+          console.log("User " + userId + " not found");
+          errors.error = "User not found";
+          return reject(errors);
+        } else {
+          return resolve(user);
+        }
+      });
   });
 };
 

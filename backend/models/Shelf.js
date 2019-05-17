@@ -10,8 +10,13 @@ const ShelfSchema = new Schema({
   },
   movies: [
     {
-      type: Number,
-      unique: true
+      movieId: {
+        type: Number
+      },
+      watchDate: {
+        type: Date,
+        default: Date.now
+      }
     }
   ]
 });

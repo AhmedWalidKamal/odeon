@@ -4,6 +4,7 @@ const empty = require("is-empty");
 const keys = require("./config/keys");
 const tmdb = require("moviedb")(keys.tmdbApiKey);
 const defaults = require("./config/defaults");
+const moment = require("moment");
 
 var base_url;
 var poster_size;
@@ -54,8 +55,7 @@ const parseCredits = function(movieCredits) {
 const createMovie = function(movieInfo, movieCredits) {
   const { cast, directors } = parseCredits(movieCredits);
   const movie = new Movie();
-  movie._id = movieInfo.id;
-  movie.id = movieInfo.id;
+  movie.id = parseInt(movieInfo.id);
   movie.title = movieInfo.title;
   movie.imdb_id = movieInfo.imdb_id;
   movie.release_date = new Date(movieInfo.release_date);
@@ -72,7 +72,7 @@ const createMovie = function(movieInfo, movieCredits) {
   return movie;
 };
 
-const getMovie = async function(id) {
+const getMovieTMDB = async function(id) {
   return new Promise((resolve, reject) => {
     tmdb.movieInfo({ id }, (movieErr, movieInfo) => {
       const errors = {};
@@ -83,7 +83,6 @@ const getMovie = async function(id) {
         errors.error = "Empty Movie Response";
         return reject(errors);
       }
-      console.log(movieInfo.title);
       tmdb.movieCredits({ id }, (credErr, movieCredits) => {
         if (credErr) {
           return reject(credErr);
@@ -99,19 +98,143 @@ const getMovie = async function(id) {
               const { base_url, poster_size } = data;
               movie.poster_path =
                 base_url + poster_size + movieInfo.poster_path;
+              movie
+                .save()
+                .then(function() {
+                  if (!movie.isNew) {
+                    console.log(
+                      "Movie " + movie.id + "(" + movie.title + ") Saved"
+                    );
+                  }
+                  return resolve(movie);
+                })
+                .catch(err => {
+                  console.log(
+                    "Failed to save movie " +
+                      movie.id +
+                      "(" +
+                      movie.title +
+                      ") " +
+                      JSON.stringify(err)
+                  );
+                  return resolve(movie);
+                });
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        } else {
+          movie
+            .save()
+            .then(function() {
+              if (!movie.isNew) {
+                console.log(
+                  "Movie " + movie.id + "(" + movie.title + ") Saved"
+                );
+              }
+              return resolve(movie);
+            })
+            .catch(err => {
+              console.log(
+                "Failed to save movie " +
+                  movie.id +
+                  "(" +
+                  movie.title +
+                  ") " +
+                  JSON.stringify(err)
+              );
+              return resolve(movie);
+            });
+        }
+      });
+    });
+  });
+};
+module.exports.getMovieTMDB = getMovieTMDB;
+const getMovie = async function(id) {
+  return new Promise((resolve, reject) => {
+    console.log("Movie: " + id + " should be fetched");
+    Movie.findOne()
+      .where("id")
+      .equals(id)
+      .then(record => {
+        if (empty(record)) {
+          console.log("Movie: " + id + " will be fetched from TMDB");
+          getMovieTMDB(id)
+            .then(movie => {
               return resolve(movie);
             })
             .catch(err => {
               return reject(err);
             });
         } else {
-          return resolve(movie);
+          console.log("Movie: " + id + " is fetched from database");
+          return resolve(record);
         }
+      })
+      .catch(err => {
+        console.log("Movie: " + id + " will be fetched from TMDB");
+        getMovieTMDB(id)
+          .then(movie => {
+            return resolve(movie);
+          })
+          .catch(err => {
+            return reject(err);
+          });
       });
-    });
   });
 };
 module.exports.getMovie = getMovie;
+const promiseSerial = funcs =>
+  funcs.reduce(
+    (promise, func) =>
+      promise.then(result => func().then(Array.prototype.concat.bind(result))),
+    Promise.resolve([])
+  );
+
+const getMovies = function(movieIds) {
+  return new Promise((resolve, reject) => {
+    console.log("Movies: [" + movieIds + "] should be fetched");
+    Movie.find()
+      .where("id")
+      .in(movieIds)
+      .then(records => {
+        if (empty(records)) {
+          records = [];
+        }
+        const recordsIds = records.map(record => record.id);
+        const moviesToFetch = movieIds.filter(id => !recordsIds.includes(id));
+        console.log(
+          "Movies: [" + recordsIds + "] are fetched from the database"
+        );
+        console.log(
+          "Movies: [" + moviesToFetch + "] will be fetched from TMDB"
+        );
+        var movies = moviesToFetch.map(id => () => getMovieTMDB(id));
+        promiseSerial(movies)
+          .then(result => {
+            return resolve(result.concat(records.map(movie => movie._doc)));
+          })
+          .catch(err => {
+            console.log(
+              "Error searching TMDB to get movies [" +
+                movieIds +
+                "] " +
+                JSON.stringify(err)
+            );
+            return reject(err);
+          });
+      })
+      .catch(err => {
+        console.log(
+          "Failed to get movies [" + movieIds + "] " + JSON.stringify(err)
+        );
+        return reject(err);
+      });
+  });
+};
+
+module.exports.getMovies = getMovies;
 
 module.exports.updateRating = function(ratings, movieId, newRating) {
   var updated = false;
@@ -132,7 +255,6 @@ const updateShelf = function(shelfId, newShelf) {
   return new Promise((resolve, reject) => {
     Shelf.findByIdAndUpdate(shelfId, newShelf).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
@@ -145,45 +267,65 @@ const updateShelf = function(shelfId, newShelf) {
 };
 module.exports.updateShelf = updateShelf;
 
-const promiseSerial = funcs =>
-  funcs.reduce(
-    (promise, func) =>
-      promise.then(result => func().then(Array.prototype.concat.bind(result))),
-    Promise.resolve([])
-  );
-
 const getShelfMovies = function(shelfId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
-        const funcs = shelf.movies.map(movieId => () => getMovie(movieId));
-        promiseSerial(funcs).then(result => {
-          return resolve(result);
-        });
+        console.log("shelf: " + JSON.stringify(shelf));
+        getMovies(shelf.movies.map(movie => movie.movieId))
+          .then(movies => {
+            const newMovies = [];
+            const watchDates = {};
+            shelf.movies.forEach(movie => {
+              watchDates[movie.movieId.toString()] = movie.watchDate;
+            });
+            for (var i = 0; i < movies.length; i++) {
+              newMovies.push({
+                ...movies[i],
+                watchDate: watchDates[movies[i].id.toString()]
+              });
+            }
+            return resolve(newMovies);
+          })
+          .catch(err => {
+            return reject(err);
+          });
       }
     });
   });
 };
 module.exports.getShelfMovies = getShelfMovies;
 
+const getShelfMoviesIds = function(shelfId) {
+  return new Promise((resolve, reject) => {
+    Shelf.findById(shelfId).then(shelf => {
+      if (empty(shelf)) {
+        errors.error = "Shelf not found";
+        return reject(errors);
+      } else {
+        return resolve(shelf.movies.map(movie => movie.movieId));
+      }
+    });
+  });
+};
+module.exports.getShelfMoviesIds = getShelfMoviesIds;
+
 module.exports.addToShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
         console.log(shelf.movies);
 
-        if (!shelf.movies.includes(movieId)) {
-          shelf.movies.push(movieId);
+        if (!shelf.movies.map(movie => movie.movieId).includes(movieId)) {
+          shelf.movies.push({ movieId, watchDate: Date.now() });
           updateShelf(shelfId, shelf).then(success => {
-            return resolve({ success });
+            return resolve({ shelf, success });
           });
         } else {
           errors.error = "Shelf already contains movieId = " + movieId;
@@ -199,15 +341,14 @@ module.exports.removeFromShelf = function(shelfId, movieId) {
   return new Promise((resolve, reject) => {
     Shelf.findById(shelfId).then(shelf => {
       if (empty(shelf)) {
-        console.log("Shelf " + shelfId + " not found");
         errors.error = "Shelf not found";
         return reject(errors);
       } else {
-        var index = shelf.movies.indexOf(movieId);
+        var index = shelf.movies.map(movie => movie.movieId).indexOf(movieId);
         if (index > -1) {
           shelf.movies.splice(index, 1);
           updateShelf(shelfId, shelf).then(success => {
-            return resolve({ success });
+            return resolve({ shelf, success });
           });
         } else {
           errors.error = "Shelf does not contain movieId = " + movieId;
@@ -312,4 +453,69 @@ module.exports.searchMovies = function(query, page) {
         return reject(err);
       });
   });
+};
+
+module.exports.countMoviesPerGenre = function(movies) {
+  const moviesPerGenre = {};
+  if (empty(movies)) {
+    movies = [];
+  }
+  movies.forEach(movie => {
+    const genres = movie.genres;
+    genres.forEach(genre => {
+      const name = genre.name;
+      if (empty(moviesPerGenre[name])) {
+        moviesPerGenre[name] = 0;
+      }
+      moviesPerGenre[name]++;
+    });
+  });
+  return moviesPerGenre;
+};
+
+module.exports.countMoviesPerRating = function(ratings) {
+  if (empty(ratings)) {
+    ratings = [];
+  }
+  const moviesPerRating = {};
+  for (var rating = 1; rating <= 10; rating++) {
+    const rate = rating / 2;
+    const rateString = rate.toString();
+    moviesPerRating[rateString] = 0;
+  }
+  ratings.forEach(rating => {
+    const rate = rating.rating;
+    const rateString = rate.toString();
+    if (empty(moviesPerRating[rateString])) {
+      moviesPerRating[rateString] = 0;
+    }
+    moviesPerRating[rateString]++;
+  });
+  return moviesPerRating;
+};
+
+module.exports.countMoviesPerMonth = function(shelf) {
+  const moviesPerMonth = {};
+  const curYear = new Date().getFullYear();
+  for (var month = 0; month < 12; month++) {
+    const monthStr = moment(new Date(curYear, month)).format("MMMM YYYY");
+    moviesPerMonth[monthStr] = 0;
+  }
+  var movies = shelf.movies;
+  if (empty(movies)) {
+    movies = [];
+  }
+  movies
+    .filter(movie => {
+      return movie.watchDate.getFullYear() === curYear;
+    })
+    .forEach(movie => {
+      const watchDate = movie.watchDate;
+      const watchDateStr = moment(watchDate).format("MMMM YYYY");
+      if (empty(moviesPerMonth[watchDateStr])) {
+        moviesPerMonth[watchDateStr] = 0;
+      }
+      moviesPerMonth[watchDateStr]++;
+    });
+  return moviesPerMonth;
 };

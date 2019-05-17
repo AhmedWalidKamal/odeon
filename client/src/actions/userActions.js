@@ -2,7 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "../util/setAuthToken";
 
-import { SET_CURRENT_USER } from "./types";
+import { SET_CURRENT_USER, FETCH_STATISTICS } from "./types";
 
 export const register = (userData, history) => dispatch => {
   axios
@@ -46,14 +46,24 @@ export const setCurrentUser = decoded => {
 };
 
 export const logout = () => dispatch => {
-  console.log("here in logout");
-
   // Remove jwt token from local storage
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
   setAuthToken(false);
   // Set current user to {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
+};
+
+export const fetchStatistics = userId => dispatch => {
+  axios
+    .get(`/api/users/statistics/${userId}`)
+    .then(res => {
+      dispatch({
+        type: FETCH_STATISTICS,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 // export const editUser = (

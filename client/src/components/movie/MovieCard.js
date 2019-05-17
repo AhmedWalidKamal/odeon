@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Rating from "react-rating";
+
 import {
   fetchMovie,
   rateMovie,
   addMovieToShelf,
   removeMovieFromShelf,
-  fetchShelfMovies
+  fetchShelfMoviesIds
 } from "../../actions/movieActions";
 import "./movieCard.scss";
 
@@ -17,35 +18,70 @@ class MovieCard extends Component {
   constructor(props) {
     super(props);
     this.rateMovie = this.rateMovie.bind(this);
-    this.state = {
-      watched: false
-    };
+    this.watched = false;
   }
 
   rateMovie(rating) {
-    console.log(rating);
     this.props.rateMovie(this.props.movieReducer.movie.id, rating);
   }
 
   componentDidMount() {
+    this.watched = false;
     this.props.fetchMovie(this.props.match.params.id);
-    // this.props.fetchShelfMovies(this.props.userReducer.user.shelves[0]); //watched shelf
+    this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves["Watched"]);
   }
+
+  handleWatchedOnClick = (event, movieId, shelfId) => {
+    event.preventDefault();
+    if (this.watched === true) {
+      this.watched = false;
+      this.props.removeMovieFromShelf(movieId, shelfId);
+    } else {
+      this.watched = true;
+      this.props.addMovieToShelf(movieId, shelfId);
+    }
+  };
+
+  getGenres = genres => {
+    var genreNames = genres.map(({ name }) => name);
+    return genreNames.join(", ");
+  };
+
+  renderNames = (persons, size = 4) => {
+    var names = persons.map(person => {
+      return <li key={person.id}>{person.name}</li>;
+    });
+    if (names.length > size) {
+      return names.slice(0, size);
+    } else {
+      return names;
+    }
+  };
 
   render() {
     const { movie } = this.props.movieReducer;
+    const { shelves } = this.props.movieReducer;
     var ratings = this.props.userReducer.user.ratings;
 
     if (ratings == null) {
       ratings = [];
     }
 
-    let initRating = 0;
+    var initRating = 0;
     ratings.forEach(rating => {
       if (rating.movieId === movie.id) {
         initRating = rating.rating;
       }
     });
+
+    if (!isEmpty(shelves)) {
+      shelves[this.props.userReducer.user.shelves["Watched"]].forEach(movieId => {
+        if (movieId === movie.id) {
+          this.watched = true;
+        }
+      });
+    }
+
     return (
       <div>
         <link
@@ -56,9 +92,9 @@ class MovieCard extends Component {
           <div className="film-card js-film-card">
             <div className="film-card__img">
               {!isEmpty(movie) && !isEmpty(movie.poster_path) ? (
-                <img src={movie.poster_path} alt="film card" />
+                <img src={movie.poster_path} alt="movie poster" />
               ) : (
-                <img src="/img/default-poster.jpg" alt="film card" />
+                <img src="/img/default-poster.jpg" alt="movie poster" />
               )}
             </div>
             <div className="film-card__cnt js-film-cnt">
@@ -70,7 +106,7 @@ class MovieCard extends Component {
               <div className="film-card__tags list--inline">
                 {!isEmpty(movie) &&
                 !isEmpty(movie.ratings_count) &&
-                movie.ratings_count != 0 ? (
+                movie.ratings_count !== 0 ? (
                   <li>{movie.avg_rating}</li>
                 ) : (
                   <li>Unrated</li>
@@ -102,18 +138,16 @@ class MovieCard extends Component {
               </div>
 
               <div className="icon-bar">
-                <a href="#" onClick={this.handleOnClick}>
-                  {this.state.watched === true ? (
+                <a href="#" onClick={(event) => {
+                    this.handleWatchedOnClick(event, movie.id, this.props.userReducer.user.shelves["Watched"])}}>
+                  {this.watched === true ? (
                     <i className="fas fa-eye checked" />
                   ) : (
                     <i className="fas fa-eye" />
                   )}
                 </a>
                 <a href="#">
-                  <i className="fas fa-heart" />
-                </a>
-                <a href="#">
-                  <i className="fas fa-history" />
+                  <i className="fas fa-plus" />
                 </a>
               </div>
 
@@ -163,36 +197,6 @@ class MovieCard extends Component {
       </div>
     );
   }
-
-  getGenres = genres => {
-    var genreNames = genres.map(({ name }) => name);
-    return genreNames.join(", ");
-  };
-
-  renderNames = (persons, size = 4) => {
-    var names = persons.map(person => {
-      return <li key={person.id}>{person.name}</li>;
-    });
-    if (names.length > size) {
-      return names.slice(0, size);
-    } else {
-      return names;
-    }
-  };
-
-  handleOnClick = watched => {
-    console.log("watched onclick");
-
-    var movieId = this.props.movieReducer.movie.id;
-    var shelfId = this.props.userReducer.user.shelves[0];
-    if (this.state.watched === true) {
-      this.setState({ watched: false });
-      this.props.removeMovieFromShelf(movieId, shelfId);
-    } else {
-      this.setState({ watched: true });
-      this.props.addMovieToShelf(movieId, shelfId);
-    }
-  };
 }
 
 MovieCard.propTypes = {
@@ -216,6 +220,6 @@ export default connect(
     rateMovie,
     addMovieToShelf,
     removeMovieFromShelf,
-    fetchShelfMovies
+    fetchShelfMoviesIds
   }
 )(MovieCard);

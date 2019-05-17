@@ -8,7 +8,9 @@ const MovieSchema = new Schema({
   id: {
     type: Number,
     unique: true,
-    required: true
+    dropDups: true,
+    required: true,
+    index: true
   },
   title: {
     type: String,
@@ -48,7 +50,6 @@ const MovieSchema = new Schema({
     {
       id: {
         type: Number,
-        unique: true,
         required: true
       },
       name: {
@@ -61,7 +62,6 @@ const MovieSchema = new Schema({
     {
       id: {
         type: Number,
-        unique: true,
         required: true
       },
       name: {
@@ -74,7 +74,6 @@ const MovieSchema = new Schema({
     {
       id: {
         type: Number,
-        unique: true,
         required: true
       },
       name: {

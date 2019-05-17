@@ -9,8 +9,6 @@ import "./auth.scss";
 class Login extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
-
     this.state = {
       email: "",
       password: ""
@@ -41,14 +39,12 @@ class Login extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     const { email, password } = this.state;
-    const { dispatch } = this.props;
-
     if (email && password) {
       this.props.login(email, password);
     }
   }
+
   render() {
     const { email, password } = this.state;
     return (

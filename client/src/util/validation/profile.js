@@ -12,8 +12,6 @@ module.exports = function validateProfileInput(data) {
   */
   data.social = !isEmpty(data.social) ? data.social : {};
 
-  console.log(data);
-
   const twitter = !isEmpty(data.twitter) ? data.twitter : "";
   const facebook = !isEmpty(data.facebook) ? data.facebook : "";
   const website = !isEmpty(data.website) ? data.website : "";

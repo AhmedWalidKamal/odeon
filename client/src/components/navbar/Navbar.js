@@ -2,20 +2,36 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+
 import { logout } from "../../actions/userActions";
-import { changeCollectionName } from "../../actions/movieActions";
+import { changeCollectionName, search } from "../../actions/movieActions";
 
 import "./navbar.scss";
 
 class Navbar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchQuery: ""
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.performSearch = this.performSearch.bind(this);
+  }
+
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
   performSearch(e) {
     e.preventDefault();
-    console.log("Search");
+    const { searchQuery } = this.state;
+    this.props.search(searchQuery);
   }
 
   render() {
     const { isAuthenticated, user } = this.props.userReducer;
-    console.log(user);
 
     // Logo
     const Logo = (
@@ -104,10 +120,17 @@ class Navbar extends Component {
       </div>
     );
 
+    const { searchQuery } = this.state;
     // Search
     const Search = (
       <form onSubmit={this.performSearch} id="search" className="Search">
-        <input type="search" placeholder="Search for a title..." />
+        <input
+          type="search"
+          name="searchQuery"
+          value={searchQuery}
+          onChange={this.handleChange}
+          placeholder="Search for a title..."
+        />
       </form>
     );
 
@@ -117,7 +140,7 @@ class Navbar extends Component {
         <div className="User">
           <div className="name">{user.username}</div>
           <div className="image">
-            <img src={user.avatar} />
+            <img src={user.avatar} alt="User avatar" />
           </div>
         </div>
         <div className="UserProfile-menu">
@@ -168,7 +191,9 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
   userReducer: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  changeCollectionName: PropTypes.func.isRequired,
+  search: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -177,5 +202,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logout, changeCollectionName }
+  { logout, changeCollectionName, search }
 )(Navbar);
