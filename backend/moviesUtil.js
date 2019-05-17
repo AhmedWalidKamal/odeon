@@ -473,6 +473,11 @@ module.exports.countMoviesPerRating = function(ratings) {
     ratings = [];
   }
   const moviesPerRating = {};
+  for (var rating = 1; rating <= 10; rating++) {
+    const rate = rating / 2;
+    const rateString = rate.toString();
+    moviesPerRating[rateString] = 0;
+  }
   ratings.forEach(rating => {
     const rate = rating.rating;
     const rateString = rate.toString();
@@ -486,11 +491,15 @@ module.exports.countMoviesPerRating = function(ratings) {
 
 module.exports.countMoviesPerMonth = function(shelf) {
   const moviesPerMonth = {};
+  const curYear = new Date().getFullYear();
+  for (var month = 0; month < 12; month++) {
+    const monthStr = moment(new Date(curYear, month)).format("MMMM YYYY");
+    moviesPerMonth[monthStr] = 0;
+  }
   var movies = shelf.movies;
   if (empty(movies)) {
     movies = [];
   }
-  const curYear = new Date().getFullYear();
   movies
     .filter(movie => {
       return movie.watchDate.getFullYear() === curYear;
