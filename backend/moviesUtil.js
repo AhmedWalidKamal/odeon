@@ -72,7 +72,7 @@ const createMovie = function(movieInfo, movieCredits) {
   return movie;
 };
 
-const getMovie = async function(id) {
+const getMovieTMDB = async function(id) {
   return new Promise((resolve, reject) => {
     tmdb.movieInfo({ id }, (movieErr, movieInfo) => {
       const errors = {};
@@ -150,8 +150,41 @@ const getMovie = async function(id) {
     });
   });
 };
+module.exports.getMovieTMDB = getMovieTMDB;
+const getMovie = async function(id) {
+  return new Promise((resolve, reject) => {
+    console.log("Movie: " + id + " should be fetched");
+    Movie.findOne()
+      .where("id")
+      .equals(id)
+      .then(record => {
+        if (empty(record)) {
+          console.log("Movie: " + id + " will be fetched from TMDB");
+          getMovieTMDB(id)
+            .then(movie => {
+              return resolve(movie);
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        } else {
+          console.log("Movie: " + id + " is fetched from database");
+          return resolve(record);
+        }
+      })
+      .catch(err => {
+        console.log("Movie: " + id + " will be fetched from TMDB");
+        getMovieTMDB(id)
+          .then(movie => {
+            return resolve(movie);
+          })
+          .catch(err => {
+            return reject(err);
+          });
+      });
+  });
+};
 module.exports.getMovie = getMovie;
-
 const promiseSerial = funcs =>
   funcs.reduce(
     (promise, func) =>
@@ -161,18 +194,11 @@ const promiseSerial = funcs =>
 
 const getMovies = function(movieIds) {
   return new Promise((resolve, reject) => {
-    // console.log("Movies: [" + movieIds + "] should be fetched");
-    Movie.find({ id: { $in: movieIds } })
-      .then((records, err) => {
-        if (!empty(err)) {
-          console.log(
-            "Error searching mongodb to get movies [" +
-              movieIds +
-              "] " +
-              JSON.stringify(err)
-          );
-          // return reject(err);
-        }
+    console.log("Movies: [" + movieIds + "] should be fetched");
+    Movie.find()
+      .where("id")
+      .in(movieIds)
+      .then(records => {
         if (empty(records)) {
           records = [];
         }
@@ -184,7 +210,7 @@ const getMovies = function(movieIds) {
         console.log(
           "Movies: [" + moviesToFetch + "] will be fetched from TMDB"
         );
-        var movies = moviesToFetch.map(id => () => getMovie(id));
+        var movies = moviesToFetch.map(id => () => getMovieTMDB(id));
         promiseSerial(movies)
           .then(result => {
             return resolve(result.concat(records));
@@ -288,7 +314,7 @@ module.exports.addToShelf = function(shelfId, movieId) {
         if (!shelf.movies.map(movie => movie.movieId).includes(movieId)) {
           shelf.movies.push({ movieId, watchDate: Date.now() });
           updateShelf(shelfId, shelf).then(success => {
-            return resolve({ success });
+            return resolve({ shelf, success });
           });
         } else {
           errors.error = "Shelf already contains movieId = " + movieId;
@@ -311,7 +337,7 @@ module.exports.removeFromShelf = function(shelfId, movieId) {
         if (index > -1) {
           shelf.movies.splice(index, 1);
           updateShelf(shelfId, shelf).then(success => {
-            return resolve({ success });
+            return resolve({ shelf, success });
           });
         } else {
           errors.error = "Shelf does not contain movieId = " + movieId;
@@ -442,12 +468,12 @@ module.exports.countMoviesPerRating = function(ratings) {
   }
   const moviesPerRating = {};
   ratings.forEach(rating => {
-    const rate = rating.rating / 2;
+    const rate = rating.rating;
     const rateString = rate.toString();
     if (empty(moviesPerRating[rateString])) {
       moviesPerRating[rateString] = 0;
     }
-    moviesPerRating[rateString];
+    moviesPerRating[rateString]++;
   });
   return moviesPerRating;
 };

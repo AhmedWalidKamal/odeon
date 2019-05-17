@@ -95,14 +95,16 @@ router.put(
     session: false
   }),
   (req, res) => {
+    console.log("test");
     const info = decode(req.headers.authorization);
     const { movieId, shelfId } = req.body;
 
     errors = {};
 
     users.getUser(info.id).then(user => {
-      if (!user.shelves.map(id => id.toString()).includes(shelfId)) {
+      if (!user.shelves.map(shelf => shelf._id.toString()).includes(shelfId)) {
         errors.shelf = "Requested shelf id does not belong to user";
+        console.log(errors);
         res.status(400).json(errors);
       } else {
         moviesUtil
@@ -130,8 +132,9 @@ router.delete(
 
     errors = {};
     users.getUser(info.id).then(user => {
-      if (!user.shelves.map(shelf => shelf.toString()).includes(shelfId)) {
+      if (!user.shelves.map(shelf => shelf._id.toString()).includes(shelfId)) {
         errors.shelf = "Requested shelf id does not belong to user";
+        console.log(errors);
         res.status(400).json(errors);
       } else {
         moviesUtil

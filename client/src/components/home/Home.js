@@ -7,10 +7,6 @@ import "./home.scss";
 import MoviePoster from "./MoviePoster";
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { collection } = this.props.match.params;
     if (collection) {
@@ -21,8 +17,6 @@ class Home extends Component {
   }
 
   render() {
-    console.log("Rendering Home...");
-    console.log(this.props.movieReducer.movies);
     let moviePosters = this.props.movieReducer.movies
       .slice(0, 15)
       .map(movie => {

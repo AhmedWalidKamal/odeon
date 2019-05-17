@@ -19,7 +19,6 @@ class MovieCard extends Component {
     super(props);
     this.rateMovie = this.rateMovie.bind(this);
     this.watched = false;
-    this.state = { toggleWatchedIcon: false };
   }
 
   rateMovie(rating) {
@@ -30,6 +29,33 @@ class MovieCard extends Component {
     this.props.fetchMovie(this.props.match.params.id);
     this.props.fetchShelfMoviesIds(this.props.userReducer.user.shelves[0]); //watched shelf
   }
+
+  handleWatchedOnClick = (event, movieId, shelfId) => {
+    event.preventDefault();
+    if (this.watched === true) {
+      this.watched = false;
+      this.props.removeMovieFromShelf(movieId, shelfId);
+    } else {
+      this.watched = true;
+      this.props.addMovieToShelf(movieId, shelfId);
+    }
+  };
+
+  getGenres = genres => {
+    var genreNames = genres.map(({ name }) => name);
+    return genreNames.join(", ");
+  };
+
+  renderNames = (persons, size = 4) => {
+    var names = persons.map(person => {
+      return <li key={person.id}>{person.name}</li>;
+    });
+    if (names.length > size) {
+      return names.slice(0, size);
+    } else {
+      return names;
+    }
+  };
 
   render() {
     const { movie } = this.props.movieReducer;
@@ -172,46 +198,6 @@ class MovieCard extends Component {
       </div>
     );
   }
-
-  handleWatchedOnClick = (event, movieId, shelfId) => {
-    event.preventDefault();
-    if (this.watched === true) {
-      this.watched = false;
-      this.props.removeMovieFromShelf(movieId, shelfId);
-    } else {
-      this.watched = true;
-      this.props.addMovieToShelf(movieId, shelfId);
-    }
-    this.setState({ toggleWatchedIcon: !this.state.toggleWatchedIcon });
-  }
-
-  getGenres = genres => {
-    var genreNames = genres.map(({ name }) => name);
-    return genreNames.join(", ");
-  };
-
-  renderNames = (persons, size = 4) => {
-    var names = persons.map(person => {
-      return <li key={person.id}>{person.name}</li>;
-    });
-    if (names.length > size) {
-      return names.slice(0, size);
-    } else {
-      return names;
-    }
-  };
-
-  // handleOnClick = watched => {
-  //   var movieId = this.props.movieReducer.movie.id;
-  //   var shelfId = this.props.userReducer.user.shelves[0];
-  //   if (this.state.watched === true) {
-  //     this.setState({ watched: false });
-  //     this.props.removeMovieFromShelf(movieId, shelfId);
-  //   } else {
-  //     this.setState({ watched: true });
-  //     this.props.addMovieToShelf(movieId, shelfId);
-  //   }
-  // };
 }
 
 MovieCard.propTypes = {
