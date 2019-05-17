@@ -145,6 +145,7 @@ module.exports.login = function(email, password) {
     User.findOne({
       email
     })
+      .populate("shelves")
       .populate("profile", ["displayName", "avatar"])
       .then(user => {
         if (!user) {
@@ -155,6 +156,9 @@ module.exports.login = function(email, password) {
           if (isMatch) {
             // user matched
             console.log(user);
+            const shelvesPayload = user.shelves.forEach(shelf => {
+              return { name: shelf.name, id: shelf._id };
+            });
             const payload = {
               id: user._id,
               profileId: user.profile._id,
@@ -162,7 +166,7 @@ module.exports.login = function(email, password) {
               email: user.email,
               displayName: user.displayName,
               avatar: user.profile.avatar,
-              shelves: user.shelves,
+              shelves: shelvesPayload,
               ratings: user.ratings
             }; // Create JWT payload, this gives information about the user
 
