@@ -11,14 +11,8 @@ class Home extends Component {
     super(props);
   }
 
-  componentWillReceiveProps(newProps) {
-    console.log(newProps);
-  }
-
   componentDidMount() {
     const { collection } = this.props.match.params;
-    console.log(this.props.match.params);
-
     if (collection) {
       this.props.fetchMoviesCollection(collection);
     } else {

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+
 import { logout } from "../../actions/userActions";
 import { changeCollectionName, search } from "../../actions/movieActions";
 
@@ -140,7 +141,7 @@ class Navbar extends Component {
         <div className="User">
           <div className="name">{user.username}</div>
           <div className="image">
-            <img src={user.avatar} />
+            <img src={user.avatar} alt="User avatar" />
           </div>
         </div>
         <div className="UserProfile-menu">

@@ -34,7 +34,7 @@ export const fetchMoviesCollection = collectionName => dispatch => {
 };
 
 export const search = (searchQuery, pages) => dispatch => {
-  pages = pages === null ? pages : 1;
+  pages = pages === null ? 1 : pages;
   axios
     .get(`/api/movies/search?query=${searchQuery}&page=${pages}`)
     .then(res => {
@@ -59,9 +59,19 @@ export const fetchShelfMovies = shelfId => dispatch => {
     .catch(err => console.log(err.response.data.error));
 };
 
-export const changeCollectionName = collectionName => dispatch => {
-  console.log(`Changing collection name to ${collectionName}`);
+export const fetchShelfMoviesIds = shelfId => dispatch => {
+  axios
+    .get(`/api/movies/shelf/ids/${shelfId}`)
+    .then(res => {
+      dispatch({
+        type: FETCH_SHELF,
+        payload: { [shelfId]: res.data }
+      });
+    })
+    .catch(err => console.log(err.response.data.error));
+};
 
+export const changeCollectionName = collectionName => dispatch => {
   dispatch({
     type: CHANGE_COLLECTION_NAME,
     payload: collectionName
@@ -74,8 +84,6 @@ export const rateMovie = (movieId, rating) => dispatch => {
   axios
     .put(`/api/movies/rate/${movieId}`, { rating })
     .then(res => {
-      console.log(res);
-
       dispatch({
         type: MOVIE_RATING,
         payload: res.data
@@ -87,9 +95,6 @@ export const rateMovie = (movieId, rating) => dispatch => {
 export const addMovieToShelf = (movieId, shelfId) => dispatch => {
   axios
     .put("/api/movies/add-to-shelf", { movieId, shelfId })
-    .then(res => {
-      console.log(res);
-    })
     .catch(err => console.log(err.response.data.error));
 };
 
