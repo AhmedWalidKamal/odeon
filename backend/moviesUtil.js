@@ -449,12 +449,12 @@ module.exports.countMoviesPerRating = function(ratings) {
   }
   const moviesPerRating = {};
   ratings.forEach(rating => {
-    const rate = rating.rating / 2;
+    const rate = rating.rating;
     const rateString = rate.toString();
     if (empty(moviesPerRating[rateString])) {
       moviesPerRating[rateString] = 0;
     }
-    moviesPerRating[rateString];
+    moviesPerRating[rateString]++;
   });
   return moviesPerRating;
 };
