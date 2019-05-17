@@ -1,9 +1,14 @@
-import { SET_CURRENT_USER, MOVIE_RATING } from "../actions/types";
+import {
+  SET_CURRENT_USER,
+  MOVIE_RATING,
+  FETCH_STATISTICS
+} from "../actions/types";
 const isEmpty = require("is-empty");
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  statistics: {}
 };
 
 export default function(state = initialState, action) {
@@ -20,6 +25,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         user: newUser
+      };
+    case FETCH_STATISTICS:
+      return {
+        ...state,
+        statistics: action.payload
       };
     default:
       return state;
