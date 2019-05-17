@@ -27,7 +27,6 @@ class Navbar extends Component {
   performSearch(e) {
     e.preventDefault();
     const { searchQuery } = this.state;
-    console.log(searchQuery);
     this.props.search(searchQuery);
   }
 

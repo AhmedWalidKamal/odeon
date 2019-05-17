@@ -38,7 +38,6 @@ export const search = (searchQuery, pages) => dispatch => {
   axios
     .get(`/api/movies/search?query=${searchQuery}&page=${pages}`)
     .then(res => {
-      console.log(res.data);
       dispatch({
         type: SEARCH_QUERY,
         payload: res.data.results
@@ -100,7 +99,6 @@ export const addMovieToShelf = (movieId, shelfId) => dispatch => {
         type: FETCH_SHELF,
         payload: { [shelfId]: res.data.shelf.movies}
       });
-      console.log(res);
     })
     .catch(err => console.log(err.response.data.error));
 };
@@ -113,7 +111,6 @@ export const removeMovieFromShelf = (movieId, shelfId) => dispatch => {
         type: FETCH_SHELF,
         payload: { [shelfId]: res.data.shelf.movies}
       });
-      console.log(res);
     })
     .catch(err => console.log(err.response.data.error));
 };
