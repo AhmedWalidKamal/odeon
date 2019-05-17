@@ -497,7 +497,7 @@ module.exports.countMoviesPerMonth = function(shelf) {
     })
     .forEach(movie => {
       const watchDate = movie.watchDate;
-      const watchDateStr = moment(watchDate).format("MMM YYYY");
+      const watchDateStr = moment(watchDate).format("MMMM YYYY");
       if (empty(moviesPerMonth[watchDateStr])) {
         moviesPerMonth[watchDateStr] = 0;
       }
