@@ -4,6 +4,7 @@ const empty = require("is-empty");
 const keys = require("./config/keys");
 const tmdb = require("moviedb")(keys.tmdbApiKey);
 const defaults = require("./config/defaults");
+const moment = require("moment");
 
 var base_url;
 var poster_size;
@@ -415,4 +416,60 @@ module.exports.searchMovies = function(query, page) {
         return reject(err);
       });
   });
+};
+
+module.exports.countMoviesPerGenre = function(movies) {
+  const moviesPerGenre = {};
+  if (empty(movies)) {
+    movies = [];
+  }
+  movies.forEach(movie => {
+    const genres = movie.genres;
+    genres.forEach(genre => {
+      const name = genre.name;
+      if (empty(moviesPerGenre[name])) {
+        moviesPerGenre[name] = 0;
+      }
+      moviesPerGenre[name]++;
+    });
+  });
+  return moviesPerGenre;
+};
+
+module.exports.countMoviesPerRating = function(ratings) {
+  if (empty(ratings)) {
+    ratings = [];
+  }
+  const moviesPerRating = {};
+  ratings.forEach(rating => {
+    const rate = rating.rating / 2;
+    const rateString = rate.toString();
+    if (empty(moviesPerRating[rateString])) {
+      moviesPerRating[rateString] = 0;
+    }
+    moviesPerRating[rateString];
+  });
+  return moviesPerRating;
+};
+
+module.exports.countMoviesPerMonth = function(shelf) {
+  const moviesPerMonth = {};
+  var movies = shelf.movies;
+  if (empty(movies)) {
+    movies = [];
+  }
+  const curYear = new Date().getFullYear();
+  movies
+    .filter(movie => {
+      return movie.watchDate.getFullYear() === curYear;
+    })
+    .forEach(movie => {
+      const watchDate = movie.watchDate;
+      const watchDateStr = moment(watchDate).format("MMM YYYY");
+      if (empty(moviesPerMonth[watchDateStr])) {
+        moviesPerMonth[watchDateStr] = 0;
+      }
+      moviesPerMonth[watchDateStr]++;
+    });
+  return moviesPerMonth;
 };
