@@ -6,6 +6,7 @@ const passport = require("passport");
 
 // User functions
 const users = require("../../user");
+const moviesUtil = require("../../moviesUtil");
 
 // @route   POST api/users/register
 // @desc    Register User
@@ -96,44 +97,69 @@ router.put(
   }
 );
 
-router.get(
-  "/shelves/:id",
-  passport.authenticate("jwt", {
-    session: false
-  }),
-  (req, res) => {
-    const id = req.params.id;
-    users
-      .getUser(id)
-      .then(data => {
-        console.log(data);
-        res.json(data.shelves);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(400).json(err);
-      });
-  }
-);
+router.get("/shelves/:id", (req, res) => {
+  const id = req.params.id;
+  users
+    .getUser(id)
+    .then(data => {
+      console.log(data);
+      res.json(data.shelves);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
 
-router.get(
-  "/ratings/:id",
-  passport.authenticate("jwt", {
-    session: false
-  }),
-  (req, res) => {
-    const id = req.params.id;
-    users
-      .getUser(id)
-      .then(data => {
-        console.log(data);
-        res.json(data.ratings);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(400).json(err);
-      });
-  }
-);
+router.get("/ratings/:id", (req, res) => {
+  const id = req.params.id;
+  users
+    .getUser(id)
+    .then(data => {
+      console.log(data);
+      res.json(data.ratings);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
+
+router.get("/statistics/:id", (req, res) => {
+  const id = req.params.id;
+  const metrics = {};
+  users
+    .getUser(id)
+    .then(user => {
+      const shelves = user.shelves;
+      const ratings = user.ratings;
+      metrics.countMoviesPerRating = moviesUtil.countMoviesPerRating(ratings);
+      const index = shelves
+        .map(shelf => shelf.name.toLowerCase())
+        .indexOf("watched");
+      if (index > -1) {
+        shelf = shelves[index];
+        metrics.countMoviesPerMonth = moviesUtil.countMoviesPerMonth(shelf);
+        moviesUtil
+          .getMovies(shelf.movies.map(movie => movie.movieId))
+          .then(movies => {
+            metrics.countMoviesPerGenre = moviesUtil.countMoviesPerGenre(
+              movies
+            );
+
+            console.log(metrics);
+            res.json(metrics);
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+          });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
 
 module.exports = router;
