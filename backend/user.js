@@ -173,10 +173,13 @@ module.exports.login = function(email, password) {
         bcrypt.compare(password, user.password).then(isMatch => {
           if (isMatch) {
             // user matched
-            console.log(user);
-            const shelvesPayload = user.shelves.forEach(shelf => {
-              return { name: shelf.name, id: shelf._id };
+            let shelvesPayload = new Object();
+            user.shelves.forEach(shelf => {
+              shelvesPayload[shelf.name] = shelf._id;
             });
+
+            console.log("Shelves Payload: " + JSON.stringify(shelvesPayload));
+
             const payload = {
               id: user._id,
               profileId: user.profile._id,
@@ -187,7 +190,7 @@ module.exports.login = function(email, password) {
               shelves: shelvesPayload,
               ratings: user.ratings
             }; // Create JWT payload, this gives information about the user
-
+            console.log("Login with payload: " + JSON.stringify(payload));
             // Sign token, returned to the frontend, has user info in the payload.
             jwt.sign(
               payload,

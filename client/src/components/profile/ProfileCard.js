@@ -12,13 +12,18 @@ const isEmpty = require("is-empty");
 
 class ProfileCard extends Component {
   componentDidMount() {
+    const { shelves } = this.props.userReducer.user;
     this.props.fetchProfile(this.props.userReducer.user.id);
-    this.props.userReducer.user.shelves.map(this.props.fetchShelfMovies);
+    for (var shelfName in shelves) {
+      if (shelves.hasOwnProperty(shelfName)) {
+        this.props.fetchShelfMovies(shelves[shelfName]);
+      }
+    }
   }
 
   getShelfMovies = shelfMovies => {
     var moviePosters = shelfMovies.map((movie, i) => {
-        return <MoviePoster key={i} movie={movie} />;
+      return <MoviePoster key={i} movie={movie} />;
     });
     return moviePosters;
   };
@@ -27,7 +32,6 @@ class ProfileCard extends Component {
     const { profile } = this.props.profileReducer;
     const { user } = this.props.userReducer;
     const { shelves } = this.props.movieReducer;
-
     return (
       <div>
         <div className="wrapper">
@@ -72,9 +76,10 @@ class ProfileCard extends Component {
               </div>
               <div className="profile-card-inf">
                 <div className="profile-card-inf__item">
-                  {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+                  {!isEmpty(shelves) &&
+                  !isEmpty(shelves[user.shelves["Watched"]]) ? (
                     <div className="profile-card-inf__title">
-                      {shelves[user.shelves[0]].length}
+                      {shelves[user.shelves["Watched"]].length}
                     </div>
                   ) : (
                     <div className="profile-card-inf__title">0</div>
@@ -135,22 +140,29 @@ class ProfileCard extends Component {
         </div>
 
         <div className="content">
-          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[0]]) ? (
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves["Watched"]]) ? (
             <div>
               <div className="content__subtitle">Watched</div>
               <div className="grid">
                 {this.getShelfMovies(shelves[user.shelves[0]])}
+              </div>
+              <div className="grid">
+                {this.getShelfMovies(shelves[user.shelves["Watched"]])}
               </div>
             </div>
           ) : (
             <div />
           )}
 
-          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves[1]]) ? (
+          {!isEmpty(shelves) &&
+          !isEmpty(shelves[user.shelves["Plan to Watch"]]) ? (
             <div>
               <div className="content__subtitle">Watchlist</div>
               <div className="grid">
                 {this.getShelfMovies(shelves[user.shelves[1]])}
+              </div>
+              <div className="grid">
+                {this.getShelfMovies(shelves[user.shelves["Plan to Watch"]])}
               </div>
             </div>
           ) : (
