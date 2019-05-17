@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { fetchMoviesCollection } from "../../actions/movieActions";
 import "./home.scss";
@@ -18,9 +19,9 @@ class Home extends Component {
 
   render() {
     let moviePosters = this.props.movieReducer.movies
-      .slice(0, 15)
-      .map((movie, i) => {
-        return <MoviePoster key={i} movie={movie} />;
+      .slice(0, 14)
+      .map(movie => {
+        return <MoviePoster key={movie.id} movie={movie} />;
       });
 
     const { collection } = this.props.match.params;
