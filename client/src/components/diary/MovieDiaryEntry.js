@@ -11,7 +11,7 @@ class MovieDiaryEntry extends Component {
     };
 
     return (
-      <div className='diary'>
+      <div className="diary">
         <div className="inline">{new Date(watchDate).toDateString()}</div>
         <Link to={`/movie/${id}`}>
           <img src={poster_path} alt="movie poster" />
