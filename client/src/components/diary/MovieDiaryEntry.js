@@ -17,7 +17,7 @@ class MovieDiaryEntry extends Component {
           <img src={poster_path} alt="movie poster" />
         </Link>
         <Link to={`/movie/${id}`}>
-          <div class="inline title">{title}</div>
+          <div className="inline title">{title}</div>
         </Link>
       </div>
     );

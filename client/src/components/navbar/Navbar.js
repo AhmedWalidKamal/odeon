@@ -94,7 +94,6 @@ class Navbar extends Component {
                 Now Playing
               </Link>
             </li>
-            <li>Activity</li>
           </ul>
         </nav>
       </div>

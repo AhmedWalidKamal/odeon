@@ -92,12 +92,15 @@ p {
 
   &:hover {
     cursor: pointer;
-    margin-top: 2px;
     svg {
       path {
         fill: $white !important;
       }
     }
+    transition-property: filter, transform;
+    transition-duration: 1s;
+    filter: grayscale(70%);
+    transform: scale(1.1);
   }
 }
 
@@ -169,6 +172,7 @@ p {
   display: flex;
   justify-content: center;
   pointer-events: none;
+  margin-left: 2rem;
 
   input {
     font-family: $font;
