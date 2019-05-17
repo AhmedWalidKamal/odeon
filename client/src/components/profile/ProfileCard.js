@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { fetchProfile } from "../../actions/profileActions";
 import { fetchShelfMovies } from "../../actions/movieActions";
@@ -143,7 +144,11 @@ class ProfileCard extends Component {
         <div className="content">
           {!isEmpty(shelves) && !isEmpty(shelves[user.shelves["Watched"]]) ? (
             <div>
-              <div className="content__subtitle">Watched</div>
+              <div className="content__subtitle">
+                <Link className="Link" to="/diary">
+                  Watched
+                </Link>
+              </div>
               <div className="grid">
                 {this.getShelfMovies(shelves[user.shelves["Watched"]])}
               </div>
