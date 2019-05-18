@@ -2,29 +2,41 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MovieDiaryEntry from "./MovieDiaryEntry";
+import { fetchShelfMovies } from "../../actions/movieActions";
 
 import "./diary.scss";
+
+const isEmpty = require("is-empty");
 
 class DiaryGrid extends Component {
   constructor(props) {
     super(props);
   }
+
+  componentDidMount() {
+    this.props.fetchShelfMovies(this.props.userReducer.user.shelves["Watched"]);
+  }
+
   render() {
     const { user } = this.props.userReducer;
     const { shelves } = this.props.movieReducer;
 
-    console.log(this.props.movieReducer);
-    console.log(user);
-
-    let movieDiaries = shelves[user.shelves["Watched"]].map(movie => {
-      console.log(movie);
-      return <MovieDiaryEntry key={movie.id} movie={movie} />;
-    });
+    let movieDiaries = null;
+    if (!isEmpty(shelves)) {
+      movieDiaries = shelves[user.shelves["Watched"]].map((movie, i) => {
+        console.log(movie);
+        return <MovieDiaryEntry key={i} movie={movie} />;
+      });
+    }
 
     return (
       <div className="content">
         <div className="content__subtitle">Diary</div>
-        <div className="diary">{movieDiaries}</div>
+        {movieDiaries !== null ? (
+          <div className="diary">{movieDiaries}</div>
+        ) : (
+          <div className="diary" />
+        )}
       </div>
     );
   }
@@ -32,7 +44,8 @@ class DiaryGrid extends Component {
 
 DiaryGrid.propTypes = {
   movieReducer: PropTypes.object.isRequired,
-  userReducer: PropTypes.object.isRequired
+  userReducer: PropTypes.object.isRequired,
+  fetchShelfMovies: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -42,5 +55,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { fetchShelfMovies }
 )(DiaryGrid);
