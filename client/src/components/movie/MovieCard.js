@@ -198,11 +198,11 @@ class MovieCard extends Component {
                     </a>
                   </div>
                 ) : (
-                  <div>
-                    <a href="#" onClick={(event) => {event.preventDefault()}}>
+                  <div style={{cursor: 'default'}}>
+                    <a href="#" style={{cursor: 'default'}} onClick={(event) => {event.preventDefault()}}>
                       <i className="fas fa-eye dimmed" />
                     </a>
-                    <a href="#" onClick={(event) => {event.preventDefault()}}>
+                    <a href="#" style={{cursor: 'default'}} onClick={(event) => {event.preventDefault()}}>
                       <i className="fas fa-plus dimmed" />
                     </a>
                   </div>

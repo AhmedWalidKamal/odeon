@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+
 import MovieDiaryEntry from "./MovieDiaryEntry";
 import { fetchShelfMovies } from "../../actions/movieActions";
-
 import "./diary.scss";
 
 const isEmpty = require("is-empty");
