@@ -157,10 +157,9 @@ class ProfileCard extends Component {
             <div />
           )}
 
-          {!isEmpty(shelves) &&
-          !isEmpty(shelves[user.shelves["Plan to Watch"]]) ? (
+          {!isEmpty(shelves) && !isEmpty(shelves[user.shelves["Plan to Watch"]]) ? (
             <div>
-              <div className="content__subtitle">Watchlist</div>
+              <div className="content__subtitle">Plan to Watch</div>
               <div className="grid">
                 {this.getShelfMovies(shelves[user.shelves["Plan to Watch"]])}
               </div>

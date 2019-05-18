@@ -490,11 +490,15 @@ a, a:hover {
   color: indianred;
 }
 
+.dimmed {
+  color: #bbbbbb;
+}
+
 .icon-bar React {
   color: black;
 }
 
-.Rating {
+.rating {
   font-size: 20px;
 
   &__empty {
@@ -503,5 +507,13 @@ a, a:hover {
 
   &__full {
     color: indianred;
+  }
+}
+
+.rating-dimmed {
+  font-size: 20px;
+
+  &__empty {
+    color: #bbbbbb;
   }
 }

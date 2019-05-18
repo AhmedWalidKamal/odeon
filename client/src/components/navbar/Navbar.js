@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 import { logout } from "../../actions/userActions";
 import { changeCollectionName, search } from "../../actions/movieActions";
-
 import "./navbar.scss";
 
 class Navbar extends Component {
