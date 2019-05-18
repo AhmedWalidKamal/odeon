@@ -498,7 +498,7 @@ a, a:hover {
   color: black;
 }
 
-.Rating {
+.rating {
   font-size: 20px;
 
   &__empty {
@@ -507,5 +507,13 @@ a, a:hover {
 
   &__full {
     color: indianred;
+  }
+}
+
+.rating-dimmed {
+  font-size: 20px;
+
+  &__empty {
+    color: #bbbbbb;
   }
 }

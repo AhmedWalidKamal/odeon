@@ -145,9 +145,8 @@ class MovieCard extends Component {
                 <div className="file-card__name">Movie Title</div>
               )}
               <div className="film-card__tags list--inline">
-                {!isEmpty(movie) &&
-                !isEmpty(movie.ratings_count) &&
-                movie.ratings_count !== 0 ? (
+                {!isEmpty(movie) && !isEmpty(movie.ratings_count)
+                    && movie.ratings_count !== 0 ? (
                   <li>{movie.avg_rating}</li>
                 ) : (
                   <li>Unrated</li>
@@ -200,10 +199,10 @@ class MovieCard extends Component {
                   </div>
                 ) : (
                   <div>
-                    <a href="#">
+                    <a href="#" onClick={(event) => {event.preventDefault()}}>
                       <i className="fas fa-eye dimmed" />
                     </a>
-                    <a href="#">
+                    <a href="#" onClick={(event) => {event.preventDefault()}}>
                       <i className="fas fa-plus dimmed" />
                     </a>
                   </div>
@@ -240,14 +239,23 @@ class MovieCard extends Component {
               </div>
 
               <div className="icon-bar">
-                <Rating
-                  className="Rating"
-                  emptySymbol="far fa-star Rating__empty"
-                  fullSymbol="fas fa-star Rating__full"
-                  fractions={2}
-                  initialRating={initRating}
-                  onClick={rating => this.rateMovie(rating)}
-                />
+                {this.props.userReducer.isAuthenticated ? (
+                  <Rating
+                    className="rating"
+                    emptySymbol="far fa-star rating__empty"
+                    fullSymbol="fas fa-star rating__full"
+                    fractions={2}
+                    initialRating={initRating}
+                    onClick={rating => this.rateMovie(rating)}
+                  />
+                ) : (
+                  <Rating
+                    className="rating-dimmed"
+                    emptySymbol="far fa-star rating-dimmed__empty"
+                    fractions={2}
+                    readonly={true}
+                  />
+                )}
               </div>
             </div>
           </div>
