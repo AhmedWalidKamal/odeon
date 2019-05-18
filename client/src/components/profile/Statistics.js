@@ -67,10 +67,6 @@ const average_ratings_barchart = {
 };
 
 class Statistics extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { id } = this.props.userReducer.user;
     this.props.fetchStatistics(id);

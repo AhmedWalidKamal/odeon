@@ -5,11 +5,6 @@ import "./diary.scss";
 class MovieDiaryEntry extends Component {
   render() {
     const { title, poster_path, id, watchDate } = this.props.movie;
-
-    const inlineStyle = {
-      display: "inline-block"
-    };
-
     return (
       <div className="diary">
         <div className="inline">{new Date(watchDate).toDateString()}</div>

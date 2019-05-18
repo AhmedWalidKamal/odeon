@@ -9,10 +9,6 @@ import "./diary.scss";
 const isEmpty = require("is-empty");
 
 class DiaryGrid extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.fetchShelfMovies(this.props.userReducer.user.shelves["Watched"]);
   }
