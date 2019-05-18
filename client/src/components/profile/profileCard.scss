@@ -451,6 +451,13 @@ a, a:hover {
   }
 }
 
+.Link {
+
+  &:hover * {
+    color: indianred;
+  }
+}
+
 .c3 text,
 .c3-legend-item {
   fill: darkgrey;
