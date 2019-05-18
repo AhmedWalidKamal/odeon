@@ -9,9 +9,10 @@ import MoviePoster from "./MoviePoster";
 class Home extends Component {
   componentDidMount() {
     const { collection } = this.props.match.params;
-    if (collection) {
+
+    if (collection && collection !== "search") {
       this.props.fetchMoviesCollection(collection);
-    } else {
+    } else if (collection !== "search") {
       this.props.fetchMoviesCollection("popular");
     }
   }
@@ -39,6 +40,9 @@ class Home extends Component {
         break;
       case "now_playing":
         subtitle = <div>Now Playing</div>;
+        break;
+      case "search":
+        subtitle = <div>Search Result</div>;
         break;
       default:
         break;

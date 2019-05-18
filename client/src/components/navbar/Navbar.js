@@ -29,6 +29,7 @@ class Navbar extends Component {
     const { searchQuery } = this.state;
     this.props.search(searchQuery);
     this.setState({ searchQuery: "" });
+    this.props.history.push("/browse/search");
   }
 
   render() {

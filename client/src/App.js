@@ -46,7 +46,7 @@ class App extends Component {
       <Router history={history}>
         <div>
           <div className="App">
-            <Navbar />
+            <Navbar history={history} />
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/browse/:collection" component={Home} />

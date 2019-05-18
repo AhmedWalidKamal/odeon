@@ -24,7 +24,6 @@ class DiaryGrid extends Component {
     let movieDiaries = null;
     if (!isEmpty(shelves)) {
       movieDiaries = shelves[user.shelves["Watched"]].map((movie, i) => {
-        console.log(movie);
         return <MovieDiaryEntry key={i} movie={movie} />;
       });
     }
