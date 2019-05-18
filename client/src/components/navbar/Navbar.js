@@ -28,6 +28,7 @@ class Navbar extends Component {
     e.preventDefault();
     const { searchQuery } = this.state;
     this.props.search(searchQuery);
+    this.setState({ searchQuery: "" });
   }
 
   render() {
